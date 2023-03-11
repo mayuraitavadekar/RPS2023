@@ -1,16 +1,16 @@
-                                        ===================================== 
-                                        Geant4 Simulation for Radon Emanation
-                                        =====================================
+                                =====================================================
+                                Geant4 Simulation for Radon Propagation Study in Soil
+                                =====================================================
 
-This is Gean4 simulation for verification of the effects of soil characteristics on Radon Emanation.
+        This is Geant4 c++ code for radon propagation study in soil at Stone Mountain Park, Atlanta, GA.
 
-                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                        Authors: Mayur Aitavadekar, Dr. Xiaochun He
-                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                    Authors: Mayur Aitavadekar, Dr. Xiaochun He
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 --------
-# usage:
+# usage notes:
 --------
 
 * N/A
