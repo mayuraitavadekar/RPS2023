@@ -26,8 +26,8 @@ nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
   G4int n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
 
-  fParticleGun->SetParticleEnergy(0*eV);
-  fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,0.));
+  fParticleGun->SetParticleEnergy(86*keV);
+  fParticleGun->SetParticlePosition(G4ThreeVector(0.,1.,0.));
   
   // if you're setting a particle through the gun
   // use following decay energy in setting particle energy  
@@ -46,38 +46,50 @@ nbPrimaryGeneratorAction::~nbPrimaryGeneratorAction()
 void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
 
-  // we need to setup momentum (mv)
-  G4double p, px, py, pz;
-  G4double theta, phi, PI;
+  // // we need to setup momentum (mv)
+  // G4double p, px, py, pz;
+  // G4double theta, phi, PI;
   
-  // p = 191.108*MeV; // this is calculated using two body decay
-  p = 188.8827972*MeV; // this value gives proper kinetic energy of 86.27 keV as mentioned in publications
+  // // p = 191.108*MeV; // this is calculated using two body decay
+  // p = 188.8827972*MeV; // this value gives proper kinetic energy of 86.27 keV as mentioned in publications
   
 
-  PI = 3.14159265;
-  theta = 180*G4UniformRand();
-  phi = 360*G4UniformRand();
+  // PI = 3.14159265;
+  // theta = 180*G4UniformRand();
+  // phi = 360*G4UniformRand();
   
-  // G4cout << "theta = " << theta <<  "   Phi = " << phi << G4endl;
+  // // G4cout << "theta = " << theta <<  "   Phi = " << phi << G4endl;
   
-  pz = p * cos (theta*PI / 180.0);
-  px = p * sin (theta*PI / 180.0) * cos (phi*PI / 360.0);
-  py = p * sin (theta*PI / 180.0) * sin (phi*PI / 360.0);
+  // pz = p * cos (theta*PI / 180.0);
+  // px = p * sin (theta*PI / 180.0) * cos (phi*PI / 360.0);
+  // py = p * sin (theta*PI / 180.0) * sin (phi*PI / 360.0);
     
-  // G4cout<<"px : "<<px<<G4endl;
-  // G4cout<<"py : "<<py<<G4endl;
-  // G4cout<<"pz : "<<pz<<G4endl;    
-    
-  fParticleGun->SetParticleMomentum(G4ThreeVector(px,py,pz));
+  // // G4cout<<"px : "<<px<<G4endl;
+  // // G4cout<<"py : "<<py<<G4endl;
+  // // G4cout<<"pz : "<<pz<<G4endl;    
+  
+  // fParticleGun->SetParticleMomentum(G4ThreeVector(px,py,pz));
 
-  G4int Z = 86, A = 222;
-  G4double ionCharge   = 0.*eplus;
-  G4double excitEnergy = 0.*keV;
+  // G4int Z = 86, A = 222;
+  // G4double ionCharge   = 0.*eplus;
+  // G4double excitEnergy = 0.*keV;
   
-  G4ParticleDefinition* ion
-    = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
-  fParticleGun->SetParticleDefinition(ion);
-  fParticleGun->SetParticleCharge(ionCharge);
+  // G4ParticleDefinition* ion
+  //   = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
+  // fParticleGun->SetParticleDefinition(ion);
+  // fParticleGun->SetParticleCharge(ionCharge);
+
+  // if no particle is specified, simulation will run as Geantino
+  if (fParticleGun->GetParticleDefinition() == G4Geantino::Geantino()) {  
+    G4int Z = 86, A = 222;
+    G4double ionCharge   = 0.*eplus;
+    G4double excitEnergy = 0.*keV;
+    
+    G4ParticleDefinition* ion
+       = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
+    fParticleGun->SetParticleDefinition(ion);
+    fParticleGun->SetParticleCharge(ionCharge);
+  } 
       
   //create vertex
   //   

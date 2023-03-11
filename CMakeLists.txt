@@ -53,6 +53,7 @@ set(nb_SCRIPTS
   run.mac
   mainConfig.txt
   run1.mac
+  plotPNames.c
   )
 
 foreach(_script ${nb_SCRIPTS})

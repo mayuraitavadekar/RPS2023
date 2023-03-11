@@ -4,8 +4,3 @@ r2,94.00
 r3,91.00
 r4,47.00
 r5,20.00
-layer1,Air
-layer2,Air
-layer3,Air
-layer4,Air
-layer5,Air

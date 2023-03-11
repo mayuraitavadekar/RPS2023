@@ -54,7 +54,6 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       void DefineMaterials();
       void DefineSoilLayerMaps();
       void FillSoilLayersWithMaps();
-      void PrintLayersMaterials();
       
       // function for file reading
       void split(const std::string &s, char delim, std::vector<std::string> &elems);

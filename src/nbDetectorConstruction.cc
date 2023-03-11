@@ -1,19 +1,3 @@
-// Neutron ball detector construction
-//
-// Created on 10/13/2021: hexc, Mayur, Tien, Weisen, Austin
-// neutron ball detector is constructed as a shell with a predeinfed inner and outer radia.
-//
-// Updated on 10/20/2021: hexc, Mayur, Tien and Weisen
-//    Add code for reading in the detector configuration file
-//
-// Updated on 11/10/2021: hexc, Mayur, Tien, Jarvious
-//   Add soil material with vaiable water contents
-//   Make multiple soil layers
-//
-// Updated on 22 Aug, 2022
-// commented unused variables and added some more comments
-
-
 // This file will make use nbDetectorConstruction.hh
 
 #include "nbDetectorConstruction.hh"
@@ -85,14 +69,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
 {
   // Define materials 
   DefineMaterials();
-  
-  // initialize the shell materials
-  shellMaterial_1 = Air;
-  shellMaterial_2 = Air;
-  shellMaterial_3 = Air;
-  shellMaterial_4 = Air;
-  shellMaterial_5 = Air;
-  
+
   // this is core material data map
   // all the materials you defined in DefineMaterials() should be
   // mentioned here
@@ -113,8 +90,6 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
         {"Galactic", defaultMaterial}
   };
   
-  // read the config file for getting default radius of each layer
-  G4String layerName;
   // read the data through configuration file
   std::ifstream infile ("mainConfig.txt");
 
@@ -131,109 +106,6 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
     else if(row_values[0] == "r3") r3 = stod(row_values[1])*cm; 
     else if(row_values[0] == "r4") r4 = stod(row_values[1])*cm; 
     else if(row_values[0] == "r5") r5 = stod(row_values[1])*cm; 
-    else
-    {
-        if(row_values[0] == "layer1")
-        {
-            int flag = 0;
-            for (const auto& itr: StringToMaterialMapper) 
-            {
-                if(itr.first == row_values[1])
-                {
-                    flag = 1;
-                    auto materialName = itr.second;
-                    shellMaterial_1 = materialName;
-                    break;
-                }
-                
-            }
-            if(flag == 0)
-            {
-                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
-                exit(0);
-            }
-        }
-        else if(row_values[0] == "layer2")
-        {
-            int flag = 0;
-            for (const auto& itr: StringToMaterialMapper) 
-            {
-                if(itr.first == row_values[1])
-                {
-                    flag = 1;
-                    auto materialName = itr.second;
-                    shellMaterial_2 = materialName;
-                    // G4double fractionMass = stod(row_values[2]);
-                    // chem_composition_2.insert({materialName, fractionMass*perCent});
-                    break;
-                }
-                
-            }
-            if(flag == 0)
-            {
-                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
-                exit(0);
-            }
-        }
-        else if(row_values[0] == "layer3")
-        {
-            int flag = 0;
-            for (const auto& itr: StringToMaterialMapper) 
-            {
-                if(itr.first == row_values[1])
-                {
-                    flag = 1;
-                    auto materialName = itr.second;
-                    shellMaterial_3 = materialName;
-                    break;
-                }
-            }
-            if(flag == 0)
-            {
-                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
-                exit(0);
-            }
-        }
-        else if(row_values[0] == "layer4")
-        {
-            int flag = 0;
-            for (const auto& itr: StringToMaterialMapper) 
-            {
-                if(itr.first == row_values[1])
-                {
-                    flag = 1;
-                    auto materialName = itr.second;
-                    shellMaterial_4 = materialName;
-                    break;
-                }
-            }
-            if(flag == 0)
-            {
-                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
-                exit(0);
-            }
-        }
-        else if(row_values[0] == "layer5")
-        {
-            int flag = 0;
-            for (const auto& itr: StringToMaterialMapper) 
-            {
-                if(itr.first == row_values[1])
-                {
-                    flag = 1;
-                    G4cout<<itr.second<<G4endl;
-                    auto materialName = itr.second;
-                    shellMaterial_5 = materialName;
-                    break;
-                }
-            }
-            if(flag == 0)
-            {
-                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
-                exit(0);
-            }
-        }
-    }
   }
 
   G4cout << "r1 : " << r1 << G4endl;
@@ -244,7 +116,9 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
 
   
   // fill soil layers
-  //FillSoilLayersWithMaps();
+  DefineSoilLayerMaps();
+  
+  FillSoilLayersWithMaps();
   
   // Define volumes
   return DefineVolumes();
@@ -270,7 +144,6 @@ void nbDetectorConstruction::DefineMaterials()
  
   // define nist compounds
   H2O  = nistManager->FindOrBuildMaterial("G4_WATER");
-  H2O->GetIonisation()->SetMeanExcitationEnergy(75.0*eV); // you may or may not include this line, overwrite computed meanExcitationEnergy with ICRU recommended value 
   
   SiO2 = nistManager->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
   Al2O3 = nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
@@ -329,12 +202,6 @@ void nbDetectorConstruction::DefineMaterials()
   // Vacuum
   defaultMaterial = new G4Material("Galactic", z=1., a=1.01*g/mole,density= universe_mean_density,
                   kStateGas, 2.73*kelvin, 3.e-18*pascal);
-
-  // Liquid argon material
-  // new G4Material("liquidArgon", z=18., a= 39.95*g/mole, density= 1.390*g/cm3);
-  //        // The argon by NIST Manager is a gas with a different density
-  // Print materials
-  // G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -346,7 +213,15 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   G4PhysicalVolumeStore::GetInstance()->Clean();
   G4LogicalVolumeStore::GetInstance()->Clean();
   G4SolidStore::GetInstance()->Clean();
- 
+
+
+  // initialize shell materials
+  shellMaterial_1 = soilOne;
+  shellMaterial_2 = soilOne10W;
+  shellMaterial_3 = soilOne20W;
+  shellMaterial_4 = soilOne30W;
+  shellMaterial_5 = soilOne40W;
+
   // Geometry parameters  
   
   // World
@@ -512,26 +387,10 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   simpleShellVisAtt_3->SetVisibility(true);
   shellLV_4->SetVisAttributes(simpleShellVisAtt_3);
   
-  // Print Layerwise Materials 
-  PrintLayersMaterials();
-
   // Always return the physical World
   //
   return worldPV;
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void nbDetectorConstruction::PrintLayersMaterials()
-{
-  G4cout << "\t******* MATERIALS OF EACH LAYER *******" << G4endl;
-  G4cout << " layer 1 material : " << shellLV_1->GetMaterial()->GetName() << G4endl; 
-  G4cout << " layer 2 material : " << shellLV_2->GetMaterial()->GetName() << G4endl; 
-  G4cout << " layer 3 material : " << shellLV_3->GetMaterial()->GetName() << G4endl; 
-  G4cout << " layer 4 material : " << shellLV_4->GetMaterial()->GetName() << G4endl; 
-  G4cout << " layer 5 material : " << shellLV_5->GetMaterial()->GetName() << G4endl; 
-}
-
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -565,7 +424,7 @@ void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber)
                 if(shellLV_1) { shellLV_1->SetMaterial(shellMaterial_1); }
                 G4RunManager::GetRunManager()->PhysicsHasBeenModified();
                 G4cout<<"layer 1 is set to material: "<<matName<<G4endl;
-                PrintLayersMaterials();
+      
             }
             
             else if(layerNumber == 2)
@@ -574,7 +433,7 @@ void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber)
                 if(shellLV_2) { shellLV_2->SetMaterial(shellMaterial_2); }
                 G4RunManager::GetRunManager()->PhysicsHasBeenModified();
                 G4cout<<"layer 2 is set to material: "<<matName<<G4endl;
-                PrintLayersMaterials();
+  
             }
             
             else if(layerNumber == 3)
@@ -583,7 +442,7 @@ void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber)
                 if(shellLV_3) { shellLV_3->SetMaterial(shellMaterial_3); }
                 G4RunManager::GetRunManager()->PhysicsHasBeenModified();
                 G4cout<<"layer 3 is set to material: "<<matName<<G4endl;
-                PrintLayersMaterials();
+        
             }
             
             else if(layerNumber == 4)
@@ -592,7 +451,7 @@ void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber)
                 if(shellLV_4) { shellLV_4->SetMaterial(shellMaterial_4); }
                 G4RunManager::GetRunManager()->PhysicsHasBeenModified();
                 G4cout<<"layer 4 is set to material: "<<matName<<G4endl;
-                PrintLayersMaterials();
+            
             }
             
             else if(layerNumber == 5)
@@ -601,7 +460,7 @@ void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber)
                 if(shellLV_5) { shellLV_5->SetMaterial(shellMaterial_5); }
                 G4RunManager::GetRunManager()->PhysicsHasBeenModified();
                 G4cout<<"layer 5 is set to material: "<<matName<<G4endl;
-                PrintLayersMaterials();
+            
             }
             
             else 
@@ -612,7 +471,6 @@ void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber)
             
             
             G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-            PrintLayersMaterials();
             flag = 1;
             break;
         }
@@ -620,95 +478,11 @@ void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber)
     if(flag == 0)
     {
         G4cout<<matName<<" is not found in your datamap"<<G4endl;
-        PrintLayersMaterials();
+ 
     }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void nbDetectorConstruction::setLayerHeight(G4double height, int layerNumber) 
-{
-    if(layerNumber == 1)
-    {
-        r1 = height;
-        G4cout << "r1 is changed to " << r1 << G4endl;
-        G4RunManager::GetRunManager()->ReinitializeGeometry();
-    }
-    
-    else if(layerNumber == 2)
-    {
-        r2 = height;
-        G4cout << "r2 is changed to " << r1 << G4endl;
-        G4RunManager::GetRunManager()->ReinitializeGeometry();
-    }
-    
-    else if(layerNumber == 3)
-    {
-        r3 = height;
-        G4cout << "r3 is changed to " << r1 << G4endl;
-        G4RunManager::GetRunManager()->ReinitializeGeometry();
-    }
-    
-    else if(layerNumber == 4)
-    {
-        r4 = height;
-        G4cout << "r4 is changed to " << r1 << G4endl;
-        G4RunManager::GetRunManager()->ReinitializeGeometry();
-    }
-    
-    else if(layerNumber == 5)
-    {
-        r5 = height;
-        G4cout << "r5 is changed to " << r1 << G4endl;
-        G4RunManager::GetRunManager()->ReinitializeGeometry();
-    }
-    
-    else
-    {
-        G4cout << "invalid layerNumber" << G4endl;
-    }
-    
-    G4cout << "r1 : " << r1 << G4endl;
-    G4cout << "r2 : " << r2 << G4endl;
-    G4cout << "r3 : " << r3 << G4endl;
-    G4cout << "r4 : " << r4 << G4endl;
-    G4cout << "r5 : " << r5 << G4endl;
-}
-
-// void nbDetectorConstruction::setLayer1Height(G4double height) 
-// {
-//     r1 = height;
-//     G4cout << "r1 is changed to " << r1 << G4endl;
-//     G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// void nbDetectorConstruction::setLayer2Height(G4double height) 
-// {
-//     r2 = height;
-//     G4cout << "r2 is changed to " << r2 << G4endl;
-//     G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// void nbDetectorConstruction::setLayer3Height(G4double height) 
-// {
-//     r3 = height;
-//     G4cout << "r3 is changed to " << r3 << G4endl;
-//     G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// void nbDetectorConstruction::setLayer4Height(G4double height) 
-// {
-//     r4 = height;
-//     G4cout << "r4 is changed to " << r4 << G4endl;
-//     G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// void nbDetectorConstruction::setLayer5Height(G4double height) 
-// {
-//     r5 = height;
-//     G4cout << "r5 is changed to " << r5 << G4endl;
-//     G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -755,42 +529,117 @@ void nbDetectorConstruction::split(const std::string &s, char delim, std::vector
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void nbDetectorConstruction::DefineSoilLayerMaps()
+{
+    // define chemical composition maps
+    // use these maps in soil layers
+    // you can add or delete any material composition
+    // in any map
+    // just make sure that summation = 100*perCent
+    
+    // first layer composition
+    chem_composition_1 = {
+        {SiO2, 46.3*perCent},
+        {pH, 15.0*perCent},             // pH
+        {Al2O3, 13.0*perCent},
+        {Fe2O3, 2.5*perCent},
+        {CaO, 1.6*perCent},
+        {MgO, 0.7*perCent},
+        {TiO2, 0.6*perCent},
+        {OrganicMat, 20.3*perCent}      // organicMat
+    };
+    
+    // second layer composition
+    chem_composition_2 = {
+        {SiO2, 40.17*perCent},
+        {pH, 15.0*perCent},             // pH
+        {Al2O3, 11.7*perCent},
+        {Fe2O3, 2.25*perCent},
+        {CaO, 1.44*perCent},
+        {MgO, 0.63*perCent},
+        {TiO2, 0.54*perCent},
+        {OrganicMat, 18.27*perCent},
+        {H2O, 10.0*perCent}
+    };
+    
+    // third layer composition
+    chem_composition_3 = {
+        {SiO2, 34.04*perCent},
+        {pH, 15.0*perCent},             // pH
+        {Al2O3, 10.4*perCent},
+        {Fe2O3, 2.0*perCent},
+        {CaO, 1.28*perCent},
+        {MgO, 0.56*perCent},
+        {TiO2, 0.48*perCent},
+        {OrganicMat, 16.24*perCent},
+        {H2O, 20.0*perCent}
+    };
+    
+    // fourth layer composition
+    chem_composition_4 = {
+        {SiO2, 27.91*perCent},
+        {pH, 15.0*perCent},             // pH
+        {Al2O3, 9.1*perCent},
+        {Fe2O3, 1.75*perCent},
+        {CaO, 1.12*perCent},
+        {MgO, 0.49*perCent},
+        {TiO2, 0.42*perCent},
+        {OrganicMat, 14.21*perCent},    // organicMat
+        {H2O, 30.0*perCent}
+    };  
+    
+    // fifth layer composition
+    chem_composition_5 = {
+        {SiO2, 17.91*perCent},
+        {pH, 15.0*perCent},
+        {Al2O3, 9.1*perCent},
+        {Fe2O3, 1.75*perCent},
+        {CaO, 1.12*perCent},
+        {MgO, 0.49*perCent},
+        {TiO2, 0.42*perCent},
+        {OrganicMat, 14.21*perCent},
+        {H2O, 40.0*perCent}
+    };
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 void nbDetectorConstruction::FillSoilLayersWithMaps()
 {
-    // create soil layers
+  // create soil layers
   // Based on: http://gfnun.unal.edu.co/fileadmin/content/gruposdeinvestigacion/fisicanuclear/Tesis/DanielAndrade_TG.pdf
   // layer 1
-  // soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
-  // for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
-  //       soilOne->AddMaterial(it->first, fractionmass=it->second);
-  // }
+  soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
+  for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
+        soilOne->AddMaterial(it->first, fractionmass=it->second);
+  }
   
   // layer 2
   // 10% moisture content
-  // soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
-  // for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
-  //       soilOne10W->AddMaterial(it->first, fractionmass=it->second);
-  // }
+  soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
+  for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
+        soilOne10W->AddMaterial(it->first, fractionmass=it->second);
+  }
   
   
   // layer 3
   // 20% moisture content. Need new density value?
-  // soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
-  // for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
-  //       soilOne20W->AddMaterial(it->first, fractionmass=it->second);
-  // }
+  soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
+  for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
+        soilOne20W->AddMaterial(it->first, fractionmass=it->second);
+  }
   
   // layer 4
   // 30% moisture content. Need new density value?
-  // soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
-  // for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
-  //       soilOne30W->AddMaterial(it->first, fractionmass=it->second);
-  // }
+  soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
+  for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
+        soilOne30W->AddMaterial(it->first, fractionmass=it->second);
+  }
     
   // layer 5 (inner most)
   // 40% moisture content. Need new density value?
-  // soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
-  // for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
-  //       soilOne40W->AddMaterial(it->first, fractionmass=it->second);
-  // }
+  soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
+  for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
+        soilOne40W->AddMaterial(it->first, fractionmass=it->second);
+  }
 }

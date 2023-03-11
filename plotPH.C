@@ -1,3 +1,4 @@
+
 void plotPH()
 {
     auto c1 = new TCanvas("c1","c1",200,10,600,400);
@@ -96,7 +97,6 @@ void plotPH()
     for(int i=0;i<9;i++) cout<<radon_count[i]<<endl;
     
     input->Close();
-    
 }
 
 /*

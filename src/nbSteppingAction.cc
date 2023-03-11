@@ -47,39 +47,39 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   
   const G4ParticleDefinition* particle = aStep->GetTrack()->GetParticleDefinition();  
   
-  G4String pName   = particle->GetParticleName();
-  G4int pID       = particle->GetPDGEncoding();
-  G4int Z         = particle->GetAtomicNumber();
-  G4int A         = particle->GetAtomicMass();
-  G4double x=aStep->GetPostStepPoint()->GetPosition().x()/cm;
-  G4double y=aStep->GetPostStepPoint()->GetPosition().y()/cm;
-  G4double z=aStep->GetPostStepPoint()->GetPosition().z()/cm;
-  G4double pVelocity=aStep->GetPostStepPoint()->GetVelocity();
-  G4double pKE=aStep->GetPostStepPoint()->GetKineticEnergy();
-  G4double pX=aStep->GetPostStepPoint()->GetMomentum().x();
-  G4double pY=aStep->GetPostStepPoint()->GetMomentum().y();
-  G4double pZ=aStep->GetPostStepPoint()->GetMomentum().z();
-  // G4double time = aStep->GetPostStepPoint()->GetGlobalTime();
-
-  G4double time = aStep->GetTrack()->GetLocalTime();
+  G4String pName      = particle->GetParticleName();
+  G4int pid           = particle->GetPDGEncoding();
+  G4int Z             = particle->GetAtomicNumber();
+  G4int A             = particle->GetAtomicMass();
+  G4double charge     = particle->GetPDGCharge();  
+  G4double x          = aStep->GetPostStepPoint()->GetPosition().x()/cm;
+  G4double y          = aStep->GetPostStepPoint()->GetPosition().y()/cm;
+  G4double z          = aStep->GetPostStepPoint()->GetPosition().z()/cm;
+  G4double pVelocity  = aStep->GetPostStepPoint()->GetVelocity();
+  G4double pKE        = aStep->GetPostStepPoint()->GetKineticEnergy()/keV;
+  G4double momX         = aStep->GetPostStepPoint()->GetMomentum().x();
+  G4double momY         = aStep->GetPostStepPoint()->GetMomentum().y();
+  G4double momZ         = aStep->GetPostStepPoint()->GetMomentum().z();
+  G4double time       = aStep->GetPostStepPoint()->GetGlobalTime()/s;
 
   // fill ntuple with id = 2
   G4int id = 2;
   analysisManager->FillNtupleDColumn(id,0, x);
   analysisManager->FillNtupleDColumn(id,1, y);
   analysisManager->FillNtupleDColumn(id,2, z);
-  analysisManager->FillNtupleDColumn(id,3, pID);
+  analysisManager->FillNtupleDColumn(id,3, pid);
   analysisManager->FillNtupleDColumn(id,4, Z);
   analysisManager->FillNtupleDColumn(id,5, A);
   analysisManager->FillNtupleSColumn(id,6, pName);
   analysisManager->FillNtupleIColumn(id,7, iVol);
   analysisManager->FillNtupleDColumn(id,8, pVelocity);
   analysisManager->FillNtupleDColumn(id,9, pKE);
-  analysisManager->FillNtupleDColumn(id,10, pX);
-  analysisManager->FillNtupleDColumn(id,11, pY);
-  analysisManager->FillNtupleDColumn(id,12, pZ);
+  analysisManager->FillNtupleDColumn(id,10, momX);
+  analysisManager->FillNtupleDColumn(id,11, momY);
+  analysisManager->FillNtupleDColumn(id,12, momZ);
   analysisManager->FillNtupleIColumn(id,13, stepCounter++);
-  analysisManager->FillNtupleDColumn(id,14, time/s);
+  analysisManager->FillNtupleDColumn(id,14, time);
+  analysisManager->FillNtupleDColumn(id,15, charge);
   // add row
   analysisManager->AddNtupleRow(id);
 }

@@ -17,25 +17,12 @@
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
 
-
-#include "G4PhysListFactory.hh"
-#include "QGSP_BERT_HP.hh"
 #include "nbRadonPhysicsList.hh"
-
-#include "G4StepLimiterPhysics.hh"
 
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-//namespace {
-//  void PrintUsage() {
-//    G4cerr << " Usage: " << G4endl;
-//    G4cerr << " neutronBhttps://www.slac.stanford.edu/xorg/geant4/SLACTutorial14/HandsOn1/#ex1aall [-m macro ] [-u UIsession] [-t nThreads]" << G4endl;
-//    G4cerr << "   note: -t option is available only for multi-threaded mode."
-//           << G4endl;
-//  }
-//}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -63,22 +50,10 @@ int main(int argc,char** argv) {
   nbDetectorConstruction* det= new nbDetectorConstruction;
   runManager->SetUserInitialization(det);
   
-  //////////////////// physics lists code ////////////////////
-  G4PhysListFactory physFactory;
-  auto qgsp_hp_bert = "QGSP_BERT_HP";
-  auto phys = physFactory.GetReferencePhysList(qgsp_hp_bert);
-  
-  nbRadonPhysicsList* nbRadonPhysList = new nbRadonPhysicsList();
-  phys->RegisterPhysics(nbRadonPhysList);
-
-  // // step limiter
-	// G4StepLimiterPhysics* stepLimiter = new G4StepLimiterPhysics;
-	// stepLimiter->SetApplyToAll(true);	// apply step limit to all particles. Default we set limit to DBL_MAX
-	// phys->RegisterPhysics(stepLimiter);
-  
-  phys->DumpList();
+  // physics list
+  nbRadonPhysicsList* phys = new nbRadonPhysicsList;
   runManager->SetUserInitialization(phys);
-  //////////////////////////////////////////////////////////// 
+
  
  
   // include detector geometry

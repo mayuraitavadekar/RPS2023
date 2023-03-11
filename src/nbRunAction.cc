@@ -44,13 +44,11 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   timeinfo = std::localtime(&rawtime);
 
   std::strftime(rootOutputFileBuffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
-  std::strftime(descFileBuffer,80,"%Y-%m-%d-%H-%M-%S.txt",timeinfo);
   
   rootOutputFile = rootOutputFileBuffer; // root file
   descFile = descFileBuffer;             // description file
   
   G4cout <<"root file: " << rootOutputFile << G4endl;
-  G4cout <<"desc file: " << descFile << G4endl;
    
   analysisManager->SetFileName(rootOutputFile);
   
@@ -67,6 +65,7 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleDColumn(1, "time");      //column 4
   analysisManager->CreateNtupleDColumn(1, "pH");        //column 5
   analysisManager->CreateNtupleSColumn(1, "pName");        //column 6
+  analysisManager->CreateNtupleDColumn(1, "charge");        //column 6
   analysisManager->FinishNtuple(1);
   
   analysisManager->CreateNtuple("particleData", "All data");
@@ -85,6 +84,8 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleDColumn(2, "pZ");
   analysisManager->CreateNtupleIColumn(2, "stepCount");
   analysisManager->CreateNtupleDColumn(2, "time");
+  analysisManager->CreateNtupleDColumn(2, "charge");
+
   analysisManager->FinishNtuple(2);
 }
 
@@ -119,23 +120,6 @@ void nbRunAction::BeginOfRunAction(const G4Run* aRun)
     G4double energy = fPrimary->GetParticleGun()->GetParticleEnergy();
     fRun->SetPrimary(particle, energy);
   }
-  
-  // create desc file and write data to it 
-  std::ofstream outfile (descFile);
-  outfile << "no of events: "+std::to_string(aRun->GetNumberOfEventToBeProcessed()) << std::endl;
-  outfile << "primary particle: Rn222" << std::endl;
-  outfile << "layer 1 material: "+fDetector->shellLV_1->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 2 material: "+fDetector->shellLV_2->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 3 material: "+fDetector->shellLV_3->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 4 material: "+fDetector->shellLV_4->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 5 material: "+fDetector->shellLV_5->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 1 Radius: "+std::to_string(fDetector->r1/cm) << std::endl;
-  outfile << "layer 2 Radius: "+std::to_string(fDetector->r2/cm) << std::endl;
-  outfile << "layer 3 Radius: "+std::to_string(fDetector->r3/cm) << std::endl;
-  outfile << "layer 4 Radius: "+std::to_string(fDetector->r4/cm) << std::endl;
-  outfile << "layer 5 Radius: "+std::to_string(fDetector->r5/cm) << std::endl;
-  outfile.close();
-  //
   
   // Get analysis manager
   auto analysisManager = G4AnalysisManager::Instance();

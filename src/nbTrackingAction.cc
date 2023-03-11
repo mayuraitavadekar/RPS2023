@@ -26,12 +26,7 @@ nbTrackingAction::nbTrackingAction(nbDetectorConstruction* det, nbEventAction* E
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
-{
-  
-  // G4cout << "pH value = "<<fDetector->pHValue<<G4endl;
-  // G4cout << "H value = "<<fDetector->fractionMassForH<<G4endl;
-  // G4cout << "OH value = "<<fDetector->fractionMassForOH<<G4endl;
-  
+{  
   // instance of G4Run
   nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());    
   
@@ -40,17 +35,13 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
 
   const G4ParticleDefinition* particle = track->GetParticleDefinition();  
   G4String pName  = particle->GetParticleName();
-  G4double pID    = particle->GetPDGEncoding();
+  G4double pid    = particle->GetPDGEncoding();
   G4double Z      = particle->GetAtomicNumber();
   G4double A      = particle->GetAtomicMass();
-  // G4double charge = particle->GetPDGCharge();    
+  G4double charge = particle->GetPDGCharge();    
   G4double energy = track->GetKineticEnergy();
   G4double time   = track->GetGlobalTime();
-  // G4double weight = track->GetWeight();
-  // G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
-  // G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().y()/cm;
-  // G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().z()/cm;
-  // G4int trackID = track->GetTrackID();
+  G4int trackID = track->GetTrackID();
 
   // if particle is anti neutrino; kill
   if (particle == G4AntiNeutrinoE::AntiNeutrinoE())
@@ -74,51 +65,38 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   run->ParticleCount(pName,energy,iVol);
   
   // if the track is secondary
-  if(track->GetTrackID() != 1)
+  if(trackID != 1)
   {
       // we can check for radioactive products
       G4int processType = track->GetCreatorProcess()->GetProcessSubType();
       if (processType == fRadioactiveDecay) {
         //fill ntuple id = 1
         G4int id = 1;
-        analysisManager->FillNtupleDColumn(id,0, pID);
+        analysisManager->FillNtupleDColumn(id,0, pid);
         analysisManager->FillNtupleDColumn(id,1, Z);
         analysisManager->FillNtupleDColumn(id,2, A);
         analysisManager->FillNtupleDColumn(id,3, energy);
         analysisManager->FillNtupleDColumn(id,4, time/s);
-        analysisManager->FillNtupleDColumn(id,5, fDetector->pHValue);
+        analysisManager->FillNtupleDColumn(id,5, 0);
         analysisManager->FillNtupleSColumn(id,6, pName);
+        analysisManager->FillNtupleDColumn(id,7, charge);
         analysisManager->AddNtupleRow(id);
       }
   }
+  
   else
   {
       G4int id = 1;
-      analysisManager->FillNtupleDColumn(id,0, pID);
+      analysisManager->FillNtupleDColumn(id,0, pid);
       analysisManager->FillNtupleDColumn(id,1, Z);
       analysisManager->FillNtupleDColumn(id,2, A);
       analysisManager->FillNtupleDColumn(id,3, energy);
       analysisManager->FillNtupleDColumn(id,4, time/s);
-      analysisManager->FillNtupleDColumn(id,5, fDetector->pHValue);
+      analysisManager->FillNtupleDColumn(id,5, 0);
       analysisManager->FillNtupleSColumn(id,6, pName);
+      analysisManager->FillNtupleDColumn(id,7, charge);
       analysisManager->AddNtupleRow(id);
   }
-  
-  // ion
-  // https://apc.u-paris.fr/~franco/g4doxy/html/G4TrackStatus_8hh.html
-  // // this will get you all radioactive elements since radioactive elements are unstable ions
-  // particles can be atom, molecules or ions. 
-  // atoms are single neutral particles
-  // molecules are neutral particles made of multiple atoms 
-  // ions are charged particles - two types - cations(net positive charge) and anions(net negative charge)
-  // G4bool unstableIon = ((charge > 2.) && !(particle->GetPDGStable()));
-  // if(unstableIon)
-  // {
-  //     G4cout<<"name: "<<name<<G4endl;
-  // }
-  
-  // const G4ParticleMomentum dir = aTrack->GetMomentumDirection();
-  // track->SetMomentumDirection(G4ThreeVector(dir.x(), dir.y(), std::abs(dir.z()));
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

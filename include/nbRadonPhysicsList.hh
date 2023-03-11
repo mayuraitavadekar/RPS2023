@@ -1,28 +1,23 @@
-/*
-	20 dec 2022 : new class radonPhysicsList is added
-*/
 
-#ifndef nbRadonPhysicsList_h
-#define nbRadonPhysicsList_h 1
+#ifndef PhysicsList_h
+#define PhysicsList_h 1
 
+#include "G4VModularPhysicsList.hh"
 #include "globals.hh"
-#include "G4VPhysicsConstructor.hh"
 
-class G4VProcess;
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbRadonPhysicsList : public G4VPhysicsConstructor
+class nbRadonPhysicsList: public G4VModularPhysicsList
 {
-  public: 
-    nbRadonPhysicsList(G4int verbose = 0, const G4String& name = "RadonPhysics");;
-    // nbRadonPhysicsList(const G4String& name);
+public:
+  nbRadonPhysicsList();
+ ~nbRadonPhysicsList();
 
-    virtual ~nbRadonPhysicsList();
-
-    // construct particle and physics processes 
-    virtual void ConstructParticle();
-    virtual void ConstructProcess();
-    
-
+public:
+  virtual void ConstructParticle();
+  virtual void SetCuts();
 };
 
-#endif // nbRadonPhysicsList_h
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

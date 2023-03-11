@@ -91,20 +91,20 @@ void nbDetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
     fDetector->setLayerMaterial(matName, layerNumber);
   }
   
-  if (command == layerHeightCmd) 
-  { 
-    // split the string
-    vector<string> row_values;
-    split(newValue, ' ', row_values);
+  // if (command == layerHeightCmd) 
+  // { 
+  //   // split the string
+  //   vector<string> row_values;
+  //   split(newValue, ' ', row_values);
     
-    G4double layerHeight = std::stod(row_values[0])*cm;
-    int layerNumber = std::stoi(row_values[1]);
+  //   G4double layerHeight = std::stod(row_values[0])*cm;
+  //   int layerNumber = std::stoi(row_values[1]);
     
-    G4cout << "layer height : " << layerHeight << G4endl;
-    G4cout << "layer number : " << layerNumber << G4endl;
+  //   G4cout << "layer height : " << layerHeight << G4endl;
+  //   G4cout << "layer number : " << layerNumber << G4endl;
     
-    fDetector->setLayerHeight(layerHeight, layerNumber);
-  }
+  //   fDetector->setLayerHeight(layerHeight, layerNumber);
+  // }
  
 }
 
