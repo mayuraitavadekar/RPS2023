@@ -107,10 +107,10 @@ void nbRadonPhysicsList::ConstructParticle()
 
 void nbRadonPhysicsList::SetCuts()
 {
-  SetCutValue(0*mm, "proton");
-  SetCutValue(10*km, "e-");
-  SetCutValue(10*km, "e+");
-  SetCutValue(10*km, "gamma");      
+  // SetCutValue(0*mm, "proton");
+  // SetCutValue(10*km, "e-");
+  // SetCutValue(10*km, "e+");
+  // SetCutValue(10*km, "gamma");      
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

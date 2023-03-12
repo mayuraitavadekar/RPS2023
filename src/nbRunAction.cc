@@ -58,7 +58,7 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   // analysisManager->OpenFile("output.root");
    
   analysisManager->CreateNtuple("RDecayProducts", "All Products of RDecay");
-  analysisManager->CreateNtupleDColumn(1, "pID");       //column 0
+  analysisManager->CreateNtupleDColumn(1, "pid");       //column 0
   analysisManager->CreateNtupleDColumn(1, "Z");         //column 1
   analysisManager->CreateNtupleDColumn(1, "A");         //column 2    
   analysisManager->CreateNtupleDColumn(1, "energy");    //column 3
@@ -72,7 +72,7 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleDColumn(2, "x");       //column 0
   analysisManager->CreateNtupleDColumn(2, "y");         //column 1
   analysisManager->CreateNtupleDColumn(2, "z");         //column 2    
-  analysisManager->CreateNtupleDColumn(2, "pID");    //column 3
+  analysisManager->CreateNtupleDColumn(2, "pid");    //column 3
   analysisManager->CreateNtupleDColumn(2, "Z");         //column 1
   analysisManager->CreateNtupleDColumn(2, "A");    
   analysisManager->CreateNtupleSColumn(2, "pName");      //column 4

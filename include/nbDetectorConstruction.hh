@@ -54,6 +54,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       void DefineMaterials();
       void DefineSoilLayerMaps();
       void FillSoilLayersWithMaps();
+      void PrintLayersMaterials();
       
       // function for file reading
       void split(const std::string &s, char delim, std::vector<std::string> &elems);
@@ -79,9 +80,10 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4Material *OrganicMat;
       G4Material *defaultMaterial;
       G4Material *Air;
+      G4Material *Quartz;
       
       // define common elements
-      G4Element *elO, *elH, *elC, *elN;
+      G4Element *elO, *elH, *elC, *elN, *elSi;
       G4Element *elMn, *elFe, *elRa;
       
       // define soil layer variables of type G4Material here

@@ -49,4 +49,12 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 # Results
 ---------
 
-N/A
+* N/A
+
+--------------
+# commit notes
+--------------
+
+upto this commit initial data analysis is performed on overall spherical
+soil horizon geometry to understand distributions of distance traveled by
+radon and other particles in various mediums.

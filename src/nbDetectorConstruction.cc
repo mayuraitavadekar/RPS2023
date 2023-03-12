@@ -141,9 +141,28 @@ void nbDetectorConstruction::DefineMaterials()
   Fe = nistManager->FindOrBuildMaterial("G4_Fe");
   Mn = nistManager->FindOrBuildMaterial("G4_Mn");
   Ra = nistManager->FindOrBuildMaterial("G4_Ra");
+
+    // define elements
+  elO = new G4Element("Oxygen"  ,symbol="O" , z= 8., a= 16.00*g/mole);
+  elH = new G4Element("Hydrogen",symbol="H" , z= 1., a= 1.01*g/mole);
+  elC  = nistManager->FindOrBuildElement("C");
+  elN  = nistManager->FindOrBuildElement("N");
+  elMn = nistManager->FindOrBuildElement("Mn");
+  elSi = new G4Element("Silicon", "Si", z=14., a= 28.0855*g/mole);
+
  
   // define nist compounds
-  H2O  = nistManager->FindOrBuildMaterial("G4_WATER");
+//   H2O = new G4Material("Water", density= 1.0*g/cm3, ncomponents=2);
+//   H2O->AddElement(elH, natoms=2);
+//   H2O->AddElement(elO, natoms=1);
+//   // overwrite computed meanExcitationEnergy with ICRU recommended value 
+//   H2O->GetIonisation()->SetMeanExcitationEnergy(75.0*eV);
+
+  Quartz = new G4Material("Quartz", 2.64 *g/cm3, ncomponents= 2);
+  Quartz-> AddElement(elSi, natoms=1);
+  Quartz-> AddElement(elO,  natoms=2);
+
+  H2O = nistManager->FindOrBuildMaterial("G4_WATER");
   
   SiO2 = nistManager->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
   Al2O3 = nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
@@ -151,13 +170,7 @@ void nbDetectorConstruction::DefineMaterials()
   CaO = nistManager->FindOrBuildMaterial("G4_CALCIUM_OXIDE");
   MgO = nistManager->FindOrBuildMaterial("G4_MAGNESIUM_OXIDE");
   TiO2 = nistManager->FindOrBuildMaterial("G4_TITANIUM_DIOXIDE");
- 
-  // define elements
-  elO = new G4Element("Oxygen"  ,symbol="O" , z= 8., a= 16.00*g/mole);
-  elH = new G4Element("Hydrogen",symbol="H" , z= 1., a= 1.01*g/mole);
-  elC  = nistManager->FindOrBuildElement("C");
-  elN  = nistManager->FindOrBuildElement("N");
-  elMn = nistManager->FindOrBuildElement("Mn");
+
   
   // create air
   Air = nistManager->FindOrBuildMaterial("G4_AIR");
@@ -216,11 +229,16 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 
 
   // initialize shell materials
-  shellMaterial_1 = soilOne;
-  shellMaterial_2 = soilOne10W;
-  shellMaterial_3 = soilOne20W;
-  shellMaterial_4 = soilOne30W;
-  shellMaterial_5 = soilOne40W;
+//   shellMaterial_1 = soilOne40W;
+//   shellMaterial_2 = soilOne30W;
+//   shellMaterial_3 = soilOne20W;
+//   shellMaterial_4 = soilOne20W;
+//   shellMaterial_5 = soilOne10W;
+  shellMaterial_1 = Quartz;
+  shellMaterial_2 = Quartz;
+  shellMaterial_3 = Quartz;
+  shellMaterial_4 = Quartz;
+  shellMaterial_5 = Quartz;
 
   // Geometry parameters  
   
@@ -386,10 +404,25 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   auto simpleShellVisAtt_3= new G4VisAttributes(G4Colour(0.3,0.1,0.2));
   simpleShellVisAtt_3->SetVisibility(true);
   shellLV_4->SetVisAttributes(simpleShellVisAtt_3);
+
+  PrintLayersMaterials();
   
   // Always return the physical World
   //
   return worldPV;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+
+void nbDetectorConstruction::PrintLayersMaterials()
+{
+  G4cout << "\t******* MATERIALS OF EACH LAYER *******" << G4endl;
+  G4cout << " layer 1 material : " << shellLV_1->GetMaterial()->GetName() << G4endl; 
+  G4cout << " layer 2 material : " << shellLV_2->GetMaterial()->GetName() << G4endl; 
+  G4cout << " layer 3 material : " << shellLV_3->GetMaterial()->GetName() << G4endl; 
+  G4cout << " layer 4 material : " << shellLV_4->GetMaterial()->GetName() << G4endl; 
+  G4cout << " layer 5 material : " << shellLV_5->GetMaterial()->GetName() << G4endl; 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

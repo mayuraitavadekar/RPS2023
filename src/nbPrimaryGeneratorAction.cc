@@ -26,8 +26,9 @@ nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
   G4int n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
 
-  fParticleGun->SetParticleEnergy(86*keV);
-  fParticleGun->SetParticlePosition(G4ThreeVector(0.,1.,0.));
+  fParticleGun->SetParticleEnergy(0*keV); // set initial kinetic energy
+  fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,0.)); // set position
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,1.,0.));
   
   // if you're setting a particle through the gun
   // use following decay energy in setting particle energy  
