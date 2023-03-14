@@ -56,10 +56,6 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   G4int iVol = 0;
   if (pVolume == fDetector->getNameOfLayer1())   iVol = 1;
   if (pVolume == fDetector->getNameOfLayer2())   iVol = 2;
-  if (pVolume == fDetector->getNameOfLayer3())   iVol = 3;
-  if (pVolume == fDetector->getNameOfLayer4())   iVol = 4;
-  if (pVolume == fDetector->getNameOfLayer5())   iVol = 5;
-  if (pVolume == fDetector->getWorld())          iVol = 6; // let's say iVol = 6 is world
   
   // count all particles regardless of PID == 1 or PID != 1
   run->ParticleCount(pName,energy,iVol);

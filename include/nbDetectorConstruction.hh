@@ -19,6 +19,7 @@
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
+#include "G4SystemOfUnits.hh"
 
 #include <map>
 
@@ -68,9 +69,13 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4double r1, r2, r3, r4, r5; // radii for 5 layers
       G4int matType, matType_1, matType_2, matType_3;
       G4Material *shellMaterial_1, *shellMaterial_2, *shellMaterial_3, *shellMaterial_4, *shellMaterial_5;
-      G4VPhysicalVolume *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4, *shellPV_5;    // neutron ball shell physical volume
-      G4LogicalVolume *shellLV_1, *shellLV_2, *shellLV_3, *shellLV_4, *shellLV_5; 
+      G4VPhysicalVolume *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4, *shellPV_5, *grainPV, *boxPV;    // neutron ball shell physical volume
+      G4LogicalVolume *shellLV_1, *shellLV_2, *shellLV_3, *shellLV_4, *shellLV_5, *grainLV, *boxLV; 
       G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
+
+      // grain size
+      G4double grainSize = 1*mm;
+      G4double boxSize = 50*cm;
 
     public:
      

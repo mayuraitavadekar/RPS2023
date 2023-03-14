@@ -234,11 +234,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 //   shellMaterial_3 = soilOne20W;
 //   shellMaterial_4 = soilOne20W;
 //   shellMaterial_5 = soilOne10W;
-  shellMaterial_1 = Quartz;
-  shellMaterial_2 = Quartz;
-  shellMaterial_3 = Quartz;
-  shellMaterial_4 = Quartz;
-  shellMaterial_5 = Quartz;
+  shellMaterial_1 = Air;
 
   // Geometry parameters  
   
@@ -267,6 +263,23 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                  false,            // no boolean operation
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps 
+
+  // box
+  G4Box*  
+  box = new G4Box("box",                          //its name
+                   boxSize,boxSize,boxSize);//its size
+                                           
+  boxLV = new G4LogicalVolume(box,             //its solid
+                                   defaultMaterial,                    //its material
+                                   "boxLV");               //its name                                
+  boxPV = new G4PVPlacement(0,                      //no rotation
+                                 G4ThreeVector(),        //at (0,0,0)
+                                 boxLV,             //its logical volume
+                                 "boxPV",                //its name
+                                 worldLV,                      //its mother  volume
+                                 false,                  //no boolean operation
+                                 0);                     //copy number
+
   
   //                               
   // Make neutron ball detector (i.e., multiple layers)
@@ -278,132 +291,37 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   G4double startAngleTheta = 0.0*deg;
   G4double spanningAngleTheta = 180.0*deg; //90
 
-  // Outer shell
-  auto solidShell_1 = new G4Sphere("Shell", 0, r1,
+  // grain
+  auto solidShell_1 = new G4Sphere("grain", 0, grainSize,
 			       startAnglePhi, spanningAnglePhi, 
 			       startAngleTheta, spanningAngleTheta);  
-  shellLV_1
+  grainLV
     = new G4LogicalVolume(
                  solidShell_1,     // its solid
                  shellMaterial_1,  // its material
-                 "shellLV_1");   // its name
+                 "grainLV");   // its name
                                    
-  shellPV_1 = new G4PVPlacement(
+  grainPV = new G4PVPlacement(
                  0,                // no rotation
                  G4ThreeVector(),  // at (0,0,0)
-                 shellLV_1,          // its logical volume                         
-                 "shellPV_1",    // its name
-                 worldLV,          // its mother  volume
+                 grainLV,          // its logical volume                         
+                 "grainPV",    // its name
+                 boxLV,          // its mother  volume
                  false,            // no boolean operation
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps
 
-  // 1st layer (A/Ap 0-6 inches)
-  auto solidShell_2 = new G4Sphere("Shell_1", 0, r2,
-				 startAnglePhi, spanningAnglePhi, 
-				 startAngleTheta, spanningAngleTheta);
   
-  shellLV_2
-    = new G4LogicalVolume(
-                 solidShell_2,     // its solid
-                 shellMaterial_2,  // its material
-                 "shellLV_2");   // its name
-                                   
-  shellPV_2 = new G4PVPlacement(
-                 0,                // no rotation
-                 G4ThreeVector(),  // at (0,0,0)
-                 shellLV_2,          // its logical volume                         
-                 "shellPV_2",    // its name
-                 shellLV_1,          // its mother  volume
-                 false,            // no boolean operation
-                 0,                // copy number
-                 fCheckOverlaps);  // checking overlaps 
-  
-  // 2nd layer (E 6-9 inches - 100-9)
-  auto solidShell_3 = new G4Sphere("Shell_2", 0, r3,
-				   startAnglePhi, spanningAnglePhi, 
-				   startAngleTheta, spanningAngleTheta);
-  
-  shellLV_3
-    = new G4LogicalVolume(
-			  solidShell_3,     // its solid
-			  shellMaterial_3,  // its material
-			  "shellLV_3");   // its name
-  
-  shellPV_3 = new G4PVPlacement(
-				0,                // no rotation
-				G4ThreeVector(),  // at (0,0,0)
-				shellLV_3,          // its logical volume                         
-				"shellPV_3",    // its name
-				shellLV_2,          // its mother  volume
-				false,            // no boolean operation
-				0,                // copy number
-				fCheckOverlaps);  // checking overlaps 
-  
-  
-  // 3rd layer (Be, Bt, Bc 9-53 inches - 100-53 = 47)
-  auto solidShell_4 = new G4Sphere("Shell_3", 0, r4,
-				   startAnglePhi, spanningAnglePhi, 
-				   startAngleTheta, spanningAngleTheta);
-  
-  shellLV_4
-    = new G4LogicalVolume(
-			  solidShell_4,     // its solid
-			  shellMaterial_4,  // its material
-			  "shellLV_4");   // its name
-  
-  shellPV_4 = new G4PVPlacement(
-				0,                // no rotation
-				G4ThreeVector(),  // at (0,0,0)
-				shellLV_4,          // its logical volume                         
-				"shellPV_4",    // its name
-				shellLV_3,          // its mother  volume
-				false,            // no boolean operation
-				0,                // copy number
-				fCheckOverlaps);  // checking overlaps 
-  
-  
-  // 4th layer (C 53-80 inches - 100-80 = 20)
-  auto solidShell_5 = new G4Sphere("Shell_4", 0, r5,
-                                   startAnglePhi, spanningAnglePhi, 
-                                   startAngleTheta, spanningAngleTheta);
-  
-  shellLV_5
-    = new G4LogicalVolume(
-                          solidShell_5,     // its solid
-                          shellMaterial_5,  // its material
-                          "shellLV_5");   // its name
-  
-  shellPV_5 = new G4PVPlacement(
-                                0,                // no rotation
-                                G4ThreeVector(),  // at (0,0,0)
-                                shellLV_5,          // its logical volume
-                                "shellPV_5",    // its name
-                                shellLV_4,          // its mother  volume
-                                false,            // no boolean operation
-                                0,                // copy number
-                                fCheckOverlaps);  // checking overlaps
+
 
   //                                        
   // Visualization attributes
   //
   worldLV->SetVisAttributes (G4VisAttributes::GetInvisible());
 
-  auto simpleShellVisAtt= new G4VisAttributes(G4Colour(0.3,0.4,0.5));
-  simpleShellVisAtt->SetVisibility(true);
-  shellLV_1->SetVisAttributes(simpleShellVisAtt);
-
-  auto simpleShellVisAtt_1= new G4VisAttributes(G4Colour(0.3,0.4,0.1));
-  simpleShellVisAtt_1->SetVisibility(true);
-  shellLV_2->SetVisAttributes(simpleShellVisAtt_1);
-
-  auto simpleShellVisAtt_2= new G4VisAttributes(G4Colour(0.3,0.3,0.2));
-  simpleShellVisAtt_2->SetVisibility(true);
-  shellLV_3->SetVisAttributes(simpleShellVisAtt_2);
-
-  auto simpleShellVisAtt_3= new G4VisAttributes(G4Colour(0.3,0.1,0.2));
-  simpleShellVisAtt_3->SetVisibility(true);
-  shellLV_4->SetVisAttributes(simpleShellVisAtt_3);
+  auto grainVisAtt= new G4VisAttributes(G4Colour(0.45,0.25,0.0));
+  grainVisAtt->SetVisibility(true);
+  grainLV->SetVisAttributes(grainVisAtt);
 
   PrintLayersMaterials();
   
@@ -418,11 +336,11 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 void nbDetectorConstruction::PrintLayersMaterials()
 {
   G4cout << "\t******* MATERIALS OF EACH LAYER *******" << G4endl;
-  G4cout << " layer 1 material : " << shellLV_1->GetMaterial()->GetName() << G4endl; 
-  G4cout << " layer 2 material : " << shellLV_2->GetMaterial()->GetName() << G4endl; 
-  G4cout << " layer 3 material : " << shellLV_3->GetMaterial()->GetName() << G4endl; 
-  G4cout << " layer 4 material : " << shellLV_4->GetMaterial()->GetName() << G4endl; 
-  G4cout << " layer 5 material : " << shellLV_5->GetMaterial()->GetName() << G4endl; 
+  // G4cout << " layer 1 material : " << shellLV_1->GetMaterial()->GetName() << G4endl; 
+  // G4cout << " layer 2 material : " << shellLV_2->GetMaterial()->GetName() << G4endl; 
+  // G4cout << " layer 3 material : " << shellLV_3->GetMaterial()->GetName() << G4endl; 
+  // G4cout << " layer 4 material : " << shellLV_4->GetMaterial()->GetName() << G4endl; 
+  // G4cout << " layer 5 material : " << shellLV_5->GetMaterial()->GetName() << G4endl; 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -521,32 +439,12 @@ void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber)
 
 G4String nbDetectorConstruction::getNameOfLayer1()
 {
-    return "shellPV_1"; // this is first layer beneath the surface
+    return "grainPV"; // this is first layer beneath the surface
 }
 
 G4String nbDetectorConstruction::getNameOfLayer2()
 {
-    return "shellPV_2"; // the second layer below that
-}
-
-G4String nbDetectorConstruction::getNameOfLayer3()
-{
-    return "shellPV_3"; // the third layer below that
-}
-
-G4String nbDetectorConstruction::getNameOfLayer4()
-{
-    return "shellPV_4"; // the fourth layer below that
-}
-
-G4String nbDetectorConstruction::getNameOfLayer5()
-{
-    return "shellPV_5"; // the fifth layer below that
-}
-
-G4String nbDetectorConstruction::getWorld()
-{
-    return "World"; // return world
+    return "boxPV"; // the second layer below that
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -9,17 +9,14 @@
 #
 # rdm is applied only to the different soil layers
 /process/had/rdm/noVolumes
-/process/had/rdm/selectVolume shellLV_1
-/process/had/rdm/selectVolume shellLV_2
-/process/had/rdm/selectVolume shellLV_3
-/process/had/rdm/selectVolume shellLV_4
-/process/had/rdm/selectVolume shellLV_5
+/process/had/rdm/selectVolume grainLV
+/process/had/rdm/selectVolume boxLV
 #
 # place the isotopes in the middle of the target, at rest. 
 #
 /gun/particle ion
-/gun/ion 88 226
-/gun/energy 0 keV
+/gun/ion 86 222
+/gun/energy 86 keV
 #
 /run/printProgress 100
 /run/beamOn 100

@@ -42,7 +42,7 @@ void plotHistXY()
     // c1->SetGridY();
 
     
-    TFile* file = new TFile("2023-03-11-15-13-14-u238-100evts.root", "read");
+    TFile* file = new TFile("2023-03-14-02-34-46.root", "read");
     
     TTree* tree = (TTree*) file->Get("particleData");
     
@@ -61,7 +61,7 @@ void plotHistXY()
     tree->SetBranchAddress("A", &A);
     tree->SetBranchAddress("pid", &pid);
 
-    tree->Draw("sqrt(x*x+y*y+z*z)","A==226");
+    tree->Draw("sqrt(x*x+y*y+z*z)","A==222");
 
     // for(int i=0;i<tree->GetEntries();i++)
     // {
@@ -78,9 +78,9 @@ void plotHistXY()
     auto htemp = (TH2F*)gPad->GetPrimitive("htemp");
     auto xaxis = htemp->GetXaxis();
 
-    htemp->SetTitle("Distribution of distance of gamma rays from origin with custom soil horizons varying moisture content");
+    htemp->SetTitle("Distribution of distance of radon rays from origin with air medium");
     htemp->GetYaxis()->SetTitle("count");
-	htemp->GetXaxis()->SetTitle("distance (in centimeters)");
+	htemp->GetXaxis()->SetTitle("distance (in micrometers)");
     htemp->GetXaxis()->SetTitleOffset(1.5);
     htemp->GetYaxis()->SetTitleColor(kBlack);
     htemp->GetYaxis()->SetTitleSize(0.03);
