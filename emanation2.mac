@@ -1,0 +1,43 @@
+# example: https://hurel.hanyang.ac.kr/Geant4/Geant4_GPS/reat.space.qinetiq.com/gps/examples/examples.html
+#                                                                         
+/control/verbose 2
+/run/verbose 1
+#
+/run/initialize
+#
+#/process/list
+#
+# rdm is applied only to the different soil layers
+/run/initialize
+/process/had/rdm/selectVolume grainLV
+/process/had/rdm/selectVolume boxLV
+#
+# place the isotopes in the middle of the target, at rest. 
+#
+/gps/particle ion
+/gps/ion 86 222
+/gps/ene/mono 86 keV
+/gps/pos/type Volume
+/gps/pos/shape Sphere
+/gps/pos/centre -40 -40 40 mm
+/gps/pos/radius 0.1 mm
+#
+/gps/source/add 1
+/gps/ene/mono 86 keV
+/gps/particle ion
+/gps/ion 86 222
+/gps/pos/type Volume
+/gps/pos/shape Sphere
+/gps/pos/centre -39 -40 40 mm
+/gps/pos/radius 0.1 mm
+#
+/gps/source/add 1
+/gps/ene/mono 86 keV
+/gps/particle ion
+/gps/ion 86 222
+/gps/pos/type Volume
+/gps/pos/shape Sphere
+/gps/pos/centre -38 -40 40 mm
+/gps/pos/radius 0.1 mm
+#
+/run/beamOn 100

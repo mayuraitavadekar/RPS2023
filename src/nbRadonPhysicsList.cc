@@ -31,7 +31,7 @@
 nbRadonPhysicsList::nbRadonPhysicsList()
 :G4VModularPhysicsList()
 {
-  G4int verb = 1;
+  G4int verb = 0;
   SetVerboseLevel(verb);
 
   // Mandatory for G4NuclideTable

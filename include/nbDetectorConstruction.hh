@@ -1,16 +1,3 @@
-// Created on 10/13/2021
-//
-// All of the geometric parameters of the neutron ball detector is define here
-//
-// Updated on 10/20/2021: hexc, Mayur, Tien, Weisen
-// Added code for reading on detector configuration parameter
-//
-// Updated on 11/10/2021: hexc, Mayur, Tien, Jarvious
-// Add more layers in the detector construct with different material properties.
-
-// Updated on 09/24/2022: Mayur
-// Made code more modular by adding separate functions for defining composition, filling soil layers
-
 #ifndef nbDetectorConstruction_h
 #define nbDetectorConstruction_h 1
 
@@ -53,29 +40,33 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       // methods
       //
       void DefineMaterials();
-      void DefineSoilLayerMaps();
+      void DefineChemicalComps();
       void FillSoilLayersWithMaps();
       void PrintLayersMaterials();
-      
-      // function for file reading
-      void split(const std::string &s, char delim, std::vector<std::string> &elems);
+      void fillGrainWithChemComps();
       G4VPhysicalVolume* DefineVolumes();
       
-      // data members
-      //
-      static G4ThreadLocal G4GlobalMagFieldMessenger*  fMagFieldMessenger; 
-      // magnetic field messenger
-      
+      G4Material* grainMaterial;
+
       G4double r1, r2, r3, r4, r5; // radii for 5 layers
       G4int matType, matType_1, matType_2, matType_3;
-      G4Material *shellMaterial_1, *shellMaterial_2, *shellMaterial_3, *shellMaterial_4, *shellMaterial_5;
-      G4VPhysicalVolume *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4, *shellPV_5, *grainPV, *boxPV;    // neutron ball shell physical volume
-      G4LogicalVolume *shellLV_1, *shellLV_2, *shellLV_3, *shellLV_4, *shellLV_5, *grainLV, *boxLV; 
+      G4Material *shellMaterial_1, *shellMaterial_2, *shellMaterial_3, *shellMaterial_4, *shellMaterial_5, *shellMaterial_6, *shellMaterial_7, *shellMaterial_8;
+      G4VPhysicalVolume *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4, *shellPV_5, *grainPV, *boxPV, *coatingPV;    // neutron ball shell physical volume
+      G4LogicalVolume *shellLV_1, *shellLV_2, *shellLV_3, *shellLV_4, *shellLV_5, *grainLV, *boxLV, *coatingLV; 
       G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 
       // grain size
-      G4double grainSize = 1*mm;
-      G4double boxSize = 50*cm;
+      G4double totalGrainSize = 50*um;
+      G4double grainSize = 50.*um;
+      // Define dimensions of box and sphere
+      G4double boxSizeX = 1*cm;
+      G4double boxSizeY = 1*cm;
+      G4double boxSizeZ = 1*cm;
+
+      // Define positions of spheres on surface of box
+      G4double spherePosX = boxSizeX/2 - grainSize - 1*cm;
+      G4double spherePosY = boxSizeY/2 - grainSize - 1*cm;
+      G4double spherePosZ = grainSize;
 
     public:
      
@@ -86,13 +77,19 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4Material *defaultMaterial;
       G4Material *Air;
       G4Material *Quartz;
+      G4Material *Ca, *C, *N, *Na, *Mg, *P, *Si, *K, *Al, *I, *S, *Ti, *O;
+      G4Material *H2OVapor;
+      G4Material *coatingMaterial;
       
       // define common elements
-      G4Element *elO, *elH, *elC, *elN, *elSi;
+      G4Element *elO, *elH, *elC, *elN, *elSi, *elP, *elMg, *elS, *elK;
       G4Element *elMn, *elFe, *elRa;
       
       // define soil layer variables of type G4Material here
       G4Material *soilOne, *soilOne10W, *soilOne20W, *soilOne30W, *soilOne40W;
+
+      G4Material *grainComp1, *grainComp2, *grainComp3, *grainComp4, *grainComp5, *grainComp6, *grainComp7, 
+                 *grainComp8, *grainComp9, *grainComp10, *grainComp11, *grainComp12, *grainComp13;
       
       // define object nist manager
       G4NistManager *nistManager;
@@ -124,7 +121,15 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       map<G4Material*, G4double> chem_composition_3;
       map<G4Material*, G4double> chem_composition_4;
       map<G4Material*, G4double> chem_composition_5;
-      
+      map<G4Material*, G4double> chem_composition_6;
+      map<G4Material*, G4double> chem_composition_7;
+      map<G4Material*, G4double> chem_composition_8;
+      map<G4Material*, G4double> chem_composition_9;
+      map<G4Material*, G4double> chem_composition_10;
+      map<G4Material*, G4double> chem_composition_11;
+      map<G4Material*, G4double> chem_composition_12;
+      map<G4Material*, G4double> chem_composition_13;
+
     public:
       // user defined functions to get physical volume names of each layer
       G4String getNameOfLayer1(); // shellPV
@@ -136,13 +141,20 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       
     
     public:
+
+      // ANALYSIS VARIABLES
+      G4int H2OContent = 15; // initialized with initial H2O content
+
+
       // create pointer to detector messenger
       nbDetectorMessenger* fdetectorMessenger;
       
       // function definitions for detector messenger
-      void updatepH(G4double pHValue);
-      void setLayerMaterial(G4String matName, int layerNumber);
-      void setLayerHeight(G4double height, int layerNumber);        
+      void updateH2OContent(G4int);
+      void setGrainMaterial(G4int);
+
+      // void setLayerMaterial(G4String matName, int layerNumber);
+      // void setLayerHeight(G4double height, int layerNumber);        
 };
 
 #endif

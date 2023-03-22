@@ -31,6 +31,7 @@ class nbSteppingAction : public G4UserSteppingAction
 
   public:
     G4int stepCounter = 0;
+    G4double emanated = -1;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

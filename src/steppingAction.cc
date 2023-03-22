@@ -17,7 +17,6 @@
 nbSteppingAction::nbSteppingAction(nbDetectorConstruction* det, nbEventAction* event)
 : G4UserSteppingAction(), fDetector(det), fEventAction(event)
 {
-    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -41,8 +40,8 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   // get volume of the current step
   G4String pVolume = aStep->GetTrack()->GetVolume()->GetName();
   G4int iVol = 0;
-  if (pVolume == fDetector->getNameOfLayer1())   iVol = 1; // grain
-  if (pVolume == fDetector->getNameOfLayer2())   iVol = 2; // grain 
+  if (pVolume == fDetector->getNameOfLayer1())   iVol = 1; // grainPV
+  if (pVolume == fDetector->getNameOfLayer2())   iVol = 2; // boxPV
   
   const G4ParticleDefinition* particle = aStep->GetTrack()->GetParticleDefinition();  
   
@@ -61,18 +60,25 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4double momZ         = aStep->GetPostStepPoint()->GetMomentum().z();
   G4double time       = aStep->GetPostStepPoint()->GetGlobalTime()/s;
 
+  emanated = 0;
 
   if(pName == "alpha") pid = 1;
   else if(pName == "gamma") pid = 2;
   else if(pName == "e-") pid = 3;
   else if(pName == "e+") pid = 4;
-  else if(pName == "Rn222" || A == 222 || Z == 86)
+  else if(A == 222 || pName == "Rn222" || Z == 86)
   {
-    // stotr pid
+    // set pid
     pid = 5;
 
-    // push in upward y
-    aTrack->SetMomentumDirection(G4ThreeVector(0., 1., 0.));
+    // G4cout << momX << " " << momY << " " << momZ << G4endl;
+
+    // check if this step is first step of radon in this volume
+    if(iVol == 2 && aStep->IsFirstStepInVolume())
+    {
+      // first step in pore volume i.e. particle has escaped from grain
+      emanated = 1;
+    }
   }
 
   // fill ntuple with id = 2
@@ -93,9 +99,10 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   analysisManager->FillNtupleIColumn(id,13, stepCounter++);
   analysisManager->FillNtupleDColumn(id,14, time);
   analysisManager->FillNtupleDColumn(id,15, charge);
+  analysisManager->FillNtupleIColumn(id,16, emanated); // set emanation flag value for radon 0/1
+  analysisManager->FillNtupleIColumn(id,17, fDetector->H2OContent); // set H2O content in chemical comps
   // add row
   analysisManager->AddNtupleRow(id);
-
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

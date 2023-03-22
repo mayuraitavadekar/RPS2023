@@ -1,0 +1,40 @@
+#
+/analysis/setFileName 25pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 25
+/run/beamOn 10000
+#
+#
+/analysis/setFileName 35pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 35
+/run/beamOn 10000
+#
+#
+/analysis/setFileName 45pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 45
+/run/beamOn 10000
+#
+#
+/analysis/setFileName 55pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 55
+/run/beamOn 10000
+#
+#
+/analysis/setFileName 65pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 65
+/run/beamOn 10000
+#
+#
+/analysis/setFileName 75pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 75
+/run/beamOn 10000
+
+ 
+hadd mainfile.root 746.root 747.root 748.root 749.root
+
+rm 746.root 747.root 748.root 749.root

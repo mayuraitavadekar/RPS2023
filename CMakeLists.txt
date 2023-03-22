@@ -51,9 +51,12 @@ set(nb_SCRIPTS
   u238PH.mac
   plotPH.C
   run.mac
+  emanation.mac
   mainConfig.txt
   plotPNames.c
+  plotEmanationByH2O.c
   plotHistXY.c
+  temp.c
   )
 
 foreach(_script ${nb_SCRIPTS})

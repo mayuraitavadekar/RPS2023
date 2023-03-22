@@ -42,7 +42,7 @@ void plotHistXY()
     // c1->SetGridY();
 
     
-    TFile* file = new TFile("2023-03-14-02-34-46.root", "read");
+    TFile* file = new TFile("2023-03-14-18-59-08.root", "read");
     
     TTree* tree = (TTree*) file->Get("particleData");
     

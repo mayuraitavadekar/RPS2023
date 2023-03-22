@@ -7,12 +7,14 @@
 #include "G4UserRunAction.hh"
 #include "globals.hh"
 
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class nbDetectorConstruction;
 class nbRun;
 class nbPrimaryGeneratorAction;
 class nbHistoManager;
+class G4GeneralParticleSource;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -40,6 +42,7 @@ class nbRunAction : public G4UserRunAction
     nbPrimaryGeneratorAction*    fPrimary;
     nbRun*                       fRun;    
     nbHistoManager*              fHistoManager;
+    G4GeneralParticleSource*     gps;
     
   public:
     

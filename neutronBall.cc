@@ -34,6 +34,11 @@ int main(int argc,char** argv) {
 
   //choose the Random engine
   CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
+  //xiaohang added three lines to change the random engine seed, hopefully it will work.
+  G4long seed=time(0); 
+  CLHEP::HepRandom::setTheSeed(seed);
+  if (argc == 4) CLHEP::HepRandom::setTheSeed(seed+atol(argv[3]));
+  CLHEP::HepRandom::showEngineStatus();
 
   //use G4SteppingVerboseWithUnits
   G4int precision = 4;

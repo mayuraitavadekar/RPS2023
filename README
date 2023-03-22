@@ -9,12 +9,6 @@
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
---------
-# usage notes:
---------
-
-* N/A
-
 -----------
 # commands:
 -----------
@@ -45,16 +39,19 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
 > ./neutronBall ../neutronBall/run.mac
 
----------
-# Results
----------
+-----------------------------------
+# commit notes (latest from bottom)
+-----------------------------------
 
-* N/A
-
---------------
-# commit notes
---------------
-
-upto this commit initial data analysis is performed on overall spherical
+[1] upto this commit initial data analysis is performed on overall spherical
 soil horizon geometry to understand distributions of distance traveled by
 radon and other particles in various mediums.
+
+[2] radon emanation study code is added with one soil grain with size 50um. 
+updated chemical composition for single soil grain from various sources 
+on web. primary partcle is radon with energy of 86 keV. simulation records 
+data of radon emanation and data analysis is performed to understand dependance 
+of radon emanation on moisture. emanation.mac file is used to run this commit code
+which assumes that radon atoms are uniformaly distributed in soil grain. 
+plotEmanationByH2O file should be used for getting plot. Before running this
+file you should combine all the data files using hadd mainfile.root file1 file2 ..

@@ -5,6 +5,7 @@
 #include "nbRun.hh"
 #include "nbDetectorConstruction.hh"
 #include "nbPrimaryGeneratorAction.hh"
+#include "G4GeneralParticleSource.hh"
 #include "nbHistoManager.hh"
 
 #include "G4Run.hh"
@@ -85,6 +86,8 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleIColumn(2, "stepCount");
   analysisManager->CreateNtupleDColumn(2, "time");
   analysisManager->CreateNtupleDColumn(2, "charge");
+  analysisManager->CreateNtupleIColumn(2, "emanation"); // by default stores -1 but if lastStepofRadon is inside soil grain then stores 0 else store 1
+  analysisManager->CreateNtupleIColumn(2, "H2OContent"); // stores water content for analysis
 
   analysisManager->FinishNtuple(2);
 }
@@ -109,17 +112,23 @@ G4Run* nbRunAction::GenerateRun()
 
 void nbRunAction::BeginOfRunAction(const G4Run* aRun)
 {    
-  // save Rndm status
+  // inform the runManager to save random number seed
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
   if (isMaster) G4Random::showEngineStatus();
   
   // keep run condition
-  if (fPrimary) { 
-    G4ParticleDefinition* particle 
-      = fPrimary->GetParticleGun()->GetParticleDefinition();
-    G4double energy = fPrimary->GetParticleGun()->GetParticleEnergy();
-    fRun->SetPrimary(particle, energy);
-  }
+  // if (fPrimary) { 
+  //   G4ParticleDefinition* particle 
+  //     = fPrimary->GetParticleGun()->GetParticleDefinition();
+  //   G4double energy = fPrimary->GetParticleGun()->GetParticleEnergy();
+  //   fRun->SetPrimary(particle, energy);
+  // }
+  auto gps = new G4GeneralParticleSource();
+  G4ParticleDefinition* particle  = gps->GetParticleDefinition();
+  G4double energy = gps->GetParticleEnergy();
+  fRun->SetPrimary(particle, energy);
+  
+  
   
   // Get analysis manager
   auto analysisManager = G4AnalysisManager::Instance();

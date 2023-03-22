@@ -25,8 +25,6 @@ public:
   // inbuilt function to override
   void SetNewValue(G4UIcommand*, G4String);
   
-  // split string function
-  void split(const std::string &s, char delim, std::vector<std::string> &elems);
   
 private:
   
@@ -36,7 +34,10 @@ private:
   G4UIdirectory*                nbDir;
   G4UIdirectory*                detDir;
   G4UIdirectory*                pHDir;
+  G4UIdirectory*                H2ODir;
   
+  G4UIcmdWithAnInteger* H2OCmd;
+
   // set concentration of H in pH material 
   G4UIcmdWithADouble* pHSetterCmdForH;
   

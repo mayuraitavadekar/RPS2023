@@ -1,0 +1,101 @@
+# example: https://hurel.hanyang.ac.kr/Geant4/Geant4_GPS/reat.space.qinetiq.com/gps/examples/examples.html
+#                                                                         
+/control/verbose 2
+/run/verbose 1
+#
+/run/initialize
+#
+#/process/list
+# 
+# rdm is applied only to the different soil layers
+/run/initialize
+/process/had/rdm/selectVolume grainLV
+/process/had/rdm/selectVolume boxLV
+# 
+# place the isotopes in the middle of the target, at rest. 
+#
+/gps/particle ion
+/gps/ion 86 222
+/gps/ang/type iso
+/gps/ene/mono 86.30 keV
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/ang/mintheta 0
+/gps/ang/maxtheta 180
+/gps/ang/minphi 0
+/gps/ang/maxphi 360
+/gps/pos/centre 0 0 0 mm
+/gps/pos/radius 49.99 um
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 20pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 20
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 25pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 25
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 30pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 30
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 35pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 35
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 40pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 40
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 45pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 45
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 50pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 50
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 55pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 55
+/run/beamOn 10000
+#
+/analysis/setFileName 60pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 60
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 65pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 65
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 70pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 70
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 75pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 75
+/run/beamOn 10000
+

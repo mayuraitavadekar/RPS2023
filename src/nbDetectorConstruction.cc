@@ -8,6 +8,7 @@
 #include "G4NistManager.hh"
 
 #include "G4Box.hh"
+#include "G4Tubs.hh"
 #include "G4Sphere.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
@@ -70,56 +71,15 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
   // Define materials 
   DefineMaterials();
 
-  // this is core material data map
-  // all the materials you defined in DefineMaterials() should be
-  // mentioned here
-  StringToMaterialMapper = {
-        {"Fe", Fe},
-        {"Fe2O3", Fe2O3},
-        {"Al2O3", Al2O3},
-        {"Mn", Mn},
-        {"Mn2O3", Mn2O3},
-        {"Ra", Ra},
-        {"Air", Air},
-        {"H2O", H2O},
-        {"OH",OH},
-        {"MgO", MgO},
-        {"TiO2", TiO2},
-        {"CaO", CaO},
-        {"pH", pH},
-        {"Galactic", defaultMaterial}
-  };
+  G4cout << "soil grain size : " << grainSize << G4endl; 
+
+  // define chemical composition maps
+  DefineChemicalComps();
+  fillGrainWithChemComps();
   
-  // read the data through configuration file
-  std::ifstream infile ("mainConfig.txt");
+  // initialize grain material
+  grainMaterial = grainComp1;
 
-  std::string line;
-
-  while (std::getline(infile, line))
-  {
-    vector<string> row_values;
-
-    split(line, ',', row_values);
-    
-    if(row_values[0] == "r1") r1 = stod(row_values[1])*cm;    
-    else if(row_values[0] == "r2") r2 = stod(row_values[1])*cm; 
-    else if(row_values[0] == "r3") r3 = stod(row_values[1])*cm; 
-    else if(row_values[0] == "r4") r4 = stod(row_values[1])*cm; 
-    else if(row_values[0] == "r5") r5 = stod(row_values[1])*cm; 
-  }
-
-  G4cout << "r1 : " << r1 << G4endl;
-  G4cout << "r2 : " << r2 << G4endl; 
-  G4cout << "r3 : " << r3 << G4endl; 
-  G4cout << "r4 : " << r4 << G4endl; 
-  G4cout << "r5 : " << r5 << G4endl; 
-
-  
-  // fill soil layers
-  DefineSoilLayerMaps();
-  
-  FillSoilLayersWithMaps();
-  
   // Define volumes
   return DefineVolumes();
 }
@@ -141,29 +101,39 @@ void nbDetectorConstruction::DefineMaterials()
   Fe = nistManager->FindOrBuildMaterial("G4_Fe");
   Mn = nistManager->FindOrBuildMaterial("G4_Mn");
   Ra = nistManager->FindOrBuildMaterial("G4_Ra");
+  Ca = nistManager->FindOrBuildMaterial("G4_Ca");
+  C = nistManager->FindOrBuildMaterial("G4_C");
+  N = nistManager->FindOrBuildMaterial("G4_N");
+  O = nistManager->FindOrBuildMaterial("G4_O");
+  Na = nistManager->FindOrBuildMaterial("G4_Na");
+  Mg = nistManager->FindOrBuildMaterial("G4_Mg");
+  P = nistManager->FindOrBuildMaterial("G4_P");
+  Si = nistManager->FindOrBuildMaterial("G4_Si");
+  K = nistManager->FindOrBuildMaterial("G4_K");
+  Al = nistManager->FindOrBuildMaterial("G4_Al");
+  I = nistManager->FindOrBuildMaterial("G4_I");
+  S = nistManager->FindOrBuildMaterial("G4_S");
+  Ti = nistManager->FindOrBuildMaterial("G4_Ti");
+  H2OVapor = nistManager->FindOrBuildMaterial("G4_WATER_VAPOR");
 
-    // define elements
+  // define elements
   elO = new G4Element("Oxygen"  ,symbol="O" , z= 8., a= 16.00*g/mole);
   elH = new G4Element("Hydrogen",symbol="H" , z= 1., a= 1.01*g/mole);
   elC  = nistManager->FindOrBuildElement("C");
   elN  = nistManager->FindOrBuildElement("N");
   elMn = nistManager->FindOrBuildElement("Mn");
+  elK = nistManager->FindOrBuildElement("K");   // Potassium
+  elMg = nistManager->FindOrBuildElement("Mg"); // magnesium
+  elS = nistManager->FindOrBuildElement("S");   // Sulfur
+  elP = nistManager->FindOrBuildElement("P");   // Phosphorus
   elSi = new G4Element("Silicon", "Si", z=14., a= 28.0855*g/mole);
-
- 
-  // define nist compounds
-//   H2O = new G4Material("Water", density= 1.0*g/cm3, ncomponents=2);
-//   H2O->AddElement(elH, natoms=2);
-//   H2O->AddElement(elO, natoms=1);
-//   // overwrite computed meanExcitationEnergy with ICRU recommended value 
-//   H2O->GetIonisation()->SetMeanExcitationEnergy(75.0*eV);
-
+  
+  // define chemical compounds
   Quartz = new G4Material("Quartz", 2.64 *g/cm3, ncomponents= 2);
   Quartz-> AddElement(elSi, natoms=1);
   Quartz-> AddElement(elO,  natoms=2);
 
   H2O = nistManager->FindOrBuildMaterial("G4_WATER");
-  
   SiO2 = nistManager->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
   Al2O3 = nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
   Fe2O3 = nistManager->FindOrBuildMaterial("G4_FERRIC_OXIDE");
@@ -171,16 +141,7 @@ void nbDetectorConstruction::DefineMaterials()
   MgO = nistManager->FindOrBuildMaterial("G4_MAGNESIUM_OXIDE");
   TiO2 = nistManager->FindOrBuildMaterial("G4_TITANIUM_DIOXIDE");
 
-  
-  // create air
   Air = nistManager->FindOrBuildMaterial("G4_AIR");
-  // Air = new G4Material("Air", density = 0.1*kg/m3, ncomponents = 2,kStateGas,3000.15*kelvin);
-  // Air->AddElement(elN, fractionmass=70.0*perCent);
-  // Air->AddElement(elO, fractionmass=30.0*perCent);
-  // Air = new G4Material("Air",density= 0.00120479*g/cm3, 1273.15*kelvin, ncomponents=2);
-  // Air->AddElement(elN, 70.0*perCent);
-  // Air->AddElement(elO, 30.0*perCent);
-  
   
   Mn2O3 = new G4Material("ManganeseOxide", density = 4.5*g/cm3, ncomponents = 2);
   Mn2O3->AddElement(elMn, natoms=2);
@@ -206,14 +167,23 @@ void nbDetectorConstruction::DefineMaterials()
   // organic material
   // We assume organic soil components have 1.33 g/cm3 density. This number should be updated with
   // specifric soil type simulation. 4/12/2019
-  OrganicMat = new G4Material("Organic", density = 1.33*g/cm3, ncomponents = 4);
-  OrganicMat->AddElement(elC, natoms=50);
-  OrganicMat->AddElement(elO, natoms=42);
-  OrganicMat->AddElement(elH, natoms=5);
-  OrganicMat->AddElement(elN, natoms=3); 
+
+  // ref: http://passel-test.unl.edu/beta/pages/informationmodule.php?idinformationmodule=1130447039&topicorder=5&maxto=10&minto=1
+  OrganicMat = new G4Material("Organic", density = 0.8*g/cm3, ncomponents = 7); 
+  OrganicMat->AddElement(elC, fractionmass=2.65*perCent);    // variable from 0.7% upto 14%
+  OrganicMat->AddElement(elO, fractionmass=15.6*perCent);   // less than 20.6
+  OrganicMat->AddElement(elN, fractionmass=79.0*perCent); 
+  OrganicMat->AddElement(elK, fractionmass=1.5*perCent);    // 0.3 to 2.5%
+  OrganicMat->AddElement(elP, fractionmass=0.6*perCent);    // avarage % of P in soil
+  OrganicMat->AddElement(elMg, fractionmass=0.5*perCent);   // 0.05 and 0.5% 
+  OrganicMat->AddElement(elS, fractionmass=0.15*perCent);   // avarage
+
+  coatingMaterial = new G4Material("coatingMaterial", density = 0.50*g/cm3, ncomponents = 2);
+  coatingMaterial->AddMaterial(H2OVapor, fractionmass=50*perCent);
+  coatingMaterial->AddMaterial(H2O, fractionmass=50*perCent);
   
-  // Vacuum
-  defaultMaterial = new G4Material("Galactic", z=1., a=1.01*g/mole,density= universe_mean_density,
+  // vacuum material
+  defaultMaterial = new G4Material("Galactic", z=1., a=1.01*g/mole, density= universe_mean_density,
                   kStateGas, 2.73*kelvin, 3.e-18*pascal);
 }
 
@@ -227,20 +197,11 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   G4LogicalVolumeStore::GetInstance()->Clean();
   G4SolidStore::GetInstance()->Clean();
 
-
-  // initialize shell materials
-//   shellMaterial_1 = soilOne40W;
-//   shellMaterial_2 = soilOne30W;
-//   shellMaterial_3 = soilOne20W;
-//   shellMaterial_4 = soilOne20W;
-//   shellMaterial_5 = soilOne10W;
-  shellMaterial_1 = Air;
-
   // Geometry parameters  
   
   // World
   //
-  auto worldSizeXY = 2.5 * r1;
+  auto worldSizeXY = 2.5 * boxSizeX;
   // auto worldSizeZ  = worldSizeXY; 
   
   auto worldS 
@@ -263,56 +224,71 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                  false,            // no boolean operation
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps 
-
   // box
   G4Box*  
-  box = new G4Box("box",                          //its name
-                   boxSize,boxSize,boxSize);//its size
+  box = new G4Box("box",                            // its name
+                   boxSizeX,boxSizeY,boxSizeZ);     //its size
                                            
-  boxLV = new G4LogicalVolume(box,             //its solid
-                                   defaultMaterial,                    //its material
-                                   "boxLV");               //its name                                
-  boxPV = new G4PVPlacement(0,                      //no rotation
-                                 G4ThreeVector(),        //at (0,0,0)
-                                 boxLV,             //its logical volume
-                                 "boxPV",                //its name
-                                 worldLV,                      //its mother  volume
-                                 false,                  //no boolean operation
-                                 0);                     //copy number
+  boxLV = new G4LogicalVolume(box,                  // its solid
+                              defaultMaterial,      // its material
+                              "boxLV");             // its name                                
+  boxPV = new G4PVPlacement(0,                      // no rotation
+                            G4ThreeVector(),        // at (0,0,0)
+                            boxLV,                  // its logical volume
+                            "boxPV",                // its name
+                            worldLV,                // its mother  volume
+                            false,                  // no boolean operation
+                            0);                     // copy number
 
-  
-  //                               
-  // Make neutron ball detector (i.e., multiple layers)
-  //
-
+  // grain
   // Define the angles for spheres
   G4double startAnglePhi = 0.0*deg;
   G4double spanningAnglePhi = 360.0*deg;
   G4double startAngleTheta = 0.0*deg;
   G4double spanningAngleTheta = 180.0*deg; //90
 
+  
+  // coating
+//   auto coatingSolid = new G4Sphere("coating", 0, totalGrainSize,
+// 			       startAnglePhi, spanningAnglePhi, 
+// 			       startAngleTheta, spanningAngleTheta);
+
+//   coatingLV
+//     = new G4LogicalVolume(
+//                  coatingSolid,        // its solid
+//                  coatingMaterial,       // its material/chemical composition of soil grain
+//                  "coatingLV");        // its name
+                                   
+//   coatingPV = new G4PVPlacement(
+//                  0,                 // no rotation
+//                  G4ThreeVector(),   // at (0,0,0)
+//                  coatingLV,           // its logical volume                         
+//                  "coatingPV",         // its name
+//                  boxLV,             // its mother  volume
+//                  false,             // no boolean operation
+//                  0,                 // copy number
+//                  fCheckOverlaps);   // checking overlaps
+
+
   // grain
-  auto solidShell_1 = new G4Sphere("grain", 0, grainSize,
+  auto grainSolid = new G4Sphere("grain", 0, grainSize,
 			       startAnglePhi, spanningAnglePhi, 
 			       startAngleTheta, spanningAngleTheta);  
   grainLV
     = new G4LogicalVolume(
-                 solidShell_1,     // its solid
-                 shellMaterial_1,  // its material
-                 "grainLV");   // its name
+                 grainSolid,        // its solid
+                 grainMaterial,        // its material/chemical composition of soil grain
+                 "grainLV");        // its name
                                    
   grainPV = new G4PVPlacement(
-                 0,                // no rotation
-                 G4ThreeVector(),  // at (0,0,0)
-                 grainLV,          // its logical volume                         
-                 "grainPV",    // its name
-                 boxLV,          // its mother  volume
-                 false,            // no boolean operation
-                 0,                // copy number
-                 fCheckOverlaps);  // checking overlaps
-
-  
-
+                 0,                 // no rotation
+                 G4ThreeVector(),   // at (0,0,0)
+                 grainLV,           // its logical volume                         
+                 "grainPV",         // its name
+                 boxLV,             // its mother  volume
+                 false,             // no boolean operation
+                 0,                 // copy number
+                 fCheckOverlaps);   // checking overlaps
 
   //                                        
   // Visualization attributes
@@ -336,6 +312,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 void nbDetectorConstruction::PrintLayersMaterials()
 {
   G4cout << "\t******* MATERIALS OF EACH LAYER *******" << G4endl;
+  G4cout << " grain material : " << grainLV->GetMaterial()->GetName() << G4endl;
   // G4cout << " layer 1 material : " << shellLV_1->GetMaterial()->GetName() << G4endl; 
   // G4cout << " layer 2 material : " << shellLV_2->GetMaterial()->GetName() << G4endl; 
   // G4cout << " layer 3 material : " << shellLV_3->GetMaterial()->GetName() << G4endl; 
@@ -345,93 +322,99 @@ void nbDetectorConstruction::PrintLayersMaterials()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::updatepH(G4double value)
+void nbDetectorConstruction::updateH2OContent(G4int value)
 {
-    pHValue = value;
-    // write code to update value of
-    // fractionMassForH and fractionMassForOH 
-    fractionMassForH = ((pHValue*100)/14);
-    fractionMassForOH = (100.00 - fractionMassForH);
-    
+    // update value of variable H2O content
+    H2OContent = value;
     G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::setLayerMaterial(G4String matName, int layerNumber) 
+void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 content
 {
-    int flag = 0;
-    for (const auto& itr: StringToMaterialMapper) 
+    if(value == 15)
     {
-        if(itr.first == matName)
-        {
-            flag = 1;
-            auto materialName = itr.second;
-            
-            // assign this material to proper layer
-            if(layerNumber == 1)
-            {
-                shellMaterial_1 = materialName;
-                if(shellLV_1) { shellLV_1->SetMaterial(shellMaterial_1); }
-                G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-                G4cout<<"layer 1 is set to material: "<<matName<<G4endl;
-      
-            }
-            
-            else if(layerNumber == 2)
-            {
-                shellMaterial_2 = materialName;
-                if(shellLV_2) { shellLV_2->SetMaterial(shellMaterial_2); }
-                G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-                G4cout<<"layer 2 is set to material: "<<matName<<G4endl;
-  
-            }
-            
-            else if(layerNumber == 3)
-            {
-                shellMaterial_3 = materialName;
-                if(shellLV_3) { shellLV_3->SetMaterial(shellMaterial_3); }
-                G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-                G4cout<<"layer 3 is set to material: "<<matName<<G4endl;
-        
-            }
-            
-            else if(layerNumber == 4)
-            {
-                shellMaterial_4 = materialName;
-                if(shellLV_4) { shellLV_4->SetMaterial(shellMaterial_4); }
-                G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-                G4cout<<"layer 4 is set to material: "<<matName<<G4endl;
-            
-            }
-            
-            else if(layerNumber == 5)
-            {
-                shellMaterial_5 = materialName;
-                if(shellLV_5) { shellLV_5->SetMaterial(shellMaterial_5); }
-                G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-                G4cout<<"layer 5 is set to material: "<<matName<<G4endl;
-            
-            }
-            
-            else 
-            {
-                G4cout << "layerNumber : " << layerNumber << "is invalid" << G4endl;
-                exit(0);
-            }
-            
-            
-            G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-            flag = 1;
-            break;
-        }
+        grainMaterial = grainComp1;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
     }
-    if(flag == 0)
+
+    if(value == 20)
     {
-        G4cout<<matName<<" is not found in your datamap"<<G4endl;
- 
+        grainMaterial = grainComp2;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
     }
+
+    if(value == 25)
+    {
+        grainMaterial = grainComp3;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 30)
+    {
+        grainMaterial = grainComp4;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 35)
+    {
+        grainMaterial = grainComp5;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 40)
+    {
+        grainMaterial = grainComp6;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 45)
+    {
+        grainMaterial = grainComp7;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 50)
+    {
+        grainMaterial = grainComp8;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 55)
+    {
+        grainMaterial = grainComp9;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 60)
+    {
+        grainMaterial = grainComp10;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 65)
+    {
+        grainMaterial = grainComp11;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 70)
+    {
+        grainMaterial = grainComp12;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    if(value == 75)
+    {
+        grainMaterial = grainComp13;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+    }
+
+    // notify run manager that physics is modified
+    G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -449,128 +432,324 @@ G4String nbDetectorConstruction::getNameOfLayer2()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::split(const std::string &s, char delim, std::vector<std::string> &elems) {
-    std::stringstream ss;
-    ss.str(s);
-    std::string item;
-    while (std::getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void nbDetectorConstruction::DefineSoilLayerMaps()
+void nbDetectorConstruction::DefineChemicalComps()
 {
     // define chemical composition maps
     // use these maps in soil layers
     // you can add or delete any material composition
     // in any map
     // just make sure that summation = 100*perCent
-    
+
+    // refs:
+    // organic matter %: https://www.agric.wa.gov.au/measuring-and-assessing-soils/what-soil-organic-carbon#:~:text=Organic%20matter%20makes%20up%20just,biological%20function%20of%20agricultural%20soils.
+    // soil grains does not have any pore space i.e. no air
+
     // first layer composition
     chem_composition_1 = {
-        {SiO2, 46.3*perCent},
-        {pH, 15.0*perCent},             // pH
-        {Al2O3, 13.0*perCent},
-        {Fe2O3, 2.5*perCent},
-        {CaO, 1.6*perCent},
-        {MgO, 0.7*perCent},
-        {TiO2, 0.6*perCent},
-        {OrganicMat, 20.3*perCent}      // organicMat
+        {H2O, 15*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 25*perCent},
+        {Na, 15*perCent},
+        {Ca, 15*perCent},
+        {Mg, 10*perCent},
+        {S, 2*perCent},
+        {P, 2*perCent},
+        {Si, 1*perCent},
+        {Al, 1*perCent},
+        {Fe, 1*perCent}
     };
     
-    // second layer composition
+    // increased H2O and decreased quartz and organic matter
     chem_composition_2 = {
-        {SiO2, 40.17*perCent},
-        {pH, 15.0*perCent},             // pH
-        {Al2O3, 11.7*perCent},
-        {Fe2O3, 2.25*perCent},
-        {CaO, 1.44*perCent},
-        {MgO, 0.63*perCent},
-        {TiO2, 0.54*perCent},
-        {OrganicMat, 18.27*perCent},
-        {H2O, 10.0*perCent}
+        {H2O, 20*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 25*perCent},
+        {Na, 14*perCent},
+        {Ca, 14*perCent},
+        {Mg, 9*perCent},
+        {S, 2*perCent},
+        {P, 1*perCent},
+        {Si, 1*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
     };
     
-    // third layer composition
+    // increased H20 and decreased al2O3, organic, Mn2O3, Al2O3 and quartz
     chem_composition_3 = {
-        {SiO2, 34.04*perCent},
-        {pH, 15.0*perCent},             // pH
-        {Al2O3, 10.4*perCent},
-        {Fe2O3, 2.0*perCent},
-        {CaO, 1.28*perCent},
-        {MgO, 0.56*perCent},
-        {TiO2, 0.48*perCent},
-        {OrganicMat, 16.24*perCent},
-        {H2O, 20.0*perCent}
+        {H2O, 25*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 25*perCent},
+        {Na, 13*perCent},
+        {Ca, 13*perCent},
+        {Mg, 8*perCent},
+        {S, 1*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
+    };
+
+    chem_composition_4 = {
+        {H2O, 30*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 23*perCent},
+        {Na, 12*perCent},
+        {Ca, 12*perCent},
+        {Mg, 7*perCent},
+        {S, 1*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
     };
     
-    // fourth layer composition
-    chem_composition_4 = {
-        {SiO2, 27.91*perCent},
-        {pH, 15.0*perCent},             // pH
-        {Al2O3, 9.1*perCent},
-        {Fe2O3, 1.75*perCent},
-        {CaO, 1.12*perCent},
-        {MgO, 0.49*perCent},
-        {TiO2, 0.42*perCent},
-        {OrganicMat, 14.21*perCent},    // organicMat
-        {H2O, 30.0*perCent}
+    chem_composition_5 = {
+        {H2O, 35*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 21*perCent},
+        {Na, 11*perCent},
+        {Ca, 11*perCent},
+        {Mg, 6*perCent},
+        {S, 1*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
     };  
     
-    // fifth layer composition
-    chem_composition_5 = {
-        {SiO2, 17.91*perCent},
-        {pH, 15.0*perCent},
-        {Al2O3, 9.1*perCent},
-        {Fe2O3, 1.75*perCent},
-        {CaO, 1.12*perCent},
-        {MgO, 0.49*perCent},
-        {TiO2, 0.42*perCent},
-        {OrganicMat, 14.21*perCent},
-        {H2O, 40.0*perCent}
+    chem_composition_6 = {
+        {H2O, 40*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 20*perCent},
+        {Na, 10*perCent},
+        {Ca, 9*perCent},
+        {Mg, 5*perCent},
+        {S, 1*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
     };
+
+    chem_composition_7 = {
+        {H2O, 45*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 18*perCent},
+        {Na, 9*perCent},
+        {Ca, 8*perCent},
+        {Mg, 4*perCent},
+        {S, 1*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
+    };
+
+    chem_composition_8 = {
+        {H2O, 50*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 17*perCent},
+        {Na, 8*perCent},
+        {Ca, 7*perCent},
+        {Mg, 2*perCent},
+        {S, 1*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
+    };
+
+    chem_composition_9 = {
+        {H2O, 55*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 5*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 15*perCent},
+        {Na, 7*perCent},
+        {Ca, 6*perCent},
+        {Mg, 1*perCent},
+        {S, 1*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
+    };
+
+    chem_composition_10 = {
+        {H2O, 60*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 4*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 13*perCent},
+        {Na, 6*perCent},
+        {Ca, 5*perCent},
+        {Mg, 1*perCent},
+        {S, 1*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
+    };
+
+    chem_composition_11 = {
+        {H2O, 65*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 4*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 11*perCent},
+        {Na, 5*perCent},
+        {Ca, 4*perCent},
+        {Mg, 0.5*perCent},
+        {S, 0.5*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
+    };
+
+    chem_composition_12 = {
+        {H2O, 70*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 4*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 9*perCent},
+        {Na, 3*perCent},
+        {Ca, 3*perCent},
+        {Mg, 0.5*perCent},
+        {S, 0.5*perCent},
+        {P, 0.5*perCent},
+        {Si, 0.5*perCent},
+        {Al, 0.5*perCent},
+        {Fe, 0.5*perCent}
+    };
+
+    chem_composition_13 = {
+        {H2O, 75*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 4*perCent},
+        {N, 3*perCent},
+        {O, 2*perCent},
+        {K, 7*perCent},
+        {Na, 2*perCent},
+        {Ca, 2*perCent},
+        {Mg, 0.5*perCent},
+        {S, 0.3*perCent},
+        {P, 0.3*perCent},
+        {Si, 0.3*perCent},
+        {Al, 0.3*perCent},
+        {Fe, 0.3*perCent}
+    };
+}
+
+void nbDetectorConstruction::fillGrainWithChemComps()
+{   
+    // grain comp1 has particle density = 2.66
+    // ref: http://passel-test.unl.edu/beta/pages/informationmodule.php?idinformationmodule=1130447039&topicorder=5&maxto=10&minto=1
+    grainComp1 = new G4Material("15W", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
+    for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
+            grainComp1->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp2 = new G4Material("20W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
+    for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
+            grainComp2->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp3 = new G4Material("25W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
+    for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
+            grainComp3->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp4 = new G4Material("30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
+    for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
+            grainComp4->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp5 = new G4Material("35W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
+    for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
+            grainComp5->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp6 = new G4Material("40W", density = 0.6*g/cm3, ncomponents=chem_composition_6.size());
+    for (it = chem_composition_6.begin(); it != chem_composition_6.end(); it++) {
+            grainComp6->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp7 = new G4Material("45W", density = 0.6*g/cm3, ncomponents=chem_composition_7.size());
+    for (it = chem_composition_7.begin(); it != chem_composition_7.end(); it++) {
+            grainComp7->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp8 = new G4Material("50W", density = 0.6*g/cm3, ncomponents=chem_composition_8.size());
+    for (it = chem_composition_8.begin(); it != chem_composition_8.end(); it++) {
+            grainComp8->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp9 = new G4Material("55W", density = 0.6*g/cm3, ncomponents=chem_composition_9.size());
+    for (it = chem_composition_9.begin(); it != chem_composition_9.end(); it++) {
+            grainComp9->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp10 = new G4Material("60W", density = 0.6*g/cm3, ncomponents=chem_composition_10.size());
+    for (it = chem_composition_10.begin(); it != chem_composition_10.end(); it++) {
+            grainComp10->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp11 = new G4Material("65W", density = 0.6*g/cm3, ncomponents=chem_composition_11.size());
+    for (it = chem_composition_11.begin(); it != chem_composition_11.end(); it++) {
+            grainComp11->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp12 = new G4Material("70W", density = 0.6*g/cm3, ncomponents=chem_composition_12.size());
+    for (it = chem_composition_12.begin(); it != chem_composition_12.end(); it++) {
+            grainComp12->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp13 = new G4Material("75W", density = 0.6*g/cm3, ncomponents=chem_composition_13.size());
+    for (it = chem_composition_13.begin(); it != chem_composition_13.end(); it++) {
+            grainComp13->AddMaterial(it->first, fractionmass=it->second);
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void nbDetectorConstruction::FillSoilLayersWithMaps()
-{
-  // create soil layers
-  // Based on: http://gfnun.unal.edu.co/fileadmin/content/gruposdeinvestigacion/fisicanuclear/Tesis/DanielAndrade_TG.pdf
-  // layer 1
-  soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
-  for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
-        soilOne->AddMaterial(it->first, fractionmass=it->second);
-  }
-  
-  // layer 2
-  // 10% moisture content
-  soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
-  for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
-        soilOne10W->AddMaterial(it->first, fractionmass=it->second);
-  }
-  
-  
-  // layer 3
-  // 20% moisture content. Need new density value?
-  soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
-  for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
-        soilOne20W->AddMaterial(it->first, fractionmass=it->second);
-  }
-  
-  // layer 4
-  // 30% moisture content. Need new density value?
-  soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
-  for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
-        soilOne30W->AddMaterial(it->first, fractionmass=it->second);
-  }
-    
-  // layer 5 (inner most)
-  // 40% moisture content. Need new density value?
-  soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
-  for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
-        soilOne40W->AddMaterial(it->first, fractionmass=it->second);
-  }
-}
