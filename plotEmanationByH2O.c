@@ -94,13 +94,6 @@ void plotEmanationByH2O()
         printf("ecount[%d] = %f \n", i, eCounts[i]);
     }
 
-    // calculate count percentage
-    count_pct[0] = 0;
-    for(int i=1;i<13;i++)
-    {
-        count_pct[i] = ((eCounts[i]-eCounts[i-1])/eCounts[i])*100; 
-    }
-
     gROOT->Reset();
 
     gStyle->SetOptStat(0);
@@ -127,9 +120,9 @@ void plotEmanationByH2O()
 	c1->cd();
 
     // now draw graph
-    TGraph* graph =  new TGraph(13, moistureLevels, count_pct);
+    TGraph* graph =  new TGraph(13, moistureLevels, eCounts);
     
-    graph->GetYaxis()->SetTitle("% change in emanation");
+    graph->GetYaxis()->SetTitle("count of escaped particles from soil grain");
     graph->GetXaxis()->SetTitle("moisture content (%)");
     graph->SetMarkerStyle(20);
     graph->SetMarkerSize(1.);

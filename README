@@ -55,3 +55,6 @@ of radon emanation on moisture. emanation.mac file is used to run this commit co
 which assumes that radon atoms are uniformaly distributed in soil grain. 
 plotEmanationByH2O file should be used for getting plot. Before running this
 file you should combine all the data files using hadd mainfile.root file1 file2 ..
+
+[3] this should be considered latest commit for radon emanation study. 
+plotEmanationByH2O.c macro is updated.
