@@ -1,6 +1,6 @@
 void plotEmanationByH2O()
 {
-    TFile* input = new TFile("mainfile.root", "read");
+    TFile* input = new TFile("emanation-study-50umGrainSize.root", "read");
     TTree* tree = (TTree*) input->Get("particleData");
     int entries = tree->GetEntries();
 
@@ -122,7 +122,7 @@ void plotEmanationByH2O()
     // now draw graph
     TGraph* graph =  new TGraph(13, moistureLevels, eCounts);
     
-    graph->GetYaxis()->SetTitle("count of escaped particles from soil grain");
+    graph->GetYaxis()->SetTitle("count of escaped radon from soil grain");
     graph->GetXaxis()->SetTitle("moisture content (%)");
     graph->SetMarkerStyle(20);
     graph->SetMarkerSize(1.);
