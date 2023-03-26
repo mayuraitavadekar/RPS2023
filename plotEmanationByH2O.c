@@ -1,13 +1,13 @@
 void plotEmanationByH2O()
 {
-    TFile* input = new TFile("emanation-study-50umGrainSize.root", "read");
+    TFile* input = new TFile("mainfile.root", "read");
     TTree* tree = (TTree*) input->Get("particleData");
     int entries = tree->GetEntries();
 
-    double eCounts[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    double count_pct[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    double eCounts[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    double count_pct[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    double moistureLevels[13] = {15., 20., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75.};
+    double moistureLevels[16] = {0., 5., 10., 15., 20., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75.};
     
     Int_t        emanation;
     Double_t        Z;
@@ -23,69 +23,84 @@ void plotEmanationByH2O()
     {
         tree->GetEntry(i);
         
-        if(H2OContent == 15 && A == 222 && emanation == 1)
+        if(H2OContent == 0 && A == 222 && emanation == 1)
         {
             eCounts[0]++;
         }
 
-        else if(H2OContent == 20 && A == 222 && emanation == 1)
+        if(H2OContent == 5 && A == 222 && emanation == 1)
         {
             eCounts[1]++;
         }
 
-        else if(H2OContent == 25 && A == 222 && emanation == 1)
+        if(H2OContent == 10 && A == 222 && emanation == 1)
         {
             eCounts[2]++;
         }
 
-        else if(H2OContent == 30 && A == 222 && emanation == 1)
+        if(H2OContent == 15 && A == 222 && emanation == 1)
         {
             eCounts[3]++;
         }
 
-        else if(H2OContent == 35 && A == 222 && emanation == 1)
+        else if(H2OContent == 20 && A == 222 && emanation == 1)
         {
             eCounts[4]++;
         }
 
-        else if(H2OContent == 40 && A == 222 && emanation == 1)
+        else if(H2OContent == 25 && A == 222 && emanation == 1)
         {
             eCounts[5]++;
         }
 
-        else if(H2OContent == 45 && A == 222 && emanation == 1)
+        else if(H2OContent == 30 && A == 222 && emanation == 1)
         {
             eCounts[6]++;
         }
 
-        else if(H2OContent == 50 && A == 222 && emanation == 1)
+        else if(H2OContent == 35 && A == 222 && emanation == 1)
         {
             eCounts[7]++;
         }
 
-        else if(H2OContent == 55 && A == 222 && emanation == 1)
+        else if(H2OContent == 40 && A == 222 && emanation == 1)
         {
             eCounts[8]++;
         }
 
-        else if(H2OContent == 60 && A == 222 && emanation == 1)
+        else if(H2OContent == 45 && A == 222 && emanation == 1)
         {
             eCounts[9]++;
         }
 
-        else if(H2OContent == 65 && A == 222 && emanation == 1)
+        else if(H2OContent == 50 && A == 222 && emanation == 1)
         {
             eCounts[10]++;
         }
 
-        else if(H2OContent == 70 && A == 222 && emanation == 1)
+        else if(H2OContent == 55 && A == 222 && emanation == 1)
         {
             eCounts[11]++;
         }
 
-        else if(H2OContent == 75 && A == 222 && emanation == 1)
+        else if(H2OContent == 60 && A == 222 && emanation == 1)
         {
             eCounts[12]++;
+        }
+
+        else if(H2OContent == 65 && A == 222 && emanation == 1)
+        {
+            eCounts[13]++;
+        }
+
+        else if(H2OContent == 70 && A == 222 && emanation == 1)
+        {
+            eCounts[14]++;
+        }
+
+        else if(H2OContent == 75 && A == 222 && emanation == 1)
+        {
+            eCounts[15]++;
         }
     }
 
@@ -120,7 +135,7 @@ void plotEmanationByH2O()
 	c1->cd();
 
     // now draw graph
-    TGraph* graph =  new TGraph(13, moistureLevels, eCounts);
+    TGraph* graph =  new TGraph(16, moistureLevels, eCounts);
     
     graph->GetYaxis()->SetTitle("count of escaped radon from soil grain");
     graph->GetXaxis()->SetTitle("moisture content (%)");

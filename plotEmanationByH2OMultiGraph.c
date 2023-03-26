@@ -37,7 +37,7 @@ void plotEmanationByH2OMultiGraph()
     }
 
     // perform same operations on another data file
-    input = new TFile("mainfile.root", "read");
+    input = new TFile("50um-10kevts-single-grain-surroundingMaterialAir.root", "read");
     tree = (TTree*) input->Get("particleData");
     entries = tree->GetEntries();
 
@@ -82,7 +82,7 @@ void plotEmanationByH2OMultiGraph()
     gStyle->SetLabelColor(1,"X");
 	gStyle->SetLabelColor(1,"Y");
 
-    TCanvas *c1 = new TCanvas("c1","c1",800,1000);
+    TCanvas *c1 = new TCanvas("c1","c1",300,300);
 
     c1->SetLeftMargin(0.15);
     c1->SetBottomMargin(0.3);
@@ -129,8 +129,8 @@ void plotEmanationByH2OMultiGraph()
     mg->GetYaxis()->CenterTitle(true);
 
     auto legend = new TLegend(0.2, 0.2, .5, .5);
-    legend->AddEntry(graph,"run 1","l");
-    legend->AddEntry(graph2,"run 2","l");
+    legend->AddEntry(graph,"Initial Setup","l");
+    legend->AddEntry(graph2,"Updated Setup","l");
     legend->Draw();
 
     return c1;

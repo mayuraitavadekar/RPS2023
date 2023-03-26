@@ -74,7 +74,7 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
     // G4cout << momX << " " << momY << " " << momZ << G4endl;
 
     // check if this step is first step of radon in this volume
-    if(iVol == 2 && aStep->IsFirstStepInVolume())
+    if(iVol == 2 && aTrack->GetTrackStatus() == fStopAndKill)
     {
       // first step in pore volume i.e. particle has escaped from grain
       emanated = 1;
@@ -82,6 +82,22 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   }
 
   // fill ntuple with id = 2
+  G4int id = 2;
+  analysisManager->FillNtupleDColumn(id,0, x);
+  analysisManager->FillNtupleDColumn(id,1, y);
+  analysisManager->FillNtupleDColumn(id,2, z);
+  analysisManager->FillNtupleDColumn(id,3, pid);
+  analysisManager->FillNtupleDColumn(id,4, Z);
+  analysisManager->FillNtupleDColumn(id,5, A);
+  analysisManager->FillNtupleIColumn(id,6, iVol);
+  analysisManager->FillNtupleDColumn(id,7, pKE);
+  analysisManager->FillNtupleDColumn(id,8, time);
+  analysisManager->FillNtupleIColumn(id,9, emanated);               // set emanation flag value for radon 0/1
+  analysisManager->FillNtupleIColumn(id,10, fDetector->H2OContent); // set H2O content in chemical comps
+  // add row
+  analysisManager->AddNtupleRow(id);
+
+  /*
   G4int id = 2;
   analysisManager->FillNtupleDColumn(id,0, x);
   analysisManager->FillNtupleDColumn(id,1, y);
@@ -103,6 +119,8 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   analysisManager->FillNtupleIColumn(id,17, fDetector->H2OContent); // set H2O content in chemical comps
   // add row
   analysisManager->AddNtupleRow(id);
+  */
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

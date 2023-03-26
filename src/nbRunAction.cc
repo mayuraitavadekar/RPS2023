@@ -51,7 +51,7 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   
   G4cout <<"root file: " << rootOutputFile << G4endl;
    
-  analysisManager->SetFileName(rootOutputFile);
+  analysisManager->SetFileName("0pct");
   
   analysisManager->SetVerboseLevel(1);
   analysisManager->SetFirstNtupleId(1);
@@ -76,6 +76,21 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleDColumn(2, "pid");    //column 3
   analysisManager->CreateNtupleDColumn(2, "Z");         //column 1
   analysisManager->CreateNtupleDColumn(2, "A");    
+  analysisManager->CreateNtupleIColumn(2, "pVolume");    //column 5
+  analysisManager->CreateNtupleDColumn(2, "pKE");
+  analysisManager->CreateNtupleDColumn(2, "time");
+  analysisManager->CreateNtupleIColumn(2, "emanation"); // by default stores -1 but if lastStepofRadon is inside soil grain then stores 0 else store 1
+  analysisManager->CreateNtupleIColumn(2, "H2OContent"); // stores water content for analysis
+
+  /*
+  
+  analysisManager->CreateNtuple("particleData", "All data");
+  analysisManager->CreateNtupleDColumn(2, "x");       //column 0
+  analysisManager->CreateNtupleDColumn(2, "y");         //column 1
+  analysisManager->CreateNtupleDColumn(2, "z");         //column 2    
+  analysisManager->CreateNtupleDColumn(2, "pid");    //column 3
+  analysisManager->CreateNtupleDColumn(2, "Z");         //column 1
+  analysisManager->CreateNtupleDColumn(2, "A");    
   analysisManager->CreateNtupleSColumn(2, "pName");      //column 4
   analysisManager->CreateNtupleIColumn(2, "pVolume");    //column 5
   analysisManager->CreateNtupleDColumn(2, "pVelocity");
@@ -88,6 +103,8 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleDColumn(2, "charge");
   analysisManager->CreateNtupleIColumn(2, "emanation"); // by default stores -1 but if lastStepofRadon is inside soil grain then stores 0 else store 1
   analysisManager->CreateNtupleIColumn(2, "H2OContent"); // stores water content for analysis
+
+  */
 
   analysisManager->FinishNtuple(2);
 }

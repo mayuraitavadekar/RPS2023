@@ -29,6 +29,24 @@
 /run/beamOn 10000
 #
 /run/initialize
+/analysis/setFileName 5pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 5
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 10pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 10
+/run/beamOn 10000
+#
+/run/initialize
+/analysis/setFileName 15pct
+/run/printProgress 100
+/nb/det/H2O/setH2O 15
+/run/beamOn 10000
+#
+/run/initialize
 /analysis/setFileName 20pct
 /run/printProgress 100
 /nb/det/H2O/setH2O 20
@@ -76,6 +94,7 @@
 /nb/det/H2O/setH2O 55
 /run/beamOn 10000
 #
+/run/initialize
 /analysis/setFileName 60pct
 /run/printProgress 100
 /nb/det/H2O/setH2O 60
@@ -98,4 +117,6 @@
 /run/printProgress 100
 /nb/det/H2O/setH2O 75
 /run/beamOn 10000
+#
+/control/shell hadd mainfile.root 0pct.root 5pct.root 10pct.root 15pct.root 20pct.root 25pct.root 30pct.root 35pct.root 40pct.root 45pct.root 50pct.root 55pct.root 60pct.root 65pct.root 70pct.root 75pct.root 
 

@@ -58,3 +58,9 @@ file you should combine all the data files using hadd mainfile.root file1 file2 
 
 [3] this should be considered latest commit for radon emanation study. 
 plotEmanationByH2O.c macro is updated.
+
+[4] steppingAction is updated with conditions of fStopAndKill track status conditions 
+to get count of particles which comes to rest after escaping soil grain.
+
+[5] more percentage options are added from 0%, 75% with 5% increase.
+

@@ -58,6 +58,7 @@ set(nb_SCRIPTS
   plotHistXY.c
   temp.c
   plotEmanationByH2O.c
+  findRecoilRange.mac
   )
 
 foreach(_script ${nb_SCRIPTS})

@@ -1,0 +1,32 @@
+# this macro is used to find recoil range in soil grain 
+# run this macro multiple times by changing radius in 
+# gps in nanometers and analyze the data to check if 
+# radon is escaping from soil grain or not. 
+#                                                                         
+/control/verbose 2
+/run/verbose 1
+#
+#/process/list
+# 
+# rdm is applied only to the different soil layers
+/run/initialize
+/process/had/rdm/selectVolume grainLV
+/process/had/rdm/selectVolume boxLV
+# 
+# place the isotopes in the middle of the target, at rest. 
+#
+/gps/particle ion
+/gps/ion 86 222
+/gps/ang/type iso
+/gps/ene/mono 86.30 keV
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+#/gps/ang/mintheta 0
+#/gps/ang/maxtheta 180
+#/gps/ang/minphi 0
+#/gps/ang/maxphi 360
+/gps/pos/centre 0 0 0 mm
+/gps/pos/radius 49.983 um
+/run/beamOn 100
+
+

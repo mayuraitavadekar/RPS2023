@@ -88,8 +88,8 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       // define soil layer variables of type G4Material here
       G4Material *soilOne, *soilOne10W, *soilOne20W, *soilOne30W, *soilOne40W;
 
-      G4Material *grainComp1, *grainComp2, *grainComp3, *grainComp4, *grainComp5, *grainComp6, *grainComp7, 
-                 *grainComp8, *grainComp9, *grainComp10, *grainComp11, *grainComp12, *grainComp13;
+      G4Material *grainComp0, *grainComp1, *grainComp2, *grainComp3, *grainComp4, *grainComp5, *grainComp6, *grainComp7, 
+                 *grainComp8, *grainComp9, *grainComp10, *grainComp11, *grainComp12, *grainComp13, *grainComp14, *grainComp15;
       
       // define object nist manager
       G4NistManager *nistManager;
@@ -116,6 +116,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       // this snippet creates static maps for soil construction layers
       // maps to store framaction masses 
       map<G4String, G4Material*> StringToMaterialMapper;
+      map<G4Material*, G4double> chem_composition_0;
       map<G4Material*, G4double> chem_composition_1;
       map<G4Material*, G4double> chem_composition_2;
       map<G4Material*, G4double> chem_composition_3;
@@ -129,6 +130,9 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       map<G4Material*, G4double> chem_composition_11;
       map<G4Material*, G4double> chem_composition_12;
       map<G4Material*, G4double> chem_composition_13;
+      map<G4Material*, G4double> chem_composition_14;
+      map<G4Material*, G4double> chem_composition_15;
+
 
     public:
       // user defined functions to get physical volume names of each layer
@@ -143,7 +147,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
     public:
 
       // ANALYSIS VARIABLES
-      G4int H2OContent = 15; // initialized with initial H2O content
+      G4int H2OContent = 0; // initialized with initial H2O content
 
 
       // create pointer to detector messenger
