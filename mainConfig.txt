@@ -1,6 +1,0 @@
-# layerNumber, materialName, fractionmass
-r1,254.0
-r2,203.2
-r3,134.62
-r4,22.86
-r5,15.24

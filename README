@@ -64,3 +64,8 @@ to get count of particles which comes to rest after escaping soil grain.
 
 [5] more percentage options are added from 0%, 75% with 5% increase.
 
+[6] mutliple grain settings: 
+
+    grainSize(detCon.hh)        coordinates(detCon.cc)      events(emanation.mac)    R(emanation.mac) (max=19nm)
+    50um                        100um                       10k                      49.9
+    150um                       300um                       20k                      149.99        

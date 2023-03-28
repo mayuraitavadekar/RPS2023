@@ -60,39 +60,40 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   // count all particles regardless of PID == 1 or PID != 1
   run->ParticleCount(pName,energy,iVol);
   
-  // if the track is secondary
-  if(trackID != 1)
-  {
-      // we can check for radioactive products
-      G4int processType = track->GetCreatorProcess()->GetProcessSubType();
-      if (processType == fRadioactiveDecay) {
-        //fill ntuple id = 1
-        G4int id = 1;
-        analysisManager->FillNtupleDColumn(id,0, pid);
-        analysisManager->FillNtupleDColumn(id,1, Z);
-        analysisManager->FillNtupleDColumn(id,2, A);
-        analysisManager->FillNtupleDColumn(id,3, energy);
-        analysisManager->FillNtupleDColumn(id,4, time/s);
-        analysisManager->FillNtupleDColumn(id,5, 0);
-        analysisManager->FillNtupleSColumn(id,6, pName);
-        analysisManager->FillNtupleDColumn(id,7, charge);
-        analysisManager->AddNtupleRow(id);
-      }
-  }
+  // 
+  // // if the track is secondary
+  // if(trackID != 1)
+  // {
+  //     // we can check for radioactive products
+  //     G4int processType = track->GetCreatorProcess()->GetProcessSubType();
+  //     if (processType == fRadioactiveDecay) {
+  //       //fill ntuple id = 1
+  //       G4int id = 1;
+  //       analysisManager->FillNtupleDColumn(id,0, pid);
+  //       analysisManager->FillNtupleDColumn(id,1, Z);
+  //       analysisManager->FillNtupleDColumn(id,2, A);
+  //       analysisManager->FillNtupleDColumn(id,3, energy);
+  //       analysisManager->FillNtupleDColumn(id,4, time/s);
+  //       analysisManager->FillNtupleDColumn(id,5, 0);
+  //       analysisManager->FillNtupleSColumn(id,6, pName);
+  //       analysisManager->FillNtupleDColumn(id,7, charge);
+  //       analysisManager->AddNtupleRow(id);
+  //     }
+  // }
   
-  else
-  {
-      G4int id = 1;
-      analysisManager->FillNtupleDColumn(id,0, pid);
-      analysisManager->FillNtupleDColumn(id,1, Z);
-      analysisManager->FillNtupleDColumn(id,2, A);
-      analysisManager->FillNtupleDColumn(id,3, energy);
-      analysisManager->FillNtupleDColumn(id,4, time/s);
-      analysisManager->FillNtupleDColumn(id,5, 0);
-      analysisManager->FillNtupleSColumn(id,6, pName);
-      analysisManager->FillNtupleDColumn(id,7, charge);
-      analysisManager->AddNtupleRow(id);
-  }
+  // else
+  // {
+  //     G4int id = 1;
+  //     analysisManager->FillNtupleDColumn(id,0, pid);
+  //     analysisManager->FillNtupleDColumn(id,1, Z);
+  //     analysisManager->FillNtupleDColumn(id,2, A);
+  //     analysisManager->FillNtupleDColumn(id,3, energy);
+  //     analysisManager->FillNtupleDColumn(id,4, time/s);
+  //     analysisManager->FillNtupleDColumn(id,5, 0);
+  //     analysisManager->FillNtupleSColumn(id,6, pName);
+  //     analysisManager->FillNtupleDColumn(id,7, charge);
+  //     analysisManager->AddNtupleRow(id);
+  // }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

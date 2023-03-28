@@ -45,20 +45,16 @@ target_link_libraries(neutronBall ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 set(nb_SCRIPTS
-  gui.mac
-  init_vis.mac
   vis.mac
-  u238PH.mac
-  plotPH.C
   run.mac
   emanation.mac
-  mainConfig.txt
   plotPNames.c
   plotEmanationByH2OMultiGraph.c
   plotHistXY.c
-  temp.c
   plotEmanationByH2O.c
   findRecoilRange.mac
+  plotEmanationLocationInMultiGrainSetup.c
+  oneRun.mac
   )
 
 foreach(_script ${nb_SCRIPTS})

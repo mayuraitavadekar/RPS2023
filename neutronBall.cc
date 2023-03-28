@@ -1,28 +1,18 @@
-// learning resource: https://www.slac.stanford.edu/xorg/geant4/SLACTutorial14/HandsOn1/
-// learning resource: https://www.slac.stanford.edu/xorg/geant4/SLACTutorial14/Agenda.html
-// learning resource: https://indico.cern.ch/event/647154/contributions/2714212/attachments/1529029/2397032/BookForApplicationDevelopers.pdf
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #include "G4Types.hh"
-
 #include "G4RunManagerFactory.hh"
 #include "G4UImanager.hh"
 #include "G4SteppingVerbose.hh"
 #include "Randomize.hh"
 
 #include "nbDetectorConstruction.hh"
-#include "nbActionInitialization.hh"
 
+#include "nbActionInitialization.hh"
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
 
 #include "nbRadonPhysicsList.hh"
-
-
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

@@ -42,7 +42,8 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4int iVol = 0;
   if (pVolume == fDetector->getNameOfLayer1())   iVol = 1; // grainPV
   if (pVolume == fDetector->getNameOfLayer2())   iVol = 2; // boxPV
-  
+  if (pVolume == fDetector->getNameOfLayer3())   iVol = 3; // surroundingGrainPV
+
   const G4ParticleDefinition* particle = aStep->GetTrack()->GetParticleDefinition();  
   
   G4String pName      = particle->GetParticleName();
@@ -73,12 +74,9 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
 
     // G4cout << momX << " " << momY << " " << momZ << G4endl;
 
-    // check if this step is first step of radon in this volume
-    if(iVol == 2 && aTrack->GetTrackStatus() == fStopAndKill)
-    {
-      // first step in pore volume i.e. particle has escaped from grain
-      emanated = 1;
-    }
+    if(iVol == 2 && aTrack->GetTrackStatus() == fStopAndKill) emanated = 1; // come to rest in pore
+    else if(iVol == 3 && aTrack->GetTrackStatus() == fStopAndKill) emanated = 2; // come to rest in surrounding grain
+    else if(iVol == 1 && aTrack->GetTrackStatus() == fStopAndKill) emanated = 3; // come to rest in central grain
   }
 
   // fill ntuple with id = 2

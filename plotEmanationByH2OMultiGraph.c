@@ -5,8 +5,8 @@ void plotEmanationByH2OMultiGraph()
     TTree* tree = (TTree*) input->Get("particleData");
     int entries = tree->GetEntries();
 
-    double eCounts[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    double moistureLevels[13] = {15., 20., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75.};
+    double eCounts[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    double moistureLevels[16] = {0., 5., 10., 15., 20., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75.};
     
     Int_t        emanation;
     Double_t        Z;
@@ -21,19 +21,22 @@ void plotEmanationByH2OMultiGraph()
     for(int i=0;i<entries;i++)
     {
         tree->GetEntry(i);
-        if(H2OContent == 15 && A == 222 && emanation == 1) eCounts[0]++;
-        else if(H2OContent == 20 && A == 222 && emanation == 1) eCounts[1]++;
-        else if(H2OContent == 25 && A == 222 && emanation == 1)  eCounts[2]++;
-        else if(H2OContent == 30 && A == 222 && emanation == 1) eCounts[3]++;
-        else if(H2OContent == 35 && A == 222 && emanation == 1) eCounts[4]++;
-        else if(H2OContent == 40 && A == 222 && emanation == 1) eCounts[5]++;
-        else if(H2OContent == 45 && A == 222 && emanation == 1) eCounts[6]++;
-        else if(H2OContent == 50 && A == 222 && emanation == 1) eCounts[7]++;
-        else if(H2OContent == 55 && A == 222 && emanation == 1) eCounts[8]++;
-        else if(H2OContent == 60 && A == 222 && emanation == 1) eCounts[9]++;
-        else if(H2OContent == 65 && A == 222 && emanation == 1) eCounts[10]++;
-        else if(H2OContent == 70 && A == 222 && emanation == 1) eCounts[11]++;
-        else if(H2OContent == 75 && A == 222 && emanation == 1) eCounts[12]++;
+        if(H2OContent == 0 && A == 222 && emanation == 1)       eCounts[0]++;
+        else if(H2OContent == 5 && A == 222 && emanation == 1)  eCounts[1]++;
+        else if(H2OContent == 10 && A == 222 && emanation == 1) eCounts[2]++;
+        else if(H2OContent == 15 && A == 222 && emanation == 1) eCounts[3]++;
+        else if(H2OContent == 20 && A == 222 && emanation == 1) eCounts[4]++;
+        else if(H2OContent == 25 && A == 222 && emanation == 1) eCounts[5]++;
+        else if(H2OContent == 30 && A == 222 && emanation == 1) eCounts[6]++;
+        else if(H2OContent == 35 && A == 222 && emanation == 1) eCounts[7]++;
+        else if(H2OContent == 40 && A == 222 && emanation == 1) eCounts[8]++;
+        else if(H2OContent == 45 && A == 222 && emanation == 1) eCounts[9]++;
+        else if(H2OContent == 50 && A == 222 && emanation == 1) eCounts[10]++;
+        else if(H2OContent == 55 && A == 222 && emanation == 1) eCounts[11]++;
+        else if(H2OContent == 60 && A == 222 && emanation == 1) eCounts[12]++;
+        else if(H2OContent == 65 && A == 222 && emanation == 1) eCounts[13]++;
+        else if(H2OContent == 70 && A == 222 && emanation == 1) eCounts[14]++;
+        else if(H2OContent == 75 && A == 222 && emanation == 1) eCounts[15]++;
     }
 
     // perform same operations on another data file
@@ -41,8 +44,8 @@ void plotEmanationByH2OMultiGraph()
     tree = (TTree*) input->Get("particleData");
     entries = tree->GetEntries();
 
-    double eCounts2[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    double moistureLevels2[13] = {15., 20., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75.};
+    double eCounts2[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    double moistureLevels2[16] = {0., 5., 10., 15., 20., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75.};
 
     tree->SetBranchAddress("A", &A);
     tree->SetBranchAddress("Z", &Z);
@@ -52,19 +55,22 @@ void plotEmanationByH2OMultiGraph()
     for(int i=0;i<entries;i++)
     {
         tree->GetEntry(i);
-        if(H2OContent == 15 && A == 222 && emanation == 1) eCounts2[0]++;
-        else if(H2OContent == 20 && A == 222 && emanation == 1) eCounts2[1]++;
-        else if(H2OContent == 25 && A == 222 && emanation == 1)  eCounts2[2]++;
-        else if(H2OContent == 30 && A == 222 && emanation == 1) eCounts2[3]++;
-        else if(H2OContent == 35 && A == 222 && emanation == 1) eCounts2[4]++;
-        else if(H2OContent == 40 && A == 222 && emanation == 1) eCounts2[5]++;
-        else if(H2OContent == 45 && A == 222 && emanation == 1) eCounts2[6]++;
-        else if(H2OContent == 50 && A == 222 && emanation == 1) eCounts2[7]++;
-        else if(H2OContent == 55 && A == 222 && emanation == 1) eCounts2[8]++;
-        else if(H2OContent == 60 && A == 222 && emanation == 1) eCounts2[9]++;
-        else if(H2OContent == 65 && A == 222 && emanation == 1) eCounts2[10]++;
-        else if(H2OContent == 70 && A == 222 && emanation == 1) eCounts2[11]++;
-        else if(H2OContent == 75 && A == 222 && emanation == 1) eCounts2[12]++;
+        if(H2OContent == 0 && A == 222 && emanation == 1)       eCounts[0]++;
+        else if(H2OContent == 5 && A == 222 && emanation == 1)  eCounts[1]++;
+        else if(H2OContent == 10 && A == 222 && emanation == 1) eCounts[2]++;
+        else if(H2OContent == 15 && A == 222 && emanation == 1) eCounts[3]++;
+        else if(H2OContent == 20 && A == 222 && emanation == 1) eCounts[4]++;
+        else if(H2OContent == 25 && A == 222 && emanation == 1) eCounts[5]++;
+        else if(H2OContent == 30 && A == 222 && emanation == 1) eCounts[6]++;
+        else if(H2OContent == 35 && A == 222 && emanation == 1) eCounts[7]++;
+        else if(H2OContent == 40 && A == 222 && emanation == 1) eCounts[8]++;
+        else if(H2OContent == 45 && A == 222 && emanation == 1) eCounts[9]++;
+        else if(H2OContent == 50 && A == 222 && emanation == 1) eCounts[10]++;
+        else if(H2OContent == 55 && A == 222 && emanation == 1) eCounts[11]++;
+        else if(H2OContent == 60 && A == 222 && emanation == 1) eCounts[12]++;
+        else if(H2OContent == 65 && A == 222 && emanation == 1) eCounts[13]++;
+        else if(H2OContent == 70 && A == 222 && emanation == 1) eCounts[14]++;
+        else if(H2OContent == 75 && A == 222 && emanation == 1) eCounts[15]++;
     }
 
     gROOT->Reset();
@@ -95,8 +101,8 @@ void plotEmanationByH2OMultiGraph()
     // now draw graph
     TMultiGraph *mg = new TMultiGraph();
     
-    TGraph* graph =  new TGraph(13, moistureLevels, eCounts);
-    TGraph* graph2 =  new TGraph(13, moistureLevels, eCounts2);
+    TGraph* graph =  new TGraph(16, moistureLevels, eCounts);
+    TGraph* graph2 =  new TGraph(16, moistureLevels, eCounts2);
 
     mg->Add(graph2);
     mg->Add(graph);

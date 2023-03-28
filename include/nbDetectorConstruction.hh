@@ -44,20 +44,25 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       void FillSoilLayersWithMaps();
       void PrintLayersMaterials();
       void fillGrainWithChemComps();
+
+      void DefinePoreChemicalComps();
+      void fillPoresWithChemComps();
+
       G4VPhysicalVolume* DefineVolumes();
       
       G4Material* grainMaterial;
+      G4Material* poreMaterial;
 
       G4double r1, r2, r3, r4, r5; // radii for 5 layers
       G4int matType, matType_1, matType_2, matType_3;
       G4Material *shellMaterial_1, *shellMaterial_2, *shellMaterial_3, *shellMaterial_4, *shellMaterial_5, *shellMaterial_6, *shellMaterial_7, *shellMaterial_8;
-      G4VPhysicalVolume *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4, *shellPV_5, *grainPV, *boxPV, *coatingPV;    // neutron ball shell physical volume
-      G4LogicalVolume *shellLV_1, *shellLV_2, *shellLV_3, *shellLV_4, *shellLV_5, *grainLV, *boxLV, *coatingLV; 
+      G4VPhysicalVolume *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4, *shellPV_5, *grainPV, *boxPV, *surroundingGrainPV;    // neutron ball shell physical volume
+      G4LogicalVolume *shellLV_1, *shellLV_2, *shellLV_3, *shellLV_4, *shellLV_5, *grainLV, *boxLV, *surroundingGrainLV; 
       G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 
       // grain size
       G4double totalGrainSize = 50*um;
-      G4double grainSize = 50.*um;
+      G4double grainSize = 150.*um;
       // Define dimensions of box and sphere
       G4double boxSizeX = 1*cm;
       G4double boxSizeY = 1*cm;
@@ -90,6 +95,10 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
 
       G4Material *grainComp0, *grainComp1, *grainComp2, *grainComp3, *grainComp4, *grainComp5, *grainComp6, *grainComp7, 
                  *grainComp8, *grainComp9, *grainComp10, *grainComp11, *grainComp12, *grainComp13, *grainComp14, *grainComp15;
+
+      
+      G4Material *poreComp0, *poreComp1, *poreComp2, *poreComp3, *poreComp4, *poreComp5, *poreComp6, *poreComp7, 
+                 *poreComp8, *poreComp9, *poreComp10, *poreComp11, *poreComp12, *poreComp13, *poreComp14, *poreComp15;
       
       // define object nist manager
       G4NistManager *nistManager;
@@ -133,6 +142,23 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       map<G4Material*, G4double> chem_composition_14;
       map<G4Material*, G4double> chem_composition_15;
 
+      map<G4Material*, G4double> pore_chem_composition_0;
+      map<G4Material*, G4double> pore_chem_composition_1;
+      map<G4Material*, G4double> pore_chem_composition_2;
+      map<G4Material*, G4double> pore_chem_composition_3;
+      map<G4Material*, G4double> pore_chem_composition_4;
+      map<G4Material*, G4double> pore_chem_composition_5;
+      map<G4Material*, G4double> pore_chem_composition_6;
+      map<G4Material*, G4double> pore_chem_composition_7;
+      map<G4Material*, G4double> pore_chem_composition_8;
+      map<G4Material*, G4double> pore_chem_composition_9;
+      map<G4Material*, G4double> pore_chem_composition_10;
+      map<G4Material*, G4double> pore_chem_composition_11;
+      map<G4Material*, G4double> pore_chem_composition_12;
+      map<G4Material*, G4double> pore_chem_composition_13;
+      map<G4Material*, G4double> pore_chem_composition_14;
+      map<G4Material*, G4double> pore_chem_composition_15;
+
 
     public:
       // user defined functions to get physical volume names of each layer
@@ -149,16 +175,12 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       // ANALYSIS VARIABLES
       G4int H2OContent = 0; // initialized with initial H2O content
 
-
       // create pointer to detector messenger
       nbDetectorMessenger* fdetectorMessenger;
       
       // function definitions for detector messenger
       void updateH2OContent(G4int);
-      void setGrainMaterial(G4int);
-
-      // void setLayerMaterial(G4String matName, int layerNumber);
-      // void setLayerHeight(G4double height, int layerNumber);        
+      void setGrainMaterial(G4int);     
 };
 
 #endif

@@ -1,5 +1,3 @@
-// This file will make use nbDetectorConstruction.hh
-
 #include "nbDetectorConstruction.hh"
 
 #include "nbDetectorMessenger.hh"
@@ -76,9 +74,13 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
   // define chemical composition maps
   DefineChemicalComps();
   fillGrainWithChemComps();
+
+  DefinePoreChemicalComps();
+  fillPoresWithChemComps();
   
   // initialize grain material
   grainMaterial = grainComp0;
+  poreMaterial = poreComp0;
 
   // Define volumes
   return DefineVolumes();
@@ -191,91 +193,391 @@ void nbDetectorConstruction::DefineMaterials()
 
 G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 {  
-  // Cleanup old geometry
-  G4GeometryManager::GetInstance()->OpenGeometry();
-  G4PhysicalVolumeStore::GetInstance()->Clean();
-  G4LogicalVolumeStore::GetInstance()->Clean();
-  G4SolidStore::GetInstance()->Clean();
+    // Cleanup old geometry
+    G4GeometryManager::GetInstance()->OpenGeometry();
+    G4PhysicalVolumeStore::GetInstance()->Clean();
+    G4LogicalVolumeStore::GetInstance()->Clean();
+    G4SolidStore::GetInstance()->Clean();
 
-  // Geometry parameters  
-  
-  // World
-  //
-  auto worldSizeXY = 2.5 * boxSizeX;
-  // auto worldSizeZ  = worldSizeXY; 
-  
-  auto worldS 
-    = new G4Box("World",           // its name
-                 worldSizeXY/2, worldSizeXY/2, worldSizeXY/2); // its size
-                         
-  auto worldLV
-    = new G4LogicalVolume(
-                 worldS,           // its solid
-                 defaultMaterial,  // its material
-                 "World");         // its name
-                                   
-  auto worldPV
-    = new G4PVPlacement(
-                 0,                // no rotation
-                 G4ThreeVector(),  // at (0,0,0)
-                 worldLV,          // its logical volume                         
-                 "World",          // its name
-                 0,                // its mother  volume
-                 false,            // no boolean operation
-                 0,                // copy number
-                 fCheckOverlaps);  // checking overlaps 
-  // box
-  G4Box*  
-  box = new G4Box("box",                            // its name
-                   boxSizeX,boxSizeY,boxSizeZ);     //its size
-                                           
-  boxLV = new G4LogicalVolume(box,                  // its solid
-                              Air,      // its material
-                              "boxLV");             // its name                                
-  boxPV = new G4PVPlacement(0,                      // no rotation
-                            G4ThreeVector(),        // at (0,0,0)
-                            boxLV,                  // its logical volume
-                            "boxPV",                // its name
-                            worldLV,                // its mother  volume
-                            false,                  // no boolean operation
-                            0);                     // copy number
+    // Geometry parameters  
+    
+    // World
+    //
+    auto worldSizeXY = 2.5 * boxSizeX;
+    // auto worldSizeZ  = worldSizeXY; 
+    
+    auto worldS 
+        = new G4Box("World",           // its name
+                    worldSizeXY/2, worldSizeXY/2, worldSizeXY/2); // its size
+                            
+    auto worldLV
+        = new G4LogicalVolume(
+                    worldS,           // its solid
+                    defaultMaterial,  // its material
+                    "World");         // its name
+                                    
+    auto worldPV
+        = new G4PVPlacement(
+                    0,                // no rotation
+                    G4ThreeVector(),  // at (0,0,0)
+                    worldLV,          // its logical volume                         
+                    "World",          // its name
+                    0,                // its mother  volume
+                    false,            // no boolean operation
+                    0,                // copy number
+                    fCheckOverlaps);  // checking overlaps 
+    // box
+    G4Box*  
+    box = new G4Box("box",                            // its name
+                    boxSizeX,boxSizeY,boxSizeZ);     //its size
+                                            
+    boxLV = new G4LogicalVolume(box,                  // its solid
+                                poreMaterial,      // its material
+                                "boxLV");             // its name                                
+    boxPV = new G4PVPlacement(0,                      // no rotation
+                                G4ThreeVector(),        // at (0,0,0)
+                                boxLV,                  // its logical volume
+                                "boxPV",                // its name
+                                worldLV,                // its mother  volume
+                                false,                  // no boolean operation
+                                0);                     // copy number
 
-  // grain
-  // Define the angles for spheres
-  G4double startAnglePhi = 0.0*deg;
-  G4double spanningAnglePhi = 360.0*deg;
-  G4double startAngleTheta = 0.0*deg;
-  G4double spanningAngleTheta = 180.0*deg; //90
+    // grain
+    // Define the angles for spheres
+    G4double startAnglePhi = 0.0*deg;
+    G4double spanningAnglePhi = 360.0*deg;
+    G4double startAngleTheta = 0.0*deg;
+    G4double spanningAngleTheta = 180.0*deg; //90
 
 
-  // grain
-  auto grainSolid = new G4Sphere("grain", 0, grainSize,
-			       startAnglePhi, spanningAnglePhi, 
-			       startAngleTheta, spanningAngleTheta);  
-  grainLV
-    = new G4LogicalVolume(
-                 grainSolid,        // its solid
-                 grainMaterial,        // its material/chemical composition of soil grain
-                 "grainLV");        // its name
-                                   
-  grainPV = new G4PVPlacement(
-                 0,                 // no rotation
-                 G4ThreeVector(),   // at (0,0,0)
-                 grainLV,           // its logical volume                         
-                 "grainPV",         // its name
-                 boxLV,             // its mother  volume
-                 false,             // no boolean operation
-                 0,                 // copy number
-                 fCheckOverlaps);   // checking overlaps
+    // grain
+    auto grainSolid = new G4Sphere("grain", 0, grainSize,
+                    startAnglePhi, spanningAnglePhi, 
+                    startAngleTheta, spanningAngleTheta);  
+    grainLV
+        = new G4LogicalVolume(
+                    grainSolid,        // its solid
+                    grainMaterial,        // its material/chemical composition of soil grain
+                    "grainLV");        // its name
+                                    
+    grainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(),   // at (0,0,0)
+                    grainLV,           // its logical volume                         
+                    "grainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // surrounding grains
+    auto surroundingGrainSolidS = new G4Sphere("surroundingGrain", 0, grainSize,
+                    startAnglePhi, spanningAnglePhi, 
+                    startAngleTheta, spanningAngleTheta); 
+
+    surroundingGrainLV
+            = new G4LogicalVolume(
+                        surroundingGrainSolidS,        // its solid
+                        grainMaterial,                 // its material/chemical composition of soil grain
+                        "surroundingGrainLV");                    // its name
+
+    // right x+
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,0,0),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+    // top y+
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(0,300*um,0),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+    // left x-
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,0,0),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom y-
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(0,-300*um,0),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // front z+
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(0,0,300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // front left x- z+
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,0,300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // front right x+ z+
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,0,300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+        // back z-
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(0,0,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // back left x- z-
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,0,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // back right x+ z-
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,0,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom front 
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(0,-300*um,+300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom left 
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,-300*um,0),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom right 
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,-300*um,0),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom back
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(0,-300*um,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom front left 
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,-300*um,300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom front right 
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,-300*um,300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom back left
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,-300*um,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // bottom back right
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,-300*um,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+
+    // top left
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,300*um,0*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // top right
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,300*um,0*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // top front
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(0,300*um,300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // top back
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(0,300*um,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // top front left
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,300*um,300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // top front right
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,300*um,300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // top back left
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(-300*um,300*um,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,             // its mother  volume
+                    false,             // no boolean operation
+                    0,                 // copy number
+                    fCheckOverlaps);   // checking overlaps
+
+    // top back right
+    surroundingGrainPV = new G4PVPlacement(
+                    0,                 // no rotation
+                    G4ThreeVector(300*um,300*um,-300*um),   // at (0,0,0)
+                    surroundingGrainLV,           // its logical volume                         
+                    "surroundingGrainPV",         // its name
+                    boxLV,                        // its mother  volume
+                    false,                        // no boolean operation
+                    0,                            // copy number
+                    fCheckOverlaps);              // checking overlaps
 
   //                                        
   // Visualization attributes
   //
   worldLV->SetVisAttributes (G4VisAttributes::GetInvisible());
 
-  auto grainVisAtt= new G4VisAttributes(G4Colour(0.45,0.25,0.0));
+  auto grainVisAtt= new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));
   grainVisAtt->SetVisibility(true);
   grainLV->SetVisAttributes(grainVisAtt);
+
+  auto surroundingGrainVisAtt= new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
+  surroundingGrainVisAtt->SetVisibility(true);
+  surroundingGrainLV->SetVisAttributes(surroundingGrainVisAtt);
 
   PrintLayersMaterials();
   
@@ -291,11 +593,8 @@ void nbDetectorConstruction::PrintLayersMaterials()
 {
   G4cout << "\t******* MATERIALS OF EACH LAYER *******" << G4endl;
   G4cout << " grain material : " << grainLV->GetMaterial()->GetName() << G4endl;
-  // G4cout << " layer 1 material : " << shellLV_1->GetMaterial()->GetName() << G4endl; 
-  // G4cout << " layer 2 material : " << shellLV_2->GetMaterial()->GetName() << G4endl; 
-  // G4cout << " layer 3 material : " << shellLV_3->GetMaterial()->GetName() << G4endl; 
-  // G4cout << " layer 4 material : " << shellLV_4->GetMaterial()->GetName() << G4endl; 
-  // G4cout << " layer 5 material : " << shellLV_5->GetMaterial()->GetName() << G4endl; 
+  G4cout << " surrounding grain material : " << surroundingGrainLV->GetMaterial()->GetName() << G4endl;
+  G4cout << " pore material : " << boxLV->GetMaterial()->GetName() << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -315,90 +614,150 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp1;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+        
+        poreMaterial = poreComp1;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 10)
     {
         grainMaterial = grainComp2;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp2;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 15)
     {
         grainMaterial = grainComp3;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp3;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 20)
     {
         grainMaterial = grainComp4;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp4;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 25)
     {
         grainMaterial = grainComp5;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp5;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 30)
     {
         grainMaterial = grainComp6;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp6;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 35)
     {
         grainMaterial = grainComp7;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp7;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 40)
     {
         grainMaterial = grainComp8;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp8;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 45)
     {
         grainMaterial = grainComp9;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp9;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 50)
     {
         grainMaterial = grainComp10;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp10;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 55)
     {
         grainMaterial = grainComp11;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp11;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 60)
     {
         grainMaterial = grainComp12;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp12;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 65)
     {
         grainMaterial = grainComp13;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp13;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 70)
     {
         grainMaterial = grainComp14;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp14;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     if(value == 75)
     {
         grainMaterial = grainComp15;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp15;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
     // notify run manager that physics is modified
@@ -412,12 +771,17 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
 
 G4String nbDetectorConstruction::getNameOfLayer1()
 {
-    return "grainPV"; // this is first layer beneath the surface
+    return "grainPV"; 
 }
 
 G4String nbDetectorConstruction::getNameOfLayer2()
 {
-    return "boxPV"; // the second layer below that
+    return "boxPV"; 
+}
+
+G4String nbDetectorConstruction::getNameOfLayer3()
+{
+    return "surroundingGrainPV";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -824,3 +1188,173 @@ void nbDetectorConstruction::fillGrainWithChemComps()
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void nbDetectorConstruction::DefinePoreChemicalComps()
+{   
+    // pore_chem_composition_0 = {
+    //     {H2O, 1*perCent}, // mass fractions cannot be 0
+    //     {H2OVapor, 99*perCent}
+    // };
+
+    pore_chem_composition_0 = {
+        {Air, 100*perCent}
+    };
+    
+    pore_chem_composition_1 = {
+        {H2O, 5*perCent},
+        {Air, 95*perCent}
+    };
+    
+    pore_chem_composition_2 = {
+        {H2O, 10*perCent},
+        {Air, 90*perCent}
+    };
+
+    pore_chem_composition_3 = {
+        {H2O, 15*perCent},
+        {Air, 85*perCent}
+    };
+
+    pore_chem_composition_4 = {
+        {H2O, 20*perCent},
+        {Air, 80*perCent}
+    };
+
+    pore_chem_composition_5 = {
+        {H2O, 25*perCent},
+        {Air, 75*perCent}
+    };
+
+    pore_chem_composition_6 = {
+        {H2O, 30*perCent},
+        {Air, 70*perCent}
+    };
+
+    pore_chem_composition_7 = {
+        {H2O, 35*perCent},
+        {Air, 65*perCent}
+    };
+
+    pore_chem_composition_8 = {
+        {H2O, 40*perCent},
+        {Air, 60*perCent}
+    };
+
+    pore_chem_composition_9 = {
+        {H2O, 45*perCent},
+        {Air, 55*perCent}
+    };
+
+    pore_chem_composition_10 = {
+        {H2O, 50*perCent},
+        {Air, 50*perCent}
+    };
+
+    pore_chem_composition_11 = {
+        {H2O, 55*perCent},
+        {Air, 45*perCent}
+    };
+
+    pore_chem_composition_12 = {
+        {H2O, 60*perCent},
+        {Air, 40*perCent}
+    };
+
+    pore_chem_composition_13 = {
+        {H2O, 65*perCent},
+        {Air, 35*perCent}
+    };
+
+    pore_chem_composition_14 = {
+        {H2O, 70*perCent},
+        {Air, 30*perCent}
+    };
+
+    pore_chem_composition_15 = {
+        {H2O, 75*perCent},
+        {Air, 25*perCent}
+    };
+}
+
+void nbDetectorConstruction::fillPoresWithChemComps()
+{
+    poreComp0 = new G4Material("P0W", density = 0.00120479*g/cm3, ncomponents=pore_chem_composition_0.size());
+    for (it = pore_chem_composition_0.begin(); it != pore_chem_composition_0.end(); it++) {
+            poreComp0->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp1 = new G4Material("P5W", density = 0.051*g/cm3, ncomponents=pore_chem_composition_1.size());
+    for (it = pore_chem_composition_1.begin(); it != pore_chem_composition_1.end(); it++) {
+            poreComp1->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp2 = new G4Material("P10W", density = 0.10*g/cm3, ncomponents=pore_chem_composition_2.size());
+    for (it = pore_chem_composition_2.begin(); it != pore_chem_composition_2.end(); it++) {
+            poreComp2->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp3 = new G4Material("P15W", density = 0.15*g/cm3, ncomponents=pore_chem_composition_3.size());
+    for (it = pore_chem_composition_3.begin(); it != pore_chem_composition_3.end(); it++) {
+            poreComp3->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp4 = new G4Material("P20W", density = 0.20*g/cm3, ncomponents=pore_chem_composition_4.size());
+    for (it = pore_chem_composition_4.begin(); it != pore_chem_composition_4.end(); it++) {
+            poreComp4->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp5 = new G4Material("P25W", density = 0.25*g/cm3, ncomponents=pore_chem_composition_5.size());
+    for (it = pore_chem_composition_5.begin(); it != pore_chem_composition_5.end(); it++) {
+            poreComp5->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp6 = new G4Material("P30W", density = 0.30*g/cm3, ncomponents=pore_chem_composition_6.size());
+    for (it = pore_chem_composition_6.begin(); it != pore_chem_composition_6.end(); it++) {
+            poreComp6->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp7 = new G4Material("P35W", density = 0.35*g/cm3, ncomponents=pore_chem_composition_7.size());
+    for (it = pore_chem_composition_7.begin(); it != pore_chem_composition_7.end(); it++) {
+            poreComp7->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp8 = new G4Material("P40W", density = 0.40*g/cm3, ncomponents=pore_chem_composition_8.size());
+    for (it = pore_chem_composition_8.begin(); it != pore_chem_composition_8.end(); it++) {
+            poreComp8->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp9 = new G4Material("P45W", density = 0.45*g/cm3, ncomponents=pore_chem_composition_9.size());
+    for (it = pore_chem_composition_9.begin(); it != pore_chem_composition_9.end(); it++) {
+            poreComp9->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp10 = new G4Material("P50W", density = 0.50*g/cm3, ncomponents=pore_chem_composition_10.size());
+    for (it = pore_chem_composition_10.begin(); it != pore_chem_composition_10.end(); it++) {
+            poreComp10->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp11 = new G4Material("P55W", density = 0.55*g/cm3, ncomponents=pore_chem_composition_11.size());
+    for (it = pore_chem_composition_11.begin(); it != pore_chem_composition_11.end(); it++) {
+            poreComp11->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp12 = new G4Material("P60W", density = 0.60*g/cm3, ncomponents=pore_chem_composition_12.size());
+    for (it = pore_chem_composition_12.begin(); it != pore_chem_composition_12.end(); it++) {
+            poreComp12->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp13 = new G4Material("P65W", density = 0.65*g/cm3, ncomponents=pore_chem_composition_13.size());
+    for (it = pore_chem_composition_13.begin(); it != pore_chem_composition_13.end(); it++) {
+            poreComp13->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp14 = new G4Material("P70W", density = 0.70*g/cm3, ncomponents=pore_chem_composition_14.size());
+    for (it = pore_chem_composition_14.begin(); it != pore_chem_composition_14.end(); it++) {
+            poreComp14->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp15 = new G4Material("P75W", density = 0.75*g/cm3, ncomponents=pore_chem_composition_15.size());
+    for (it = pore_chem_composition_15.begin(); it != pore_chem_composition_15.end(); it++) {
+            poreComp15->AddMaterial(it->first, fractionmass=it->second);
+    }
+}
