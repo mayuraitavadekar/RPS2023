@@ -257,7 +257,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     grainLV
         = new G4LogicalVolume(
                     grainSolid,        // its solid
-                    grainMaterial,        // its material/chemical composition of soil grain
+                    grainMaterial,     // its material/chemical composition of soil grain
                     "grainLV");        // its name
                                     
     grainPV = new G4PVPlacement(
@@ -284,7 +284,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // right x+
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,0,0),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,0,0),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -294,7 +294,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top y+
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(0,300*um,0),   // at (0,0,0)
+                    G4ThreeVector(0,2*grainSize,0),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -304,7 +304,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // left x-
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,0,0),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,0,0),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -315,7 +315,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom y-
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(0,-300*um,0),   // at (0,0,0)
+                    G4ThreeVector(0,-2*grainSize,0),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -326,7 +326,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // front z+
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(0,0,300*um),   // at (0,0,0)
+                    G4ThreeVector(0,0,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -337,7 +337,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // front left x- z+
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,0,300*um),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,0,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -348,7 +348,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // front right x+ z+
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,0,300*um),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,0,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -356,10 +356,10 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                     0,                 // copy number
                     fCheckOverlaps);   // checking overlaps
 
-        // back z-
+    // back z-
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(0,0,-300*um),   // at (0,0,0)
+                    G4ThreeVector(0,0,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -370,7 +370,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // back left x- z-
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,0,-300*um),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,0,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -381,7 +381,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // back right x+ z-
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,0,-300*um),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,0,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -392,7 +392,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom front 
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(0,-300*um,+300*um),   // at (0,0,0)
+                    G4ThreeVector(0,-2*grainSize,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -403,7 +403,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom left 
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,-300*um,0),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,-2*grainSize,0),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -414,7 +414,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom right 
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,-300*um,0),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,-2*grainSize,0),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -425,7 +425,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom back
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(0,-300*um,-300*um),   // at (0,0,0)
+                    G4ThreeVector(0,-2*grainSize,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -436,7 +436,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom front left 
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,-300*um,300*um),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,-2*grainSize,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -447,7 +447,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom front right 
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,-300*um,300*um),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,-2*grainSize,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -458,7 +458,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom back left
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,-300*um,-300*um),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,-2*grainSize,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -469,7 +469,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // bottom back right
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,-300*um,-300*um),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,-2*grainSize,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -481,7 +481,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top left
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,300*um,0*um),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,2*grainSize,0),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -492,7 +492,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top right
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,300*um,0*um),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,2*grainSize,0),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -503,7 +503,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top front
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(0,300*um,300*um),   // at (0,0,0)
+                    G4ThreeVector(0,2*grainSize,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -514,7 +514,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top back
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(0,300*um,-300*um),   // at (0,0,0)
+                    G4ThreeVector(0,2*grainSize,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -525,7 +525,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top front left
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,300*um,300*um),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,2*grainSize,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -536,7 +536,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top front right
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,300*um,300*um),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,2*grainSize,2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -547,7 +547,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top back left
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(-300*um,300*um,-300*um),   // at (0,0,0)
+                    G4ThreeVector(-2*grainSize,2*grainSize,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,             // its mother  volume
@@ -558,7 +558,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     // top back right
     surroundingGrainPV = new G4PVPlacement(
                     0,                 // no rotation
-                    G4ThreeVector(300*um,300*um,-300*um),   // at (0,0,0)
+                    G4ThreeVector(2*grainSize,2*grainSize,-2*grainSize),   // at (0,0,0)
                     surroundingGrainLV,           // its logical volume                         
                     "surroundingGrainPV",         // its name
                     boxLV,                        // its mother  volume
@@ -594,6 +594,7 @@ void nbDetectorConstruction::PrintLayersMaterials()
   G4cout << "\t******* MATERIALS OF EACH LAYER *******" << G4endl;
   G4cout << " grain material : " << grainLV->GetMaterial()->GetName() << G4endl;
   G4cout << " surrounding grain material : " << surroundingGrainLV->GetMaterial()->GetName() << G4endl;
+//   G4cout << " pore grain material : " << poreGrainLV->GetMaterial()->GetName() << G4endl;
   G4cout << " pore material : " << boxLV->GetMaterial()->GetName() << G4endl;
 }
 
@@ -614,6 +615,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp1;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
         
         poreMaterial = poreComp1;
@@ -624,6 +626,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp2;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp2;
@@ -634,6 +637,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp3;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp3;
@@ -644,6 +648,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp4;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp4;
@@ -654,6 +659,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp5;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp5;
@@ -664,6 +670,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp6;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp6;
@@ -674,6 +681,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp7;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp7;
@@ -684,6 +692,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp8;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp8;
@@ -694,6 +703,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp9;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp9;
@@ -704,6 +714,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp10;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp10;
@@ -714,6 +725,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp11;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp11;
@@ -724,6 +736,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp12;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp12;
@@ -734,6 +747,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp13;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp13;
@@ -744,6 +758,7 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp14;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp14;
@@ -754,9 +769,65 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
     {
         grainMaterial = grainComp15;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
         if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
 
         poreMaterial = poreComp15;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
+    }
+
+    if(value == 80)
+    {
+        grainMaterial = grainComp16;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp16;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
+    }
+
+    if(value == 85)
+    {
+        grainMaterial = grainComp17;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp17;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
+    }
+
+    if(value == 90)
+    {
+        grainMaterial = grainComp18;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp18;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
+    }
+
+    if(value == 95)
+    {
+        grainMaterial = grainComp19;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp19;
+        if(boxLV) { boxLV->SetMaterial(poreMaterial); }
+    }
+
+    if(value == 100)
+    {
+        grainMaterial = grainComp20;
+        if(grainLV) { grainLV->SetMaterial(grainMaterial); }
+        
+        if(surroundingGrainLV) { surroundingGrainLV->SetMaterial(grainMaterial); }
+
+        poreMaterial = poreComp20;
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
@@ -782,6 +853,11 @@ G4String nbDetectorConstruction::getNameOfLayer2()
 G4String nbDetectorConstruction::getNameOfLayer3()
 {
     return "surroundingGrainPV";
+}
+
+G4String nbDetectorConstruction::getNameOfLayer4()
+{
+    return "poreGrainPV";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -1100,6 +1176,70 @@ void nbDetectorConstruction::DefineChemicalComps()
         {Al, 0.3*perCent},
         {Fe, 0.3*perCent}
     };
+    
+    // 80% water
+    chem_composition_16 = {
+        {H2O, 80*perCent},
+        {Air, 1*perCent},
+        {H, 2*perCent},
+        {C, 4*perCent},
+        {N, 2*perCent},
+        {O, 1*perCent},
+        {K, 6*perCent},
+        {Na, 1*perCent},
+        {Ca, 1*perCent},
+        {Mg, 0.5*perCent},
+        {S, 0.3*perCent},
+        {P, 0.3*perCent},
+        {Si, 0.3*perCent},
+        {Al, 0.3*perCent},
+        {Fe, 0.3*perCent}
+    };
+
+    // 85% water
+    chem_composition_17 = {
+        {H2O, 85*perCent},
+        {Air, 1*perCent},
+        {H, 1*perCent},
+        {C, 3*perCent},
+        {N, 1*perCent},
+        {O, 1*perCent},
+        {K, 4*perCent},
+        {Na, 1*perCent},
+        {Ca, 1*perCent},
+        {Mg, 0.5*perCent},
+        {S, 0.3*perCent},
+        {P, 0.3*perCent},
+        {Si, 0.3*perCent},
+        {Al, 0.3*perCent},
+        {Fe, 0.3*perCent}
+    };
+
+    // 90% water
+    chem_composition_18 = {
+        {H2O, 90*perCent},
+        {Air, 1*perCent},
+        {H, 1*perCent},
+        {C, 3*perCent},
+        {N, 1*perCent},
+        {O, 1*perCent},
+        {K, 1*perCent},
+        {Na, 1*perCent},
+        {Ca, 1*perCent}
+    };
+
+    // 95% water
+    chem_composition_19 = {
+        {H2O, 95*perCent},
+        {H, 1*perCent},
+        {C, 3*perCent},
+        {N, 1*perCent}
+    };
+
+    // 100% water
+    chem_composition_20 = {
+        {H2O, 100*perCent},
+    };
 }
 
 void nbDetectorConstruction::fillGrainWithChemComps()
@@ -1185,6 +1325,33 @@ void nbDetectorConstruction::fillGrainWithChemComps()
     for (it = chem_composition_15.begin(); it != chem_composition_15.end(); it++) {
             grainComp15->AddMaterial(it->first, fractionmass=it->second);
     }
+
+    grainComp16 = new G4Material("80W", density = 0.6*g/cm3, ncomponents=chem_composition_16.size());
+    for (it = chem_composition_16.begin(); it != chem_composition_16.end(); it++) {
+            grainComp16->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp17 = new G4Material("85W", density = 0.6*g/cm3, ncomponents=chem_composition_17.size());
+    for (it = chem_composition_17.begin(); it != chem_composition_17.end(); it++) {
+            grainComp17->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp18 = new G4Material("90W", density = 0.6*g/cm3, ncomponents=chem_composition_18.size());
+    for (it = chem_composition_18.begin(); it != chem_composition_18.end(); it++) {
+            grainComp18->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp19 = new G4Material("95W", density = 0.6*g/cm3, ncomponents=chem_composition_19.size());
+    for (it = chem_composition_19.begin(); it != chem_composition_19.end(); it++) {
+            grainComp19->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    grainComp20 = new G4Material("100W", density = 0.6*g/cm3, ncomponents=chem_composition_20.size());
+    for (it = chem_composition_20.begin(); it != chem_composition_20.end(); it++) {
+            grainComp20->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -1274,6 +1441,30 @@ void nbDetectorConstruction::DefinePoreChemicalComps()
         {H2O, 75*perCent},
         {Air, 25*perCent}
     };
+
+    pore_chem_composition_16 = {
+        {H2O, 80*perCent},
+        {Air, 20*perCent}
+    };
+
+    pore_chem_composition_17 = {
+        {H2O, 85*perCent},
+        {Air, 15*perCent}
+    };
+
+    pore_chem_composition_18 = {
+        {H2O, 90*perCent},
+        {Air, 10*perCent}
+    };
+
+    pore_chem_composition_19 = {
+        {H2O, 95*perCent},
+        {Air, 5*perCent}
+    };
+
+    pore_chem_composition_20 = {
+        {H2O, 100*perCent}
+    };
 }
 
 void nbDetectorConstruction::fillPoresWithChemComps()
@@ -1357,4 +1548,30 @@ void nbDetectorConstruction::fillPoresWithChemComps()
     for (it = pore_chem_composition_15.begin(); it != pore_chem_composition_15.end(); it++) {
             poreComp15->AddMaterial(it->first, fractionmass=it->second);
     }
+
+    poreComp16 = new G4Material("P80W", density = 0.80*g/cm3, ncomponents=pore_chem_composition_16.size());
+    for (it = pore_chem_composition_16.begin(); it != pore_chem_composition_16.end(); it++) {
+            poreComp16->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp17 = new G4Material("P85W", density = 0.85*g/cm3, ncomponents=pore_chem_composition_17.size());
+    for (it = pore_chem_composition_17.begin(); it != pore_chem_composition_17.end(); it++) {
+            poreComp17->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp18 = new G4Material("P90W", density = 0.90*g/cm3, ncomponents=pore_chem_composition_18.size());
+    for (it = pore_chem_composition_18.begin(); it != pore_chem_composition_18.end(); it++) {
+            poreComp18->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp19 = new G4Material("P95W", density = 0.95*g/cm3, ncomponents=pore_chem_composition_19.size());
+    for (it = pore_chem_composition_19.begin(); it != pore_chem_composition_19.end(); it++) {
+            poreComp19->AddMaterial(it->first, fractionmass=it->second);
+    }
+
+    poreComp20 = new G4Material("P100W", density = 1.00*g/cm3, ncomponents=pore_chem_composition_20.size());
+    for (it = pore_chem_composition_20.begin(); it != pore_chem_composition_20.end(); it++) {
+            poreComp20->AddMaterial(it->first, fractionmass=it->second);
+    }
 }
+

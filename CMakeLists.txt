@@ -47,7 +47,8 @@ target_link_libraries(neutronBall ${Geant4_LIBRARIES})
 set(nb_SCRIPTS
   vis.mac
   run.mac
-  emanation.mac
+  recoilEmanation.mac
+  uniformEmanation.mac
   plotPNames.c
   plotEmanationByH2OMultiGraph.c
   plotHistXY.c
@@ -55,6 +56,8 @@ set(nb_SCRIPTS
   findRecoilRange.mac
   plotEmanationLocationInMultiGrainSetup.c
   oneRun.mac
+  plotCountInSurroundingGrainsByH2O.c
+  plotCountInSurroundingGrainsByH2OMultiGrain.c
   )
 
 foreach(_script ${nb_SCRIPTS})

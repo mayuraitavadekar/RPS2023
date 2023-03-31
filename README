@@ -30,42 +30,69 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
 * build code using cmake and make
 
+    > mkdir build_sim
+    > cd build_sim
+    > cmake ../RPS2023
+    > make
+    
 1) run code interative mode:
 
-> ./neutronBall
-> /control/execute run.mac
+    > ./neutronBall
+    > /control/execute file_name.mac
 
 2) run code in batch mode
 
-> ./neutronBall ../neutronBall/run.mac
+    > ./neutronBall file_name.mac
 
 -----------------------------------
 # commit notes (latest from bottom)
 -----------------------------------
 
 [1] upto this commit initial data analysis is performed on overall spherical
-soil horizon geometry to understand distributions of distance traveled by
-radon and other particles in various mediums.
+    soil horizon geometry to understand distributions of distance traveled by
+    radon and other particles in various mediums.
 
 [2] radon emanation study code is added with one soil grain with size 50um. 
-updated chemical composition for single soil grain from various sources 
-on web. primary partcle is radon with energy of 86 keV. simulation records 
-data of radon emanation and data analysis is performed to understand dependance 
-of radon emanation on moisture. emanation.mac file is used to run this commit code
-which assumes that radon atoms are uniformaly distributed in soil grain. 
-plotEmanationByH2O file should be used for getting plot. Before running this
-file you should combine all the data files using hadd mainfile.root file1 file2 ..
+    updated chemical composition for single soil grain from various sources 
+    on web. primary partcle is radon with energy of 86 keV. simulation records 
+    data of radon emanation and data analysis is performed to understand dependance 
+    of radon emanation on moisture. emanation.mac file is used to run this commit code
+    which assumes that radon atoms are uniformaly distributed in soil grain. 
+    plotEmanationByH2O file should be used for getting plot. Before running this
+    file you should combine all the data files using hadd mainfile.root file1 file2 ..
 
 [3] this should be considered latest commit for radon emanation study. 
-plotEmanationByH2O.c macro is updated.
+    plotEmanationByH2O.c macro is updated.
 
 [4] steppingAction is updated with conditions of fStopAndKill track status conditions 
-to get count of particles which comes to rest after escaping soil grain.
+    to get count of particles which comes to rest after escaping soil grain.
 
 [5] more percentage options are added from 0%, 75% with 5% increase.
 
+[6] in case of uniform primary events with uniformEmanation.mac file, be careful because
+    it can produce wierd plot of moisture level vs radon emanation. You have to shoot
+    good amount of particles as comapared to particle size. For example, 100nm size and
+    10K primary events will show nice linear correlation.
+
 [6] mutliple grain settings: 
 
-    grainSize(detCon.hh)        coordinates(detCon.cc)      events(emanation.mac)    R(emanation.mac) (max=19nm)
-    50um                        100um                       10k                      49.9
-    150um                       300um                       20k                      149.99        
+    currently, we have set small units for grain size because if we increase grain size
+    units, particle size will be more and for that we need to shoot more primary events.
+    only then we can see nice plots similar to [6].
+
+    Use following settings to obtain graphs:
+
+    grainSize(detCon.hh)        events(emanation.mac)    R(emanation.mac/surface radius) (max=19nm)
+    100nm                       10k                      99nm        
+    1um                         100k                     990nm      
+    10um                        1000K                    9.99 um
+    100um                       10000K                   99.90um
+
+
+    in future, we will update this grain sizes with actual grain sizes of stone mountain
+    which will most likely in range of 50um to some millimeters. But at that time we 
+    also need to shoot more radon particles probably more than 100k. We need to have 
+    rough estimation of radium concentration of soil. 
+
+
+    

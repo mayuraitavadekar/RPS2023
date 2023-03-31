@@ -1,11 +1,11 @@
 void plotEmanationByH2O()
 {
-    TFile* input = new TFile("mainfile.root", "read");
+    TFile* input = new TFile("emanation-study-1um-100KEvts-multigrain-recoil-emanation.root", "read");
     TTree* tree = (TTree*) input->Get("particleData");
     int entries = tree->GetEntries();
 
-    double eCounts[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    double moistureLevels[16] = {0., 5., 10., 15., 20., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75.};
+    double eCounts[21] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    double moistureLevels[21] = {0., 5., 10., 15., 20., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.};
     
     Int_t        emanation;
     Double_t        Z;
@@ -37,11 +37,17 @@ void plotEmanationByH2O()
         else if(H2OContent == 65 && A == 222 && emanation == 1) eCounts[13]++;
         else if(H2OContent == 70 && A == 222 && emanation == 1) eCounts[14]++;
         else if(H2OContent == 75 && A == 222 && emanation == 1) eCounts[15]++;
+        else if(H2OContent == 80 && A == 222 && emanation == 1) eCounts[16]++;
+        else if(H2OContent == 85 && A == 222 && emanation == 1) eCounts[17]++;
+        else if(H2OContent == 90 && A == 222 && emanation == 1) eCounts[18]++;
+        else if(H2OContent == 95 && A == 222 && emanation == 1) eCounts[19]++;
+        else if(H2OContent == 100 && A == 222 && emanation == 1)eCounts[20]++;
     }
 
-    for(int i=0;i<16;i++)
+    for(int i=0;i<22;i++)
     {
         printf("ecount[%d] = %f \n", i, eCounts[i]);
+        eCounts[i] = (eCounts[i]/1000000)*100;
     }
 
     gROOT->Reset();
@@ -70,9 +76,9 @@ void plotEmanationByH2O()
 	c1->cd();
 
     // now draw graph
-    TGraph* graph =  new TGraph(16, moistureLevels, eCounts);
+    TGraph* graph =  new TGraph(21, moistureLevels, eCounts);
     
-    graph->GetYaxis()->SetTitle("count of escaped radon from soil grain");
+    graph->GetYaxis()->SetTitle("escaped radon from soil grain");
     graph->GetXaxis()->SetTitle("moisture content (%)");
     graph->SetMarkerStyle(20);
     graph->SetMarkerSize(1.);

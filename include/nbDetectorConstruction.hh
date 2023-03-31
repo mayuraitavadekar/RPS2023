@@ -56,13 +56,13 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4double r1, r2, r3, r4, r5; // radii for 5 layers
       G4int matType, matType_1, matType_2, matType_3;
       G4Material *shellMaterial_1, *shellMaterial_2, *shellMaterial_3, *shellMaterial_4, *shellMaterial_5, *shellMaterial_6, *shellMaterial_7, *shellMaterial_8;
-      G4VPhysicalVolume *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4, *shellPV_5, *grainPV, *boxPV, *surroundingGrainPV;    // neutron ball shell physical volume
-      G4LogicalVolume *shellLV_1, *shellLV_2, *shellLV_3, *shellLV_4, *shellLV_5, *grainLV, *boxLV, *surroundingGrainLV; 
+      G4VPhysicalVolume *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4, *shellPV_5, *grainPV, *boxPV, *surroundingGrainPV, *poreGrainPV;    // neutron ball shell physical volume
+      G4LogicalVolume *shellLV_1, *shellLV_2, *shellLV_3, *shellLV_4, *shellLV_5, *grainLV, *boxLV, *surroundingGrainLV, *poreGrainLV; 
       G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 
       // grain size
-      G4double totalGrainSize = 50*um;
-      G4double grainSize = 150.*um;
+      G4double grainSize = 10.*um;
+      G4double poreGrainSize = 31.60*um;
       // Define dimensions of box and sphere
       G4double boxSizeX = 1*cm;
       G4double boxSizeY = 1*cm;
@@ -94,11 +94,13 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4Material *soilOne, *soilOne10W, *soilOne20W, *soilOne30W, *soilOne40W;
 
       G4Material *grainComp0, *grainComp1, *grainComp2, *grainComp3, *grainComp4, *grainComp5, *grainComp6, *grainComp7, 
-                 *grainComp8, *grainComp9, *grainComp10, *grainComp11, *grainComp12, *grainComp13, *grainComp14, *grainComp15;
+                 *grainComp8, *grainComp9, *grainComp10, *grainComp11, *grainComp12, *grainComp13, *grainComp14, *grainComp15,
+                 *grainComp16, *grainComp17, *grainComp18, *grainComp19, *grainComp20;
 
       
       G4Material *poreComp0, *poreComp1, *poreComp2, *poreComp3, *poreComp4, *poreComp5, *poreComp6, *poreComp7, 
-                 *poreComp8, *poreComp9, *poreComp10, *poreComp11, *poreComp12, *poreComp13, *poreComp14, *poreComp15;
+                 *poreComp8, *poreComp9, *poreComp10, *poreComp11, *poreComp12, *poreComp13, *poreComp14, *poreComp15,
+                 *poreComp16, *poreComp17, *poreComp18, *poreComp19, *poreComp20;
       
       // define object nist manager
       G4NistManager *nistManager;
@@ -141,6 +143,11 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       map<G4Material*, G4double> chem_composition_13;
       map<G4Material*, G4double> chem_composition_14;
       map<G4Material*, G4double> chem_composition_15;
+      map<G4Material*, G4double> chem_composition_16;
+      map<G4Material*, G4double> chem_composition_17;
+      map<G4Material*, G4double> chem_composition_18;
+      map<G4Material*, G4double> chem_composition_19;
+      map<G4Material*, G4double> chem_composition_20;
 
       map<G4Material*, G4double> pore_chem_composition_0;
       map<G4Material*, G4double> pore_chem_composition_1;
@@ -158,6 +165,11 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       map<G4Material*, G4double> pore_chem_composition_13;
       map<G4Material*, G4double> pore_chem_composition_14;
       map<G4Material*, G4double> pore_chem_composition_15;
+      map<G4Material*, G4double> pore_chem_composition_16;
+      map<G4Material*, G4double> pore_chem_composition_17;
+      map<G4Material*, G4double> pore_chem_composition_18;
+      map<G4Material*, G4double> pore_chem_composition_19;
+      map<G4Material*, G4double> pore_chem_composition_20;
 
 
     public:

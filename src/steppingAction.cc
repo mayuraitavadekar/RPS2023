@@ -74,9 +74,21 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
 
     // G4cout << momX << " " << momY << " " << momZ << G4endl;
 
-    if(iVol == 2 && aTrack->GetTrackStatus() == fStopAndKill) emanated = 1; // come to rest in pore
-    else if(iVol == 3 && aTrack->GetTrackStatus() == fStopAndKill) emanated = 2; // come to rest in surrounding grain
-    else if(iVol == 1 && aTrack->GetTrackStatus() == fStopAndKill) emanated = 3; // come to rest in central grain
+    if(iVol == 2 && aTrack->GetTrackStatus() == fStopButAlive)
+    {
+      emanated = 1; // come to rest in pore
+      aTrack->SetTrackStatus(fStopAndKill);
+    }
+    else if(iVol == 3 && aTrack->GetTrackStatus() == fStopButAlive)
+    {
+      emanated = 2; // come to rest in surrounding grain
+      aTrack->SetTrackStatus(fStopAndKill);
+    }
+    else if(iVol == 1 && aTrack->GetTrackStatus() == fStopButAlive)
+    {
+      emanated = 3; // come to rest in central grain
+      aTrack->SetTrackStatus(fStopAndKill);
+    }
   }
 
   // fill ntuple with id = 2
