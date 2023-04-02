@@ -1,5 +1,5 @@
-#ifndef nbDetectorConstruction_h
-#define nbDetectorConstruction_h 1
+#ifndef RPS2023DetectorConstruction_h
+#define RPS2023DetectorConstruction_h 1
 
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
@@ -15,21 +15,21 @@ using namespace std;
 class G4VPhysicalVolume;
 class G4GlobalMagFieldMessenger;
 class G4Material;
-class nbDetectorMessenger;
+class RPS2023DetectorMessenger;
 
 /// Detector construction class to define materials and geometry.
 /// The detector consists of concentric spherical shells. One can have as many shell as we want.
 /// In this version, we simply make single shell with inner and outer radius
 /// 
 
-class nbDetectorConstruction : public G4VUserDetectorConstruction
+class RPS2023DetectorConstruction : public G4VUserDetectorConstruction
 {
     public:
 
       // construction definition
-      nbDetectorConstruction();
+      RPS2023DetectorConstruction();
       // destructor definition
-      virtual ~nbDetectorConstruction();
+      virtual ~RPS2023DetectorConstruction();
       
     public:
 
@@ -188,7 +188,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4int H2OContent = 0; // initialized with initial H2O content
 
       // create pointer to detector messenger
-      nbDetectorMessenger* fdetectorMessenger;
+      RPS2023DetectorMessenger* fdetectorMessenger;
       
       // function definitions for detector messenger
       void updateH2OContent(G4int);

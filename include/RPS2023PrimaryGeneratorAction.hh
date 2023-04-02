@@ -4,8 +4,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo...... 
 
-#ifndef nbPrimaryGeneratorAction_h
-#define nbPrimaryGeneratorAction_h 1
+#ifndef RPS2023PrimaryGeneratorAction_h
+#define RPS2023PrimaryGeneratorAction_h 1
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 
@@ -16,11 +16,11 @@ class G4Event;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
+class RPS2023PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
-    nbPrimaryGeneratorAction();    
-   ~nbPrimaryGeneratorAction();
+    RPS2023PrimaryGeneratorAction();    
+   ~RPS2023PrimaryGeneratorAction();
 
   public:
     virtual void GeneratePrimaries(G4Event*);

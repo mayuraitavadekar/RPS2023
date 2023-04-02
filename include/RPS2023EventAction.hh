@@ -6,12 +6,12 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbEventAction : public G4UserEventAction
+class RPS2023EventAction : public G4UserEventAction
 {
   public:
     // constructors and destructors
-    nbEventAction();
-   ~nbEventAction();
+    RPS2023EventAction();
+   ~RPS2023EventAction();
 
   public:
     

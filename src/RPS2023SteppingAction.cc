@@ -1,12 +1,12 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "nbSteppingAction.hh"
+#include "RPS2023SteppingAction.hh"
 
-#include "nbDetectorConstruction.hh"
-#include "nbRun.hh"
-#include "nbEventAction.hh"
-#include "nbHistoManager.hh"
+#include "RPS2023DetectorConstruction.hh"
+#include "RPS2023Run.hh"
+#include "RPS2023EventAction.hh"
+#include "RPS2023HistoManager.hh"
 
 #include "G4RunManager.hh"
 #include "G4SystemOfUnits.hh"
@@ -14,22 +14,22 @@
                            
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbSteppingAction::nbSteppingAction(nbDetectorConstruction* det, nbEventAction* event)
+RPS2023SteppingAction::RPS2023SteppingAction(RPS2023DetectorConstruction* det, RPS2023EventAction* event)
 : G4UserSteppingAction(), fDetector(det), fEventAction(event)
 {
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbSteppingAction::~nbSteppingAction()
+RPS2023SteppingAction::~RPS2023SteppingAction()
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
+void RPS2023SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
   // instance of G4Run
-  nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun()); 
+  RPS2023Run* run = static_cast<RPS2023Run*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun()); 
   
   // instance of analysisManager
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();

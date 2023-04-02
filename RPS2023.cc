@@ -6,13 +6,13 @@
 #include "G4SteppingVerbose.hh"
 #include "Randomize.hh"
 
-#include "nbDetectorConstruction.hh"
+#include "RPS2023DetectorConstruction.hh"
 
-#include "nbActionInitialization.hh"
+#include "RPS2023ActionInitialization.hh"
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
 
-#include "nbRadonPhysicsList.hh"
+#include "RPS2023RadonPhysicsList.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -42,17 +42,17 @@ int main(int argc,char** argv) {
   }  
 
   //set mandatory initialization classes
-  nbDetectorConstruction* det= new nbDetectorConstruction;
+  RPS2023DetectorConstruction* det= new RPS2023DetectorConstruction;
   runManager->SetUserInitialization(det);
   
   // physics list
-  nbRadonPhysicsList* phys = new nbRadonPhysicsList;
+  RPS2023RadonPhysicsList* phys = new RPS2023RadonPhysicsList;
   runManager->SetUserInitialization(phys);
 
  
  
   // include detector geometry
-  runManager->SetUserInitialization(new nbActionInitialization(det));
+  runManager->SetUserInitialization(new RPS2023ActionInitialization(det));
   
 
   //initialize G4 kernel

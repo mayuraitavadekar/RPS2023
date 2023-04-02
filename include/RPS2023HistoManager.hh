@@ -4,19 +4,19 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo...... 
 
-#ifndef nbHistoManager_h
-#define nbHistoManager_h 1
+#ifndef RPS2023HistoManager_h
+#define RPS2023HistoManager_h 1
 
 #include "globals.hh"
 #include "G4AnalysisManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbHistoManager
+class RPS2023HistoManager
 {
   public:
-   nbHistoManager();
-  ~nbHistoManager();
+   RPS2023HistoManager();
+  ~RPS2023HistoManager();
 
   public:
     void Book();

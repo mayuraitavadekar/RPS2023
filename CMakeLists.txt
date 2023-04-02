@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.8...3.18)
 if(${CMAKE_VERSION} VERSION_LESS 3.12)
   cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
-project(nb)
+project(RPS2023)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -36,15 +36,15 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(neutronBall  neutronBall.cc ${sources} ${headers})
-target_link_libraries(neutronBall ${Geant4_LIBRARIES})
+add_executable(RPS2023  RPS2023.cc ${sources} ${headers})
+target_link_libraries(RPS2023 ${Geant4_LIBRARIES})
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
 # build neutronBall. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(nb_SCRIPTS
+set(RPS2023_SCRIPTS
   vis.mac
   run.mac
   recoilEmanation.mac
@@ -60,7 +60,7 @@ set(nb_SCRIPTS
   plotCountInSurroundingGrainsByH2OMultiGrain.c
   )
 
-foreach(_script ${nb_SCRIPTS})
+foreach(_script ${RPS2023_SCRIPTS})
   configure_file(
     ${PROJECT_SOURCE_DIR}/${_script}
     ${PROJECT_BINARY_DIR}/${_script}
@@ -71,4 +71,4 @@ endforeach()
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS neutronBall DESTINATION bin)
+install(TARGETS RPS2023 DESTINATION bin)

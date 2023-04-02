@@ -85,14 +85,13 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
     grainSize(detCon.hh)        events(emanation.mac)    R(emanation.mac/surface radius) (max=19nm)
     100nm                       10k                      99nm        
     1um                         100k                     990nm      
-    10um                        1000K                    9.99 um
-    100um                       10000K                   99.90um
+    10um                        1000K                    9.99 um 
 
-
-    in future, we will update this grain sizes with actual grain sizes of stone mountain
-    which will most likely in range of 50um to some millimeters. But at that time we 
-    also need to shoot more radon particles probably more than 100k. We need to have 
-    rough estimation of radium concentration of soil. 
+[7] all source code files are renamed from prefix nb to RPS2023. 
+    this should be considered as final code for studying radon emanation. 
+    for single grain study comment code of surrounding grains in detConstruction.
+    for multi-grain study use code as it is.
+    
 
 
     

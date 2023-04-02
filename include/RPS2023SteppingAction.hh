@@ -7,27 +7,27 @@
 #include "G4UserSteppingAction.hh"
 #include "globals.hh"
 
-class nbDetectorConstruction;
-class nbEventAction;
+class RPS2023DetectorConstruction;
+class RPS2023EventAction;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbSteppingAction : public G4UserSteppingAction
+class RPS2023SteppingAction : public G4UserSteppingAction
 {
   public:
   
     // constructor & destructors
-    nbSteppingAction(nbDetectorConstruction*, nbEventAction*);
-   ~nbSteppingAction();
+    RPS2023SteppingAction(RPS2023DetectorConstruction*, RPS2023EventAction*);
+   ~RPS2023SteppingAction();
 
-    // inbuilt method in steppingAction class
+    // iRPS2023uilt method in steppingAction class
     virtual void UserSteppingAction(const G4Step*);
     
   private:
     
     // objects of detector construction & eventAction class
-    nbDetectorConstruction* fDetector;  
-    nbEventAction* fEventAction;    
+    RPS2023DetectorConstruction* fDetector;  
+    RPS2023EventAction* fEventAction;    
 
   public:
     G4int stepCounter = 0;

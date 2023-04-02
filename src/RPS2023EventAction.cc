@@ -1,7 +1,7 @@
-#include "nbEventAction.hh"
+#include "RPS2023EventAction.hh"
 
-#include "nbRun.hh"
-#include "nbHistoManager.hh"
+#include "RPS2023Run.hh"
+#include "RPS2023HistoManager.hh"
 
 #include "G4Event.hh"
 #include "G4RunManager.hh"
@@ -10,7 +10,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbEventAction::nbEventAction()
+RPS2023EventAction::RPS2023EventAction()
 :G4UserEventAction()
 { 
     
@@ -18,12 +18,12 @@ nbEventAction::nbEventAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbEventAction::~nbEventAction()
+RPS2023EventAction::~RPS2023EventAction()
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbEventAction::BeginOfEventAction(const G4Event*)
+void RPS2023EventAction::BeginOfEventAction(const G4Event*)
 {
     
 }
@@ -34,7 +34,7 @@ void nbEventAction::BeginOfEventAction(const G4Event*)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbEventAction::EndOfEventAction(const G4Event* event)
+void RPS2023EventAction::EndOfEventAction(const G4Event* event)
 {
     
 

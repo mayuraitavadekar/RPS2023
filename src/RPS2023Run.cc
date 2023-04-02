@@ -1,7 +1,7 @@
-#include "nbRun.hh"
-#include "nbDetectorConstruction.hh"
-#include "nbPrimaryGeneratorAction.hh"
-#include "nbHistoManager.hh"
+#include "RPS2023Run.hh"
+#include "RPS2023DetectorConstruction.hh"
+#include "RPS2023PrimaryGeneratorAction.hh"
+#include "RPS2023HistoManager.hh"
 
 #include "G4ProcessTable.hh"
 #include "G4Radioactivation.hh"
@@ -13,7 +13,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbRun::nbRun(nbDetectorConstruction* det)
+RPS2023Run::RPS2023Run(RPS2023DetectorConstruction* det)
 : G4Run(),
   fDetector(det), fParticle(0), fEkin(0.)
 {
@@ -22,12 +22,12 @@ nbRun::nbRun(nbDetectorConstruction* det)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbRun::~nbRun()
+RPS2023Run::~RPS2023Run()
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRun::SetPrimary(G4ParticleDefinition* particle, G4double energy)
+void RPS2023Run::SetPrimary(G4ParticleDefinition* particle, G4double energy)
 { 
   fParticle = particle; // set particle definition
   fEkin = energy; // set initial KE
@@ -38,7 +38,7 @@ void nbRun::SetPrimary(G4ParticleDefinition* particle, G4double energy)
                   
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRun::ParticleCount(G4String name, G4double Ekin, G4int iVol)
+void RPS2023Run::ParticleCount(G4String name, G4double Ekin, G4int iVol)
 {
 
   // layer 1
@@ -68,9 +68,9 @@ void nbRun::ParticleCount(G4String name, G4double Ekin, G4int iVol)
                  
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRun::Merge(const G4Run* run)
+void RPS2023Run::Merge(const G4Run* run)
 {
-  const nbRun* localRun = static_cast<const nbRun*>(run);
+  const RPS2023Run* localRun = static_cast<const RPS2023Run*>(run);
   
   //primary particle info
   //
@@ -109,7 +109,7 @@ void nbRun::Merge(const G4Run* run)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRun::EndOfRun() 
+void RPS2023Run::EndOfRun() 
 {
   // some variables for structured prints on terminal
   G4int prec = 5, wid = prec + 2;  

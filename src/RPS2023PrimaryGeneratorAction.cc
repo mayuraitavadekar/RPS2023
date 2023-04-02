@@ -2,7 +2,7 @@
 // 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-#include "nbPrimaryGeneratorAction.hh"
+#include "RPS2023PrimaryGeneratorAction.hh"
 
 #include "G4Event.hh"
 #include "G4ParticleTable.hh"
@@ -21,7 +21,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
+RPS2023PrimaryGeneratorAction::RPS2023PrimaryGeneratorAction()
  : G4VUserPrimaryGeneratorAction(),
    GPS(0)
 {
@@ -30,14 +30,14 @@ nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbPrimaryGeneratorAction::~nbPrimaryGeneratorAction()
+RPS2023PrimaryGeneratorAction::~RPS2023PrimaryGeneratorAction()
 {
   delete GPS;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
+void RPS2023PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   GPS->GeneratePrimaryVertex(anEvent);
 }

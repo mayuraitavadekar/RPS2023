@@ -1,10 +1,10 @@
-#ifndef nbDetectorMessenger_h
-#define nbDetectorMessenger_h 1
+#ifndef RPS2023DetectorMessenger_h
+#define RPS2023DetectorMessenger_h 1
 
 #include "globals.hh"
 #include "G4UImessenger.hh"
 
-class nbDetectorConstruction;
+class RPS2023DetectorConstruction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithAnInteger;
@@ -14,24 +14,24 @@ class G4UIcmdWithoutParameter;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbDetectorMessenger: public G4UImessenger
+class RPS2023DetectorMessenger: public G4UImessenger
 {
 public:
   
   // general construction and destruction function
-  nbDetectorMessenger(nbDetectorConstruction*);
-  ~nbDetectorMessenger();
+  RPS2023DetectorMessenger(RPS2023DetectorConstruction*);
+  ~RPS2023DetectorMessenger();
   
-  // inbuilt function to override
+  // iRPS2023uilt function to override
   void SetNewValue(G4UIcommand*, G4String);
   
   
 private:
   
   // object det construction class
-  nbDetectorConstruction*       fDetector = nullptr ;
+  RPS2023DetectorConstruction*       fDetector = nullptr ;
   
-  G4UIdirectory*                nbDir;
+  G4UIdirectory*                RPS2023Dir;
   G4UIdirectory*                detDir;
   G4UIdirectory*                pHDir;
   G4UIdirectory*                H2ODir;

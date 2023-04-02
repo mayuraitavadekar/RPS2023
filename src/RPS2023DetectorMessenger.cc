@@ -1,5 +1,5 @@
-#include "nbDetectorMessenger.hh"
-#include "nbDetectorConstruction.hh"
+#include "RPS2023DetectorMessenger.hh"
+#include "RPS2023DetectorConstruction.hh"
 
 #include "G4UIdirectory.hh"
 
@@ -14,20 +14,20 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbDetectorMessenger::nbDetectorMessenger(nbDetectorConstruction* det)
+RPS2023DetectorMessenger::RPS2023DetectorMessenger(RPS2023DetectorConstruction* det)
 :fDetector(det)
 { 
   // create ui directory
-  nbDir = new G4UIdirectory("/nb/");
-  nbDir->SetGuidance("UI commands for this detector");
+  RPS2023Dir = new G4UIdirectory("/RPS2023/");
+  RPS2023Dir->SetGuidance("UI commands for this detector");
   
-  detDir = new G4UIdirectory("/nb/det/");
+  detDir = new G4UIdirectory("/RPS2023/det/");
   detDir->SetGuidance("detector control");
 
-  detDir = new G4UIdirectory("/nb/det/H2O/");
+  detDir = new G4UIdirectory("/RPS2023/det/H2O/");
   detDir->SetGuidance("detector control");
 
-  H2OCmd = new G4UIcmdWithAnInteger("/nb/det/H2O/setH2O",this);  
+  H2OCmd = new G4UIcmdWithAnInteger("/RPS2023/det/H2O/setH2O",this);  
   H2OCmd->SetGuidance("choose amount of H2O in grain");
   H2OCmd->SetParameterName("H2O",false);    
   H2OCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
@@ -35,16 +35,16 @@ nbDetectorMessenger::nbDetectorMessenger(nbDetectorConstruction* det)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbDetectorMessenger::~nbDetectorMessenger()
+RPS2023DetectorMessenger::~RPS2023DetectorMessenger()
 {
   delete H2OCmd;
   delete detDir;
-  delete nbDir;  
+  delete RPS2023Dir;  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
+void RPS2023DetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
 { 
   if(command == H2OCmd)
   { 

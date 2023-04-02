@@ -1,12 +1,12 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "nbTrackingAction.hh"
-#include "nbEventAction.hh"
+#include "RPS2023TrackingAction.hh"
+#include "RPS2023EventAction.hh"
 
-#include "nbDetectorConstruction.hh"
-#include "nbRun.hh"
-#include "nbHistoManager.hh"
+#include "RPS2023DetectorConstruction.hh"
+#include "RPS2023Run.hh"
+#include "RPS2023HistoManager.hh"
 
 #include "G4RunManager.hh"
 #include "G4Track.hh"
@@ -17,7 +17,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbTrackingAction::nbTrackingAction(nbDetectorConstruction* det, nbEventAction* EA)
+RPS2023TrackingAction::RPS2023TrackingAction(RPS2023DetectorConstruction* det, RPS2023EventAction* EA)
 :G4UserTrackingAction(), fDetector(det), fEvent(EA)
 {
     
@@ -25,10 +25,10 @@ nbTrackingAction::nbTrackingAction(nbDetectorConstruction* det, nbEventAction* E
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
+void RPS2023TrackingAction::PreUserTrackingAction(const G4Track* track)
 {  
   // instance of G4Run
-  nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());    
+  RPS2023Run* run = static_cast<RPS2023Run*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());    
   
   // instance of analysisManager
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -98,7 +98,7 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbTrackingAction::PostUserTrackingAction(const G4Track* )
+void RPS2023TrackingAction::PostUserTrackingAction(const G4Track* )
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

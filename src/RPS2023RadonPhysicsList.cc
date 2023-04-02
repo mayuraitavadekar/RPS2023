@@ -1,4 +1,4 @@
-#include "nbRadonPhysicsList.hh"
+#include "RPS2023RadonPhysicsList.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4UnitsTable.hh"
@@ -8,7 +8,7 @@
 #include "G4EmParameters.hh"
 #include "G4DecayPhysics.hh"
 #include "G4NuclideTable.hh"
-#include "nbBiasedRDPhysics.hh"
+#include "RPS2023BiasedRDPhysics.hh"
 #include "G4HadronElasticPhysics.hh"
 #include "G4HadronPhysicsFTFP_BERT.hh"
 #include "G4HadronInelasticQBBC.hh"
@@ -28,7 +28,7 @@
 #include "G4ShortLivedConstructor.hh"
 
 
-nbRadonPhysicsList::nbRadonPhysicsList()
+RPS2023RadonPhysicsList::RPS2023RadonPhysicsList()
 :G4VModularPhysicsList()
 {
   G4int verb = 0;
@@ -51,7 +51,7 @@ nbRadonPhysicsList::nbRadonPhysicsList()
   RegisterPhysics(new G4DecayPhysics());
 
   // Radioactive decay
-  RegisterPhysics(new nbBiasedRDPhysics());
+  RegisterPhysics(new RPS2023BiasedRDPhysics());
             
   // Hadron Elastic scattering
   RegisterPhysics( new G4HadronElasticPhysics(verb) );
@@ -77,12 +77,12 @@ nbRadonPhysicsList::nbRadonPhysicsList()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbRadonPhysicsList::~nbRadonPhysicsList()
+RPS2023RadonPhysicsList::~RPS2023RadonPhysicsList()
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRadonPhysicsList::ConstructParticle()
+void RPS2023RadonPhysicsList::ConstructParticle()
 {
   G4BosonConstructor  pBosonConstructor;
   pBosonConstructor.ConstructParticle();
@@ -105,7 +105,7 @@ void nbRadonPhysicsList::ConstructParticle()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRadonPhysicsList::SetCuts()
+void RPS2023RadonPhysicsList::SetCuts()
 {
   // SetCutValue(0*mm, "proton");
   // SetCutValue(10*km, "e-");

@@ -1,4 +1,4 @@
-#include "nbBiasedRDPhysics.hh"
+#include "RPS2023BiasedRDPhysics.hh"
 
 #include "G4Radioactivation.hh"
 #include "G4GenericIon.hh"
@@ -15,10 +15,10 @@
 // factory
 #include "G4PhysicsConstructorFactory.hh"
 
-G4_DECLARE_PHYSCONSTR_FACTORY(nbBiasedRDPhysics);
+G4_DECLARE_PHYSCONSTR_FACTORY(RPS2023BiasedRDPhysics);
 
 
-nbBiasedRDPhysics::nbBiasedRDPhysics(G4int)
+RPS2023BiasedRDPhysics::RPS2023BiasedRDPhysics(G4int)
  : G4VPhysicsConstructor("G4Radioactivation")
 {
   G4EmParameters::Instance()->AddPhysics("World","G4Radioactivation");
@@ -28,23 +28,23 @@ nbBiasedRDPhysics::nbBiasedRDPhysics(G4int)
                        /std::log(2.));
 }
 
-nbBiasedRDPhysics::nbBiasedRDPhysics(const G4String&)
- : nbBiasedRDPhysics(0)
+RPS2023BiasedRDPhysics::RPS2023BiasedRDPhysics(const G4String&)
+ : RPS2023BiasedRDPhysics(0)
 {}
 
 
-nbBiasedRDPhysics::~nbBiasedRDPhysics()
+RPS2023BiasedRDPhysics::~RPS2023BiasedRDPhysics()
 {}
 
 
-void nbBiasedRDPhysics::ConstructParticle()
+void RPS2023BiasedRDPhysics::ConstructParticle()
 {
   // apply this process for generic ions only
   G4GenericIon::GenericIon();
 }
 
 
-void nbBiasedRDPhysics::ConstructProcess()
+void RPS2023BiasedRDPhysics::ConstructProcess()
 {
   G4LossTableManager* man = G4LossTableManager::Instance();
   G4VAtomDeexcitation* ad = man->AtomDeexcitation();

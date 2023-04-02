@@ -1,12 +1,12 @@
  //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "nbHistoManager.hh"
+#include "RPS2023HistoManager.hh"
 #include "G4UnitsTable.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbHistoManager::nbHistoManager()
+RPS2023HistoManager::RPS2023HistoManager()
   : fFileName("rdecay02")
 {
   Book();
@@ -14,13 +14,13 @@ nbHistoManager::nbHistoManager()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbHistoManager::~nbHistoManager()
+RPS2023HistoManager::~RPS2023HistoManager()
 {
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbHistoManager::Book()
+void RPS2023HistoManager::Book()
 {
   // Create or get analysis manager
   // G4AnalysisManager* analysis = G4AnalysisManager::Instance();

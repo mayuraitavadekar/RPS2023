@@ -7,28 +7,28 @@
 #include "G4UserTrackingAction.hh"
 #include "globals.hh"
 
-class nbDetectorConstruction;
-class nbEventAction;
+class RPS2023DetectorConstruction;
+class RPS2023EventAction;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbTrackingAction : public G4UserTrackingAction {
+class RPS2023TrackingAction : public G4UserTrackingAction {
 
   public:  
   
     // constructor & desstructor
-    nbTrackingAction(nbDetectorConstruction*, nbEventAction*);
-   ~nbTrackingAction() {};
+    RPS2023TrackingAction(RPS2023DetectorConstruction*, RPS2023EventAction*);
+   ~RPS2023TrackingAction() {};
    
-    // inbuilt methods for trackingAction class
+    // iRPS2023uilt methods for trackingAction class
     virtual void PreUserTrackingAction(const G4Track*);   
     virtual void PostUserTrackingAction(const G4Track*);
     
   private:
   
     // object of detector construction class
-    nbDetectorConstruction* fDetector;
-    nbEventAction* fEvent;
+    RPS2023DetectorConstruction* fDetector;
+    RPS2023EventAction* fEvent;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

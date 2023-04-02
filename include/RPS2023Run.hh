@@ -8,17 +8,17 @@
 #include "globals.hh"
 #include <map>
 
-class nbDetectorConstruction;
+class RPS2023DetectorConstruction;
 class G4ParticleDefinition;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbRun : public G4Run
+class RPS2023Run : public G4Run
 {
   public:
     
-    nbRun(nbDetectorConstruction*);
-   ~nbRun();
+    RPS2023Run(RPS2023DetectorConstruction*);
+   ~RPS2023Run();
 
   public:
     void SetPrimary(G4ParticleDefinition* particle, G4double energy);         
@@ -43,8 +43,8 @@ class nbRun : public G4Run
     };
      
   private:
-    // object of class nbDetectorConstruction class
-    nbDetectorConstruction* fDetector;
+    // object of class RPS2023DetectorConstruction class
+    RPS2023DetectorConstruction* fDetector;
     // instance of particleDefinition class
     G4ParticleDefinition* fParticle;
     // KE or E of particle is measure in eV

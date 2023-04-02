@@ -1,6 +1,6 @@
-#include "nbDetectorConstruction.hh"
+#include "RPS2023DetectorConstruction.hh"
 
-#include "nbDetectorMessenger.hh"
+#include "RPS2023DetectorMessenger.hh"
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
@@ -34,7 +34,7 @@ using namespace std;
 
 // constructor to initialization values of shellPV, overlap checks 
 // set data member values from config.txt file
-nbDetectorConstruction::nbDetectorConstruction()
+RPS2023DetectorConstruction::RPS2023DetectorConstruction()
  : G4VUserDetectorConstruction(),
    shellPV_1(nullptr),
    fCheckOverlaps(true),
@@ -49,14 +49,14 @@ nbDetectorConstruction::nbDetectorConstruction()
   fractionMassForOH = 100.00-fractionMassForH;
   
   // call detector messenger
-  fdetectorMessenger = new nbDetectorMessenger(this);
+  fdetectorMessenger = new RPS2023DetectorMessenger(this);
   
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 // destructor
-nbDetectorConstruction::~nbDetectorConstruction()
+RPS2023DetectorConstruction::~RPS2023DetectorConstruction()
 { 
     delete fdetectorMessenger;
 }
@@ -64,7 +64,7 @@ nbDetectorConstruction::~nbDetectorConstruction()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 // member function of header file
-G4VPhysicalVolume* nbDetectorConstruction::Construct()
+G4VPhysicalVolume* RPS2023DetectorConstruction::Construct()
 {
   // Define materials 
   DefineMaterials();
@@ -88,7 +88,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::DefineMaterials()
+void RPS2023DetectorConstruction::DefineMaterials()
 {   
   // Lead material defined using NIST Manager
   nistManager = G4NistManager::Instance();
@@ -191,7 +191,7 @@ void nbDetectorConstruction::DefineMaterials()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
+G4VPhysicalVolume* RPS2023DetectorConstruction::DefineVolumes()
 {  
     // Cleanup old geometry
     G4GeometryManager::GetInstance()->OpenGeometry();
@@ -589,7 +589,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
-void nbDetectorConstruction::PrintLayersMaterials()
+void RPS2023DetectorConstruction::PrintLayersMaterials()
 {
   G4cout << "\t******* MATERIALS OF EACH LAYER *******" << G4endl;
   G4cout << " grain material : " << grainLV->GetMaterial()->GetName() << G4endl;
@@ -600,7 +600,7 @@ void nbDetectorConstruction::PrintLayersMaterials()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::updateH2OContent(G4int value)
+void RPS2023DetectorConstruction::updateH2OContent(G4int value)
 {
     // update value of variable H2O content
     H2OContent = value;
@@ -609,7 +609,7 @@ void nbDetectorConstruction::updateH2OContent(G4int value)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 content
+void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 content
 {
     if(value == 5)
     {
@@ -840,29 +840,29 @@ void nbDetectorConstruction::setGrainMaterial(G4int value) // value = h20 conten
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4String nbDetectorConstruction::getNameOfLayer1()
+G4String RPS2023DetectorConstruction::getNameOfLayer1()
 {
     return "grainPV"; 
 }
 
-G4String nbDetectorConstruction::getNameOfLayer2()
+G4String RPS2023DetectorConstruction::getNameOfLayer2()
 {
     return "boxPV"; 
 }
 
-G4String nbDetectorConstruction::getNameOfLayer3()
+G4String RPS2023DetectorConstruction::getNameOfLayer3()
 {
     return "surroundingGrainPV";
 }
 
-G4String nbDetectorConstruction::getNameOfLayer4()
+G4String RPS2023DetectorConstruction::getNameOfLayer4()
 {
     return "poreGrainPV";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::DefineChemicalComps()
+void RPS2023DetectorConstruction::DefineChemicalComps()
 {
     // define chemical composition maps
     // use these maps in soil layers
@@ -1242,7 +1242,7 @@ void nbDetectorConstruction::DefineChemicalComps()
     };
 }
 
-void nbDetectorConstruction::fillGrainWithChemComps()
+void RPS2023DetectorConstruction::fillGrainWithChemComps()
 {   
     // grain comp1 has particle density = 2.66
     // ref: http://passel-test.unl.edu/beta/pages/informationmodule.php?idinformationmodule=1130447039&topicorder=5&maxto=10&minto=1
@@ -1356,7 +1356,7 @@ void nbDetectorConstruction::fillGrainWithChemComps()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::DefinePoreChemicalComps()
+void RPS2023DetectorConstruction::DefinePoreChemicalComps()
 {   
     // pore_chem_composition_0 = {
     //     {H2O, 1*perCent}, // mass fractions cannot be 0
@@ -1467,7 +1467,7 @@ void nbDetectorConstruction::DefinePoreChemicalComps()
     };
 }
 
-void nbDetectorConstruction::fillPoresWithChemComps()
+void RPS2023DetectorConstruction::fillPoresWithChemComps()
 {
     poreComp0 = new G4Material("P0W", density = 0.00120479*g/cm3, ncomponents=pore_chem_composition_0.size());
     for (it = pore_chem_composition_0.begin(); it != pore_chem_composition_0.end(); it++) {

@@ -7,11 +7,11 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbRadonPhysicsList: public G4VModularPhysicsList
+class RPS2023RadonPhysicsList: public G4VModularPhysicsList
 {
 public:
-  nbRadonPhysicsList();
- ~nbRadonPhysicsList();
+  RPS2023RadonPhysicsList();
+ ~RPS2023RadonPhysicsList();
 
 public:
   virtual void ConstructParticle();

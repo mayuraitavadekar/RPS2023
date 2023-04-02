@@ -1,12 +1,12 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "nbRunAction.hh"
-#include "nbRun.hh"
-#include "nbDetectorConstruction.hh"
-#include "nbPrimaryGeneratorAction.hh"
+#include "RPS2023RunAction.hh"
+#include "RPS2023Run.hh"
+#include "RPS2023DetectorConstruction.hh"
+#include "RPS2023PrimaryGeneratorAction.hh"
 #include "G4GeneralParticleSource.hh"
-#include "nbHistoManager.hh"
+#include "RPS2023HistoManager.hh"
 
 #include "G4Run.hh"
 #include "G4RunManager.hh"
@@ -25,7 +25,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* prim)
+RPS2023RunAction::RPS2023RunAction(RPS2023DetectorConstruction* det, RPS2023PrimaryGeneratorAction* prim)
   : G4UserRunAction(),
     fDetector(det), fPrimary(prim), fRun(0), fHistoManager(0)
 {
@@ -111,23 +111,23 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbRunAction::~nbRunAction()
+RPS2023RunAction::~RPS2023RunAction()
 {
  delete fHistoManager;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4Run* nbRunAction::GenerateRun()
+G4Run* RPS2023RunAction::GenerateRun()
 { 
   // geant4 convention: instantiate G4Run object here
-  fRun = new nbRun(fDetector); 
+  fRun = new RPS2023Run(fDetector); 
   return fRun;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRunAction::BeginOfRunAction(const G4Run* aRun)
+void RPS2023RunAction::BeginOfRunAction(const G4Run* aRun)
 {    
   // inform the runManager to save random number seed
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
@@ -162,7 +162,7 @@ void nbRunAction::BeginOfRunAction(const G4Run* aRun)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRunAction::EndOfRunAction(const G4Run*)
+void RPS2023RunAction::EndOfRunAction(const G4Run*)
 {
   if (isMaster) fRun->EndOfRun();    
   
