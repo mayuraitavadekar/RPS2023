@@ -28,4 +28,4 @@
 /gps/ang/maxphi 360
 /gps/pos/centre 0 0 0 mm
 /gps/pos/radius 90 nm
-/run/beamOn 15000
+/run/beamOn 10000

@@ -32,7 +32,7 @@ void plotEmanationLocationInMultiGrainSetup()
 
     const char *locations[3] = {"Central grain","Sorrounding grain","Pore space"};
 
-    TFile* file = new TFile("emanation-study-10um-1000KEvts-multigrain-recoil-emanation.root", "read");
+    TFile* file = new TFile("0pct.root", "read");
     
     TTree* tree = (TTree*) file->Get("particleData");
     
@@ -46,8 +46,8 @@ void plotEmanationLocationInMultiGrainSetup()
 
     gPad->SetLogy();
 
-    h->GetYaxis()->SetTitle("count of radon");
-	h->GetXaxis()->SetTitle("locations of radon after recoil");
+    h->GetYaxis()->SetTitle("Count of radon");
+	h->GetXaxis()->SetTitle("Location of radon after recoil");
     h->GetXaxis()->SetTitleOffset(1.5);
     h->GetYaxis()->SetTitleColor(kBlack);
     h->GetYaxis()->SetTitleSize(0.03);
@@ -78,10 +78,10 @@ void plotEmanationLocationInMultiGrainSetup()
     TPaveText *pt = new TPaveText(0.7,0.85,0.98,0.98,"brNDC");
     pt->SetFillColor(18);
     pt->SetTextAlign(12);
-    pt->AddText("Precise counts in each location");
-    pt->AddText("14315 in central grain");
-    pt->AddText("592 in surrounding grain");
-    pt->AddText("93 in pore space");
+    pt->AddText("Radon count in each location");
+    pt->AddText("9513 in central grain");
+    pt->AddText("429 in surrounding grain");
+    pt->AddText("58 in pore space");
     pt->Draw();
     return c1;
 }

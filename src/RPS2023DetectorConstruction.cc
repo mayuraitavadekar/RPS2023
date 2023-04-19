@@ -622,7 +622,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 10)
+    else if(value == 10)
     {
         grainMaterial = grainComp2;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -633,7 +633,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 15)
+    else if(value == 15)
     {
         grainMaterial = grainComp3;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -644,7 +644,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 20)
+    else if(value == 20)
     {
         grainMaterial = grainComp4;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -655,7 +655,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 25)
+    else if(value == 25)
     {
         grainMaterial = grainComp5;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -666,7 +666,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 30)
+    else if(value == 30)
     {
         grainMaterial = grainComp6;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -677,7 +677,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 35)
+    else if(value == 35)
     {
         grainMaterial = grainComp7;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -688,7 +688,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 40)
+    else if(value == 40)
     {
         grainMaterial = grainComp8;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -699,7 +699,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 45)
+    else if(value == 45)
     {
         grainMaterial = grainComp9;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -710,7 +710,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 50)
+    else if(value == 50)
     {
         grainMaterial = grainComp10;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -721,7 +721,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 55)
+    else if(value == 55)
     {
         grainMaterial = grainComp11;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -732,7 +732,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 60)
+    else if(value == 60)
     {
         grainMaterial = grainComp12;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -743,7 +743,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 65)
+    else if(value == 65)
     {
         grainMaterial = grainComp13;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -754,7 +754,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 70)
+    else if(value == 70)
     {
         grainMaterial = grainComp14;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -765,7 +765,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 75)
+    else if(value == 75)
     {
         grainMaterial = grainComp15;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -776,7 +776,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 80)
+    else if(value == 80)
     {
         grainMaterial = grainComp16;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -787,7 +787,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 85)
+    else if(value == 85)
     {
         grainMaterial = grainComp17;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -798,7 +798,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 90)
+    else if(value == 90)
     {
         grainMaterial = grainComp18;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -809,7 +809,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 95)
+    else if(value == 95)
     {
         grainMaterial = grainComp19;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -820,7 +820,7 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
         if(boxLV) { boxLV->SetMaterial(poreMaterial); }
     }
 
-    if(value == 100)
+    else if(value == 100)
     {
         grainMaterial = grainComp20;
         if(grainLV) { grainLV->SetMaterial(grainMaterial); }
@@ -835,8 +835,6 @@ void RPS2023DetectorConstruction::setGrainMaterial(G4int value) // value = h20 c
     G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

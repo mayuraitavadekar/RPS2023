@@ -2,7 +2,7 @@ void plotEmanationByH2OMultiGraph()
 {
 
     // 100 nm
-    TFile* input = new TFile("emanation-study-100nm-10Kevts-multigrain-recoil-emanation.root", "read");
+    TFile* input = new TFile("100nm.root", "read");
     TTree* tree = (TTree*) input->Get("particleData");
     int entries = tree->GetEntries();
 
@@ -50,8 +50,8 @@ void plotEmanationByH2OMultiGraph()
         eCounts[i] = (eCounts[i]/10000)*100;
     }
 
-    // 1 um
-    input = new TFile("emanation-study-1um-100KEvts-multigrain-recoil-emanation.root", "read");
+    // 200 nm
+    input = new TFile("200nm.root", "read");
     tree = (TTree*) input->Get("particleData");
     entries = tree->GetEntries();
 
@@ -90,11 +90,11 @@ void plotEmanationByH2OMultiGraph()
 
     for(int i=0;i<=21;i++)
     {
-        eCounts2[i] = (eCounts2[i]/100000)*100;
+        eCounts2[i] = (eCounts2[i]/20000)*100;
     }
 
-    // 10 um
-    input = new TFile("emanation-study-10um-1000KEvts-multigrain-recoil-emanation.root", "read");
+    // 300 nm
+    input = new TFile("300nm.root", "read");
     tree = (TTree*) input->Get("particleData");
     entries = tree->GetEntries();
 
@@ -133,7 +133,7 @@ void plotEmanationByH2OMultiGraph()
 
     for(int i=0;i<=21;i++)
     {
-        eCounts3[i] = (eCounts3[i]/1000000)*100;
+        eCounts3[i] = (eCounts3[i]/30000)*100;
     }
 
     gROOT->Reset();
@@ -199,8 +199,8 @@ void plotEmanationByH2OMultiGraph()
 
     mg->Draw("ACP");
 
-    mg->GetYaxis()->SetTitle("radon emanation coefficient");
-    mg->GetXaxis()->SetTitle("moisture content (%)");
+    mg->GetYaxis()->SetTitle("Radon emanation coefficient (%)");
+    mg->GetXaxis()->SetTitle("Moisture content (%)");
     mg->GetXaxis()->SetTitleOffset(1.5);
     mg->GetYaxis()->SetTitleColor(kBlack);
     mg->GetYaxis()->SetTitleSize(0.03);
@@ -209,9 +209,9 @@ void plotEmanationByH2OMultiGraph()
     mg->GetYaxis()->CenterTitle(true);
 
     auto legend = new TLegend(0.2, 0.2, .5, .5);
-    legend->AddEntry(graph,"100 nm (10K Events)","l");
-    legend->AddEntry(graph2,"1 um (100K Events)","l");
-    legend->AddEntry(graph3,"10 um (1000K Events)","l");
+    legend->AddEntry(graph,"100 nm (10K Events)","fpl");
+    legend->AddEntry(graph2,"200 nm (20K Events)","fpl");
+    legend->AddEntry(graph3,"300 nm (30K Events)","fpl");
     legend->Draw();
 
     return c1;

@@ -82,10 +82,10 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
     Use following settings to obtain graphs:
 
-    grainSize(detCon.hh)        events(emanation.mac)    R(emanation.mac/surface radius) (max=19nm)
-    100nm                       10k                      99nm        
-    1um                         100k                     990nm      
-    10um                        1000K                    9.99 um 
+    grainSize(detCon.hh)        events(emanation.mac)       R(emanation.mac/surface radius) (max=19nm)
+    100 nm                      10k                         90 nm   
+    200 nm                      20K                         190 nm
+    300 nm                      30K                         290 nm
 
 [7] all source code files are renamed from prefix nb to RPS2023. 
     this should be considered as final code for studying radon emanation. 

@@ -1,6 +1,6 @@
 void plotCountInSurroundingGrainsByH2O()
 {
-    TFile* input = new TFile("emanation-study-100nm-10Kevts-multigrain-recoil-emanation.root", "read");
+    TFile* input = new TFile("100nm-multigrain.root", "read");
     TTree* tree = (TTree*) input->Get("particleData");
     int entries = tree->GetEntries();
 
@@ -78,8 +78,8 @@ void plotCountInSurroundingGrainsByH2O()
     // now draw graph
     TGraph* graph =  new TGraph(21, moistureLevels, eCounts);
     
-    graph->GetYaxis()->SetTitle("radon embedded in surrounding grains (%)");
-    graph->GetXaxis()->SetTitle("moisture content (%)");
+    graph->GetYaxis()->SetTitle("Radon embedded in surrounding grains (%)");
+    graph->GetXaxis()->SetTitle("Moisture content (%)");
     graph->SetMarkerStyle(20);
     graph->SetMarkerSize(1.);
     graph->SetMarkerColor(6); // 4 blue 2 red

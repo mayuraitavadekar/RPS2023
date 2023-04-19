@@ -1,6 +1,6 @@
 void plotEmanationByH2O()
 {
-    TFile* input = new TFile("emanation-study-1um-100KEvts-multigrain-recoil-emanation.root", "read");
+    TFile* input = new TFile("mainfile.root", "read");
     TTree* tree = (TTree*) input->Get("particleData");
     int entries = tree->GetEntries();
 
@@ -47,7 +47,7 @@ void plotEmanationByH2O()
     for(int i=0;i<22;i++)
     {
         printf("ecount[%d] = %f \n", i, eCounts[i]);
-        eCounts[i] = (eCounts[i]/1000000)*100;
+        eCounts[i] = (eCounts[i]/10000)*100;
     }
 
     gROOT->Reset();
@@ -94,6 +94,6 @@ void plotEmanationByH2O()
     graph->GetYaxis()->CenterTitle(true);
     gStyle->SetTitleFontSize(0.04);
 
-    graph->Draw("ALP");
+    graph->Draw("ACP");
 
 }
