@@ -34,7 +34,7 @@ void plotPNames()
     c1->SetBottomMargin(0.3);
 	c1->SetTopMargin(0.15);
     c1->SetRightMargin(0.15);
-    c1->SetGridy(0);
+    c1->SetGridy(1);
     c1->SetGridx(1);
 	c1->cd();
  
@@ -42,7 +42,7 @@ void plotPNames()
     // c1->SetGridY();
 
     
-    TFile* file = new TFile("2023-03-10-13-13-05-u238-100evts.root", "read");
+    TFile* file = new TFile("gamma-distance-distribution.root", "read");
     
     TTree* tree = (TTree*) file->Get("RDecayProducts");
     
@@ -51,7 +51,7 @@ void plotPNames()
     
     tree->SetBranchAddress("pName", &pName);
 
-    TH1F *hist = new TH1F("myhist", "Decay Products in Uranium-238 Series", 66, 1, 66);
+    TH1F *hist = new TH1F("myhist", "", 66, 1, 66);
 
     for (int i = 0; i < tree->GetEntries(); i++) {
         tree->GetEntry(i);
@@ -71,7 +71,7 @@ void plotPNames()
 
     gPad->SetLogy();
 
-    hist->GetYaxis()->SetTitle("count");
+    hist->GetYaxis()->SetTitle("Count");
 	// hist->GetXaxis()->SetTitle("Decay Products of Uranium 238");
     hist->GetYaxis()->SetTitleColor(kBlack);
     hist->GetYaxis()->SetTitleSize(0.03);

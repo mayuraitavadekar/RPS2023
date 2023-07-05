@@ -104,6 +104,7 @@ void RPS2023SteppingAction::UserSteppingAction(const G4Step* aStep)
   analysisManager->FillNtupleDColumn(id,8, time);
   analysisManager->FillNtupleIColumn(id,9, emanated);               // set emanation flag value for radon 0/1
   analysisManager->FillNtupleIColumn(id,10, fDetector->H2OContent); // set H2O content in chemical comps
+  analysisManager->FillNtupleIColumn(id,11, stepCounter++); // set H2O content in chemical comps
   // add row
   analysisManager->AddNtupleRow(id);
 

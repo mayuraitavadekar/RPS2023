@@ -8,90 +8,80 @@
                                     Authors: Mayur Aitavadekar, Dr. Xiaochun He
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+---
 
------------
 # commands:
------------
+
+---
 
 after running code in interactive mode, you can optionally use following
 commands for better visibility and understanding of detector geometry.
 
-* /vis/viewer/set/style surface OR wireframe
-* /vis/viewer/addCutawayPlane 0 1 0 
-* /vis/viewer/set/background white
-
+- /vis/viewer/set/style surface OR wireframe
+- /vis/viewer/addCutawayPlane 0 1 0
+- /vis/viewer/set/background white
 
 More commands to use in macros and interactive console can be found here:
 https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
---------------------------------
+---
+
 # Instructions to run simulation
---------------------------------
 
-* build code using cmake and make
+---
 
-    > mkdir build_sim
-    > cd build_sim
-    > cmake ../RPS2023
-    > make
-    
-1) run code interative mode:
+- build code using cmake and make
 
-    > ./neutronBall
-    > /control/execute file_name.mac
+  > mkdir build_sim
+  > cd build_sim
+  > cmake ../RPS2023
+  > make
 
-2) run code in batch mode
+1. run code interative mode:
 
-    > ./neutronBall file_name.mac
+   > ./neutronBall
+   > /control/execute file_name.mac
 
------------------------------------
+2. run code in batch mode
+
+   > ./neutronBall file_name.mac
+
+---
+
 # commit notes (latest from bottom)
------------------------------------
+
+---
 
 [1] upto this commit initial data analysis is performed on overall spherical
-    soil horizon geometry to understand distributions of distance traveled by
-    radon and other particles in various mediums.
+soil horizon geometry to understand distributions of distance traveled by
+radon and other particles in various mediums.
 
-[2] radon emanation study code is added with one soil grain with size 50um. 
-    updated chemical composition for single soil grain from various sources 
-    on web. primary partcle is radon with energy of 86 keV. simulation records 
-    data of radon emanation and data analysis is performed to understand dependance 
-    of radon emanation on moisture. emanation.mac file is used to run this commit code
-    which assumes that radon atoms are uniformaly distributed in soil grain. 
-    plotEmanationByH2O file should be used for getting plot. Before running this
-    file you should combine all the data files using hadd mainfile.root file1 file2 ..
+[2] radon emanation study code is added with one soil grain with size 50um.
+updated chemical composition for single soil grain from various sources
+on web. primary partcle is radon with energy of 86 keV. simulation records
+data of radon emanation and data analysis is performed to understand dependance
+of radon emanation on moisture. emanation.mac file is used to run this commit code
+which assumes that radon atoms are uniformaly distributed in soil grain.
+plotEmanationByH2O file should be used for getting plot. Before running this
+file you should combine all the data files using hadd mainfile.root file1 file2 ..
 
-[3] this should be considered latest commit for radon emanation study. 
-    plotEmanationByH2O.c macro is updated.
+[3] this should be considered latest commit for radon emanation study.
+plotEmanationByH2O.c macro is updated.
 
-[4] steppingAction is updated with conditions of fStopAndKill track status conditions 
-    to get count of particles which comes to rest after escaping soil grain.
+[4] steppingAction is updated with conditions of fStopAndKill track status conditions
+to get count of particles which comes to rest after escaping soil grain.
 
 [5] more percentage options are added from 0%, 75% with 5% increase.
 
-[6] in case of uniform primary events with uniformEmanation.mac file, be careful because
-    it can produce wierd plot of moisture level vs radon emanation. You have to shoot
-    good amount of particles as comapared to particle size. For example, 100nm size and
-    10K primary events will show nice linear correlation.
+[6] all source code files are renamed from prefix nb to RPS2023.
+this should be considered as final code for studying radon emanation.
+for single grain study comment code of surrounding grains in detConstruction.
+for multi-grain study use code as it is.
 
-[6] mutliple grain settings: 
+[7] new function calculateMixtureDensity() to calculate mixture density of composition map
+is implemented. XRF data is added in RPS2023PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
+updated with new code. This code randomly choose primary particle position in recoil range.
+Overall program running flow lookks like below: 1. add XRF data in DefineXRFChemicalComps() function. 2. // how to find recoil range 3. update the recoil range in RPS2023PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) 4. adjust grain size RPS2023DetectorConstruction.hh file. 5. run code with recoilEmanationParticleGun.mac file
+with required number of particles. 6. output file mainfile.root is generated.
 
-    currently, we have set small units for grain size because if we increase grain size
-    units, particle size will be more and for that we need to shoot more primary events.
-    only then we can see nice plots similar to [6].
-
-    Use following settings to obtain graphs:
-
-    grainSize(detCon.hh)        events(emanation.mac)       R(emanation.mac/surface radius) (max=19nm)
-    100 nm                      10k                         90 nm   
-    200 nm                      20K                         190 nm
-    300 nm                      30K                         290 nm
-
-[7] all source code files are renamed from prefix nb to RPS2023. 
-    this should be considered as final code for studying radon emanation. 
-    for single grain study comment code of surrounding grains in detConstruction.
-    for multi-grain study use code as it is.
-    
-
-
-    
+[8] input paramaters: grain size, chemical composition, recoil range.

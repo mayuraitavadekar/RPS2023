@@ -37,7 +37,6 @@
 
 
 rm 0* 1* 2* 3* 4* 5* 6* 7* 8* 9*
+rm 0pct.root 5pct.root 10pct.root 15pct.root 20pct.root 25pct.root 30pct.root 35pct.root 40pct.root 45pct.root 50pct.root 55pct.root 60pct.root 65pct.root 70pct.root 75pct.root 80pct.root 85pct.root 90pct.root 95pct.root 100pct.root
 
 hadd mainfile.root 0pct.root 15pct.root 20pct.root 25pct.root 30pct.root 35pct.root 40pct.root 45pct.root 50pct.root 55pct.root 60pct.root 65pct.root 70pct.root 75pct.root 
-
-rm 0pct.root 5pct.root 10pct.root 15pct.root 20pct.root 25pct.root 30pct.root 35pct.root 40pct.root 45pct.root 50pct.root 55pct.root 60pct.root 65pct.root 70pct.root 75pct.root 80pct.root 85pct.root 90pct.root 95pct.root 100pct.root 

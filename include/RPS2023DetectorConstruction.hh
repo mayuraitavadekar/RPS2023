@@ -40,13 +40,16 @@ class RPS2023DetectorConstruction : public G4VUserDetectorConstruction
       // methods
       //
       void DefineMaterials();
-      void DefineChemicalComps();
+      void DefineApproximateChemicalComps();  // use this when you need to use approximate chemical composition
+      void DefineXRFChemicalComps();    // use this when you need to use XRF chemical composition 
       void FillSoilLayersWithMaps();
       void PrintLayersMaterials();
       void fillGrainWithChemComps();
 
       void DefinePoreChemicalComps();
       void fillPoresWithChemComps();
+
+      G4double calculateMixtureDensity(map<G4Material*, G4double> chem_composition_map);
 
       G4VPhysicalVolume* DefineVolumes();
       
@@ -61,28 +64,28 @@ class RPS2023DetectorConstruction : public G4VUserDetectorConstruction
       G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 
       // grain size
-      G4double grainSize = 300.*nm;
-      G4double poreGrainSize = 31.60*um;
-      // Define dimensions of box and sphere
+      G4double grainSize = 1000.*nm;
+
+      // Define dimensions of box
       G4double boxSizeX = 1*cm;
       G4double boxSizeY = 1*cm;
       G4double boxSizeZ = 1*cm;
 
-      // Define positions of spheres on surface of box
-      G4double spherePosX = boxSizeX/2 - grainSize - 1*cm;
-      G4double spherePosY = boxSizeY/2 - grainSize - 1*cm;
-      G4double spherePosZ = grainSize;
+      // // Define positions of spheres on surface of box
+      // G4double spherePosX = boxSizeX/2 - grainSize - 1*cm;
+      // G4double spherePosY = boxSizeY/2 - grainSize - 1*cm;
+      // G4double spherePosZ = grainSize;
 
     public:
      
       // define common material variables here
-      G4Material *H, *H2O, *SiO2, *Al2O3, *Fe2O3, *CaO, *MgO, *TiO2, *OH, *Mn2O3, *Fe, *Mn, *Ra;
+      G4Material *H, *H2O, *SiO2, *Al2O3, *Fe2O3, *CaO, *MgO, *TiO2, *OH, *Mn2O3;
       G4Material *pH;
       G4Material *OrganicMat;
       G4Material *defaultMaterial;
       G4Material *Air;
       G4Material *Quartz;
-      G4Material *Ca, *C, *N, *Na, *Mg, *P, *Si, *K, *Al, *I, *S, *Ti, *O;
+      G4Material *Ca, *C, *N, *Na, *Mg, *P, *Si, *K, *Al, *I, *S, *Ti, *O, *V, *Cr, *Fe, *Mn, *Ra, *Co, *Ni, *Cu, *Zn, *As, *Se, *Rb, *Sr, *Y, *Zr, *Nb, *Mo, *Cd, *Sn, *Ba, *La, *Ce, *Nd, *Hg, *Pb, *Bi, *Th, *U;
       G4Material *H2OVapor;
       G4Material *coatingMaterial;
       

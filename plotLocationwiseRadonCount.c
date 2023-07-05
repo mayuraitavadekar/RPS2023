@@ -3,7 +3,7 @@
     at different locations when they come to rest
     and creates barplot
 */
-void plotEmanationLocationInMultiGrainSetup()
+void plotLocationwiseRadonCount()
 {
     gROOT->Reset();
 
@@ -47,7 +47,7 @@ void plotEmanationLocationInMultiGrainSetup()
     gPad->SetLogy();
 
     h->GetYaxis()->SetTitle("Count of radon");
-	h->GetXaxis()->SetTitle("Location of radon after recoil");
+	h->GetXaxis()->SetTitle("Location of radon when it comes to rest");
     h->GetXaxis()->SetTitleOffset(1.5);
     h->GetYaxis()->SetTitleColor(kBlack);
     h->GetYaxis()->SetTitleSize(0.03);
@@ -79,9 +79,8 @@ void plotEmanationLocationInMultiGrainSetup()
     pt->SetFillColor(18);
     pt->SetTextAlign(12);
     pt->AddText("Radon count in each location");
-    pt->AddText("9513 in central grain");
-    pt->AddText("429 in surrounding grain");
-    pt->AddText("58 in pore space");
+    pt->AddText("7595 in central grain");
+    pt->AddText("2066 in surrounding grain");
+    pt->AddText("339 in pore space");
     pt->Draw();
-    return c1;
 }

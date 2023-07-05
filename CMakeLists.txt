@@ -47,17 +47,19 @@ target_link_libraries(RPS2023 ${Geant4_LIBRARIES})
 set(RPS2023_SCRIPTS
   vis.mac
   run.mac
-  recoilEmanation.mac
+  recoilEmanationGPS.mac
+  recoilEmanationParticleGun.mac
   uniformEmanation.mac
   plotPNames.c
   plotEmanationByH2OMultiGraph.c
   plotHistXY.c
   plotEmanationByH2O.c
   findRecoilRange.mac
-  plotEmanationLocationInMultiGrainSetup.c
   oneRun.mac
+  plotEmanationLocationInMultiGrainSetup.c
   plotCountInSurroundingGrainsByH2O.c
   plotCountInSurroundingGrainsByH2OMultiGrain.c
+  countEmanationToFindRecoilRange.c
   )
 
 foreach(_script ${RPS2023_SCRIPTS})

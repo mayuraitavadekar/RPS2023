@@ -35,21 +35,21 @@ RPS2023RunAction::RPS2023RunAction(RPS2023DetectorConstruction* det, RPS2023Prim
   analysisManager->SetDefaultFileType("root");
   analysisManager->SetNtupleMerging(true);
   
-  // we need to setfile name dynamically
-  std::time_t rawtime;
-  std::tm* timeinfo;
-  char rootOutputFileBuffer [80];
-  char descFileBuffer [80];
-
-  std::time(&rawtime);
-  timeinfo = std::localtime(&rawtime);
-
-  std::strftime(rootOutputFileBuffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
+  // // if you need to setfile name dynamically
+  // // uncomment following code
+  // // and set rootOutputFile variable in analysisManager->SetFileName();
+  // std::time_t rawtime;
+  // std::tm* timeinfo;
+  // char rootOutputFileBuffer [80];
+  // char descFileBuffer [80];
+  // std::time(&rawtime);
+  // timeinfo = std::localtime(&rawtime);
+  // std::strftime(rootOutputFileBuffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
   
-  rootOutputFile = rootOutputFileBuffer; // root file
-  descFile = descFileBuffer;             // description file
+  // rootOutputFile = rootOutputFileBuffer; // root file
+  // descFile = descFileBuffer;             // description file
   
-  G4cout <<"root file: " << rootOutputFile << G4endl;
+  // G4cout <<"root file: " << rootOutputFile << G4endl;
    
   analysisManager->SetFileName("0pct");
   
@@ -81,6 +81,7 @@ RPS2023RunAction::RPS2023RunAction(RPS2023DetectorConstruction* det, RPS2023Prim
   analysisManager->CreateNtupleDColumn(2, "time");
   analysisManager->CreateNtupleIColumn(2, "emanation"); // by default stores -1 but if lastStepofRadon is inside soil grain then stores 0 else store 1
   analysisManager->CreateNtupleIColumn(2, "H2OContent"); // stores water content for analysis
+  analysisManager->CreateNtupleIColumn(2, "stepCount");
 
   /*
   
@@ -134,16 +135,17 @@ void RPS2023RunAction::BeginOfRunAction(const G4Run* aRun)
   if (isMaster) G4Random::showEngineStatus();
   
   // keep run condition
-  // if (fPrimary) { 
-  //   G4ParticleDefinition* particle 
-  //     = fPrimary->GetParticleGun()->GetParticleDefinition();
-  //   G4double energy = fPrimary->GetParticleGun()->GetParticleEnergy();
-  //   fRun->SetPrimary(particle, energy);
-  // }
-  auto gps = new G4GeneralParticleSource();
-  G4ParticleDefinition* particle  = gps->GetParticleDefinition();
-  G4double energy = gps->GetParticleEnergy();
-  fRun->SetPrimary(particle, energy);
+  if (fPrimary) { 
+    G4ParticleDefinition* particle 
+      = fPrimary->GetParticleGun()->GetParticleDefinition();
+    G4double energy = fPrimary->GetParticleGun()->GetParticleEnergy();
+    fRun->SetPrimary(particle, energy);
+  }
+
+  // auto gps = new G4GeneralParticleSource();
+  // G4ParticleDefinition* particle  = gps->GetParticleDefinition();
+  // G4double energy = gps->GetParticleEnergy();
+  // fRun->SetPrimary(particle, energy);
   
   
   

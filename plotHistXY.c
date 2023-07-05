@@ -42,7 +42,7 @@ void plotHistXY()
     // c1->SetGridY();
 
     
-    TFile* file = new TFile("2023-03-14-18-59-08.root", "read");
+    TFile* file = new TFile("mainfile.root", "read");
     
     TTree* tree = (TTree*) file->Get("particleData");
     
@@ -61,7 +61,8 @@ void plotHistXY()
     tree->SetBranchAddress("A", &A);
     tree->SetBranchAddress("pid", &pid);
 
-    tree->Draw("sqrt(x*x+y*y+z*z)","A==222");
+    // tree->Draw("sqrt(x*x+y*y+z*z)","A==222");
+    tree->Draw("sqrt(x*x+y*y+z*z)",TString::Format("pName == \"%s\"", "Rn222"));
 
     // for(int i=0;i<tree->GetEntries();i++)
     // {
@@ -73,14 +74,14 @@ void plotHistXY()
     //     }
     // }
 
-    // gPad->SetLogy();
+    gPad->SetLogy();
 
     auto htemp = (TH2F*)gPad->GetPrimitive("htemp");
     auto xaxis = htemp->GetXaxis();
 
     htemp->SetTitle("Distribution of distance of radon rays from origin with air medium");
-    htemp->GetYaxis()->SetTitle("count");
-	htemp->GetXaxis()->SetTitle("distance (in micrometers)");
+    htemp->GetYaxis()->SetTitle("Count");
+	htemp->GetXaxis()->SetTitle("Distance (in centimeters)");
     htemp->GetXaxis()->SetTitleOffset(1.5);
     htemp->GetYaxis()->SetTitleColor(kBlack);
     htemp->GetYaxis()->SetTitleSize(0.03);

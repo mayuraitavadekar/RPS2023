@@ -72,7 +72,9 @@ G4VPhysicalVolume* RPS2023DetectorConstruction::Construct()
   G4cout << "soil grain size : " << grainSize << G4endl; 
 
   // define chemical composition maps
-  DefineChemicalComps();
+//   DefineApproximateChemicalComps(); // call this OR
+  DefineXRFChemicalComps(); // call this
+
   fillGrainWithChemComps();
 
   DefinePoreChemicalComps();
@@ -117,6 +119,34 @@ void RPS2023DetectorConstruction::DefineMaterials()
   S = nistManager->FindOrBuildMaterial("G4_S");
   Ti = nistManager->FindOrBuildMaterial("G4_Ti");
   H2OVapor = nistManager->FindOrBuildMaterial("G4_WATER_VAPOR");
+  
+  // newly added from XRF data
+  V = nistManager->FindOrBuildMaterial("G4_V");
+  Cr = nistManager->FindOrBuildMaterial("G4_Cr");
+  Co = nistManager->FindOrBuildMaterial("G4_Co");
+  Ni = nistManager->FindOrBuildMaterial("G4_Ni");
+  Cu = nistManager->FindOrBuildMaterial("G4_Cu");
+  Zn = nistManager->FindOrBuildMaterial("G4_Zn");
+  As = nistManager->FindOrBuildMaterial("G4_As");
+  Se = nistManager->FindOrBuildMaterial("G4_Se");   
+  Co = nistManager->FindOrBuildMaterial("G4_Co");
+  Rb = nistManager->FindOrBuildMaterial("G4_Rb");
+  Sr = nistManager->FindOrBuildMaterial("G4_Sr");
+  Y = nistManager->FindOrBuildMaterial("G4_Y");
+  Zr = nistManager->FindOrBuildMaterial("G4_Zr");
+  Nb = nistManager->FindOrBuildMaterial("G4_Nb");
+  Mo = nistManager->FindOrBuildMaterial("G4_Mo");
+  Cd = nistManager->FindOrBuildMaterial("G4_Cd");
+  Sn = nistManager->FindOrBuildMaterial("G4_Sn");   
+  Ba = nistManager->FindOrBuildMaterial("G4_Ba");
+  La = nistManager->FindOrBuildMaterial("G4_La");
+  Ce = nistManager->FindOrBuildMaterial("G4_Ce");
+  Nd = nistManager->FindOrBuildMaterial("G4_Nd");
+  Hg = nistManager->FindOrBuildMaterial("G4_Hg");
+  Pb = nistManager->FindOrBuildMaterial("G4_Pb");
+  Bi = nistManager->FindOrBuildMaterial("G4_Bi");
+  Th = nistManager->FindOrBuildMaterial("G4_Th");
+  U = nistManager->FindOrBuildMaterial("G4_U");
 
   // define elements
   elO = new G4Element("Oxygen"  ,symbol="O" , z= 8., a= 16.00*g/mole);
@@ -860,7 +890,7 @@ G4String RPS2023DetectorConstruction::getNameOfLayer4()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void RPS2023DetectorConstruction::DefineChemicalComps()
+void RPS2023DetectorConstruction::DefineApproximateChemicalComps()
 {
     // define chemical composition maps
     // use these maps in soil layers
@@ -1240,116 +1270,1135 @@ void RPS2023DetectorConstruction::DefineChemicalComps()
     };
 }
 
+void RPS2023DetectorConstruction::DefineXRFChemicalComps()
+{
+    // define chemical composition maps
+    // use these maps in soil layers
+    // you can add or delete any material composition
+    // in any map
+    // just make sure that summation = 100*perCent
+
+    // refs:
+    // organic matter %: https://www.agric.wa.gov.au/measuring-and-assessing-soils/what-soil-organic-carbon#:~:text=Organic%20matter%20makes%20up%20just,biological%20function%20of%20agricultural%20soils.
+    // soil grains does not have any pore space i.e. no air
+
+    // 0% water
+    chem_composition_0 = {
+        {Al, 15.6300*perCent},
+        {Si, 22.2600*perCent},
+        {P, 0.0300*perCent},
+        {S, 0.0400*perCent},
+        {K, 1.8800*perCent},
+        {Ca, 0.1600*perCent},
+        {Ti, 0.2380*perCent},
+        {V, 0.0050*perCent},
+        {Cr, 0.0030*perCent},
+        {Mn, 0.0295*perCent},
+        {Fe, 2.3060*perCent},
+        {Co, 0.0041*perCent},
+        {Ni, 0.0011*perCent},
+        {Cu, 0.0014*perCent},
+        {Zn, 0.0070*perCent},
+        {As, 0.0004*perCent},
+        {Se, 0.0002*perCent},
+        {Rb, 0.0218*perCent},
+        {Sr, 0.0059*perCent},
+        {Y, 0.0013*perCent},
+        {Zr, 0.0097*perCent},
+        {Nb, 0.0007*perCent},
+        {Mo, 0.0002*perCent},
+        {Cd, 0.0005*perCent},
+        {Sn, 0.0011*perCent},
+        {Ba, 0.0275*perCent},
+        {La, 0.0034*perCent},
+        {Ce, 0.0068*perCent},
+        {Nd, 0.0087*perCent},
+        {Hg, 0.0003*perCent},
+        {Pb, 0.0044*perCent},
+        {Bi, 0.0018*perCent},
+        {Th, 0.0006*perCent},
+        {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 15.0000*perCent},
+        {O, 19.3090*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 6.0000*perCent},
+        {Na, 4.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };
+
+    // 5% water
+    chem_composition_1 = {
+        {Al, 13.6300*perCent},
+        {Si, 19.2600*perCent},
+        {P, 0.0300*perCent},
+        {S, 0.0400*perCent},
+        {K, 1.8800*perCent},
+        {Ca, 0.1600*perCent},
+        {Ti, 0.2380*perCent},
+        {V, 0.0050*perCent},
+        {Cr, 0.0030*perCent},
+        {Mn, 0.0295*perCent},
+        {Fe, 2.3060*perCent},
+        {Co, 0.0041*perCent},
+        {Ni, 0.0011*perCent},
+        {Cu, 0.0014*perCent},
+        {Zn, 0.0070*perCent},
+        {As, 0.0004*perCent},
+        {Se, 0.0002*perCent},
+        {Rb, 0.0218*perCent},
+        {Sr, 0.0059*perCent},
+        {Y, 0.0013*perCent},
+        {Zr, 0.0097*perCent},
+        {Nb, 0.0007*perCent},
+        {Mo, 0.0002*perCent},
+        {Cd, 0.0005*perCent},
+        {Sn, 0.0011*perCent},
+        {Ba, 0.0275*perCent},
+        {La, 0.0034*perCent},
+        {Ce, 0.0068*perCent},
+        {Nd, 0.0087*perCent},
+        {Hg, 0.0003*perCent},
+        {Pb, 0.0044*perCent},
+        {Bi, 0.0018*perCent},
+        {Th, 0.0006*perCent},
+        {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 15.0000*perCent},
+        {O, 19.3090*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 6.0000*perCent},
+        {Na, 4.0000*perCent},
+        {Mg, 2.0000*perCent},
+        {H2O, 5*perCent},
+    };
+
+    // 10% water
+    chem_composition_2 = {
+        {H2O, 10*perCent},
+        {Al, 11.6300*perCent},
+        {Si, 17.2600*perCent},
+        {P, 0.0300*perCent},
+        {S, 0.0400*perCent},
+        {K, 1.8800*perCent},
+        {Ca, 0.1600*perCent},
+        {Ti, 0.2380*perCent},
+        {V, 0.0050*perCent},
+        {Cr, 0.0030*perCent},
+        {Mn, 0.0295*perCent},
+        {Fe, 1.3060*perCent},
+        {Co, 0.0041*perCent},
+        {Ni, 0.0011*perCent},
+        {Cu, 0.0014*perCent},
+        {Zn, 0.0070*perCent},
+        {As, 0.0004*perCent},
+        {Se, 0.0002*perCent},
+        {Rb, 0.0218*perCent},
+        {Sr, 0.0059*perCent},
+        {Y, 0.0013*perCent},
+        {Zr, 0.0097*perCent},
+        {Nb, 0.0007*perCent},
+        {Mo, 0.0002*perCent},
+        {Cd, 0.0005*perCent},
+        {Sn, 0.0011*perCent},
+        {Ba, 0.0275*perCent},
+        {La, 0.0034*perCent},
+        {Ce, 0.0068*perCent},
+        {Nd, 0.0087*perCent},
+        {Hg, 0.0003*perCent},
+        {Pb, 0.0044*perCent},
+        {Bi, 0.0018*perCent},
+        {Th, 0.0006*perCent},
+        {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 15.0000*perCent},
+        {O, 19.3090*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 6.0000*perCent},
+        {Na, 4.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };
+
+    // 15% water
+    chem_composition_3 = {
+        {H2O, 15*perCent},
+        {Al, 10.6300*perCent},
+        {Si, 14.2600*perCent},
+        {P, 0.0300*perCent},
+        {S, 0.0400*perCent},
+        {K, 0.8800*perCent},
+        {Ca, 0.1600*perCent},
+        {Ti, 0.2380*perCent},
+        {V, 0.0050*perCent},
+        {Cr, 0.0030*perCent},
+        {Mn, 0.0295*perCent},
+        {Fe, 1.3060*perCent},
+        {Co, 0.0041*perCent},
+        {Ni, 0.0011*perCent},
+        {Cu, 0.0014*perCent},
+        {Zn, 0.0070*perCent},
+        {As, 0.0004*perCent},
+        {Se, 0.0002*perCent},
+        {Rb, 0.0218*perCent},
+        {Sr, 0.0059*perCent},
+        {Y, 0.0013*perCent},
+        {Zr, 0.0097*perCent},
+        {Nb, 0.0007*perCent},
+        {Mo, 0.0002*perCent},
+        {Cd, 0.0005*perCent},
+        {Sn, 0.0011*perCent},
+        {Ba, 0.0275*perCent},
+        {La, 0.0034*perCent},
+        {Ce, 0.0068*perCent},
+        {Nd, 0.0087*perCent},
+        {Hg, 0.0003*perCent},
+        {Pb, 0.0044*perCent},
+        {Bi, 0.0018*perCent},
+        {Th, 0.0006*perCent},
+        {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 15.0000*perCent},
+        {O, 19.3090*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 6.0000*perCent},
+        {Na, 4.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };
+    
+    // 20% water
+    chem_composition_4 = {
+        {H2O, 20*perCent},
+        {Al, 8.6300*perCent},
+        {Si, 12.2600*perCent},
+        {P, 0.0300*perCent},
+        {S, 0.0400*perCent},
+        {K, 0.8800*perCent},
+        {Ca, 0.1600*perCent},
+        {Ti, 0.2380*perCent},
+        {V, 0.0050*perCent},
+        {Cr, 0.0030*perCent},
+        {Mn, 0.0295*perCent},
+        {Fe, 0.3060*perCent},
+        {Co, 0.0041*perCent},
+        {Ni, 0.0011*perCent},
+        {Cu, 0.0014*perCent},
+        {Zn, 0.0070*perCent},
+        {As, 0.0004*perCent},
+        {Se, 0.0002*perCent},
+        {Rb, 0.0218*perCent},
+        {Sr, 0.0059*perCent},
+        {Y, 0.0013*perCent},
+        {Zr, 0.0097*perCent},
+        {Nb, 0.0007*perCent},
+        {Mo, 0.0002*perCent},
+        {Cd, 0.0005*perCent},
+        {Sn, 0.0011*perCent},
+        {Ba, 0.0275*perCent},
+        {La, 0.0034*perCent},
+        {Ce, 0.0068*perCent},
+        {Nd, 0.0087*perCent},
+        {Hg, 0.0003*perCent},
+        {Pb, 0.0044*perCent},
+        {Bi, 0.0018*perCent},
+        {Th, 0.0006*perCent},
+        {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 15.0000*perCent},
+        {O, 19.3090*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 6.0000*perCent},
+        {Na, 4.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };
+    
+    // 25% water
+    chem_composition_5 = {
+        {H2O, 25*perCent},
+        {Al, 8.6300*perCent},
+        {Si, 9.0000*perCent},
+        {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 15.0000*perCent},
+        {O, 19.3090*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 6.0000*perCent},
+        {Na, 4.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };  
+
+    // 30% water
+    chem_composition_6 = {
+        {H2O, 30*perCent},
+        {Al, 6.6300*perCent},
+        {Si, 7.0000*perCent},
+        {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 15.0000*perCent},
+        {O, 18.3090*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 6.0000*perCent},
+        {Na, 4.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };
+    
+    // 35% water
+    chem_composition_7 = {
+        {H2O, 35*perCent},
+        {Al, 6.6300*perCent},
+        {Si, 7.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 12.37*perCent},
+        {O, 16.0000*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 6.0000*perCent},
+        {Na, 4.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };  
+
+    // 40% water
+    chem_composition_8 = {
+        {H2O, 40*perCent},
+        {Al, 6.6300*perCent},
+        {Si, 5.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 12.37*perCent},
+        {O, 16.0000*perCent},
+        {Air, 2.0000*perCent},
+        {C, 9.0000*perCent},
+        {N, 5.0000*perCent},
+        {Na, 2.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };
+
+    // 45% water
+    chem_composition_9 = {
+        {H2O, 45*perCent},
+        {Al, 4.6300*perCent},
+        {Si, 4.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 12.37*perCent},
+        {O, 16.0000*perCent},
+        {Air, 2.0000*perCent},
+        {C, 7.0000*perCent},
+        {N, 5.0000*perCent},
+        {Na, 2.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };
+
+    // 50% water
+    chem_composition_10 = {
+        {H2O, 50*perCent},
+        {Al, 4.6300*perCent},
+        {Si, 4.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 12.37*perCent},
+        {O, 14.0000*perCent},
+        {Air, 2.0000*perCent},
+        {C, 4.0000*perCent},
+        {N, 5.0000*perCent},
+        {Na, 2.0000*perCent},
+        {Mg, 2.0000*perCent},
+    };
+
+    // 55% water
+    chem_composition_11 = {
+        {H2O, 55*perCent},
+        {Al, 4.6300*perCent},
+        {Si, 4.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 12.37*perCent},
+        {O, 12.0000*perCent},
+        {Air, 2.0000*perCent},
+        {C, 4.0000*perCent},
+        {N, 3.0000*perCent},
+        {Na, 2.0000*perCent},
+        {Mg, 1.0000*perCent},
+    };
+
+    // 60% water
+    chem_composition_12 = {
+        {H2O, 60*perCent},
+        {Al, 4.6300*perCent},
+        {Si, 3.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 12.37*perCent},
+        {O, 12.0000*perCent},
+        {C, 2.0000*perCent},
+        {N, 3.0000*perCent},
+        {Na, 2.0000*perCent},
+        {Mg, 1.0000*perCent},
+    };
+
+    // 65% water
+    chem_composition_13 = {
+        {H2O, 65*perCent},
+        {Al, 2.6300*perCent},
+        {Si, 2.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 12.37*perCent},
+        {O, 11.0000*perCent},
+        {C, 2.0000*perCent},
+        {N, 3.0000*perCent},
+        {Na, 2.0000*perCent}
+    };
+
+    // 70% water
+    chem_composition_14 = {
+        {H2O, 70*perCent},
+        {Al, 1.6300*perCent},
+        {Si, 1.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 12.37*perCent},
+        {O, 11.0000*perCent},
+        {C, 1.0000*perCent},
+        {N, 1.0000*perCent},
+        {Na, 2.0000*perCent}
+    };
+
+    // 75% water
+    chem_composition_15 = {
+        {H2O, 75*perCent},
+        {Al, 0.6300*perCent},
+        {Si, 1.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 11.37*perCent},
+        {O, 9.0000*perCent},
+        {C, 1.0000*perCent},
+        {N, 1.0000*perCent},
+        {Na, 1.0000*perCent}
+    };
+    
+    // 80% water
+    chem_composition_16 = {
+        {H2O, 80*perCent},
+        {Al, 0.6300*perCent},
+        {Si, 0.5000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 10.37*perCent},
+        {O, 7.5000*perCent},
+        // {C, 1.0000*perCent},
+        {N, 0.5*perCent},
+        {Na, 0.5*perCent}
+    };
+
+    // 85% water
+    chem_composition_17 = {
+        {H2O, 85*perCent},
+        {Al, 0.6300*perCent},
+        // {Si, 1.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 8.37*perCent},
+        {O, 5.5000*perCent},
+        // {C, 1.0000*perCent},
+        {N, 0.5*perCent},
+    };
+
+    // 90% water
+    chem_composition_18 = {
+        {H2O, 90*perCent},
+        // {Al, 0.6300*perCent},
+        // {Si, 1.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 7.37*perCent},
+        {O, 2.63*perCent},
+        // {C, 1.0000*perCent},
+        // {N, 0.5*perCent},
+    };
+
+    // 95% water
+    chem_composition_19 = {
+        {H2O, 95*perCent},
+        // {Al, 0.6300*perCent},
+        // {Si, 1.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        {H, 5.00*perCent}
+        // {C, 1.0000*perCent},
+        // {N, 0.5*perCent},
+    };
+
+    // 100% water
+    chem_composition_20 = {
+        {H2O, 100*perCent}
+        // {Al, 0.6300*perCent},
+        // {Si, 1.0000*perCent},
+        // {P, 0.0300*perCent},
+        // {S, 0.0400*perCent},
+        // {K, 0.8800*perCent},
+        // {Ca, 0.1600*perCent},
+        // {Ti, 0.2380*perCent},
+        // {V, 0.0050*perCent},
+        // {Cr, 0.0030*perCent},
+        // {Mn, 0.0277*perCent},
+        // {Fe, 0.3060*perCent},
+        // {Co, 0.0041*perCent},
+        // {Ni, 0.0011*perCent},
+        // {Cu, 0.0014*perCent},
+        // {Zn, 0.0070*perCent},
+        // {As, 0.0004*perCent},
+        // {Se, 0.0002*perCent},
+        // {Rb, 0.0218*perCent},
+        // {Sr, 0.0059*perCent},
+        // {Y, 0.0013*perCent},
+        // {Zr, 0.0097*perCent},
+        // {Nb, 0.0007*perCent},
+        // {Mo, 0.0002*perCent},
+        // {Cd, 0.0005*perCent},
+        // {Sn, 0.0011*perCent},
+        // {Ba, 0.0275*perCent},
+        // {La, 0.0034*perCent},
+        // {Ce, 0.0068*perCent},
+        // {Nd, 0.0087*perCent},
+        // {Hg, 0.0003*perCent},
+        // {Pb, 0.0044*perCent},
+        // {Bi, 0.0018*perCent},
+        // {Th, 0.0006*perCent},
+        // {U, 0.0003*perCent},
+        // LE 57.27 approx
+        // {H, 5.00*perCent}
+        // {C, 1.0000*perCent},
+        // {N, 0.5*perCent},
+    };
+}
+
 void RPS2023DetectorConstruction::fillGrainWithChemComps()
 {   
     // grain comp1 has particle density = 2.66
     // ref: http://passel-test.unl.edu/beta/pages/informationmodule.php?idinformationmodule=1130447039&topicorder=5&maxto=10&minto=1
+
+    G4double density_value = 0.0;
+    
+    density_value = calculateMixtureDensity(chem_composition_0);
+    G4cout << "density value for comp0 = " << density_value << G4endl;
     grainComp0 = new G4Material("0W", density = 0.6*g/cm3, ncomponents=chem_composition_0.size());
     for (it = chem_composition_0.begin(); it != chem_composition_0.end(); it++) {
             grainComp0->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_1);
+    G4cout << "density value for comp1 = " << density_value << G4endl;
     grainComp1 = new G4Material("5W", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
     for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
             grainComp1->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_2);
+    G4cout << "density value for comp2 = " << density_value << G4endl;
     grainComp2 = new G4Material("10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
     for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
             grainComp2->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_3);
+    G4cout << "density value for comp3 = " << density_value << G4endl;
     grainComp3 = new G4Material("15W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
     for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
             grainComp3->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_4);
+    G4cout << "density value for comp4 = " << density_value << G4endl;
     grainComp4 = new G4Material("20W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
     for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
             grainComp4->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_5);
+    G4cout << "density value for comp5 = " << density_value << G4endl;
     grainComp5 = new G4Material("25W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
     for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
             grainComp5->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_6);
+    G4cout << "density value for comp6 = " << density_value << G4endl;
     grainComp6 = new G4Material("30W", density = 0.6*g/cm3, ncomponents=chem_composition_6.size());
     for (it = chem_composition_6.begin(); it != chem_composition_6.end(); it++) {
             grainComp6->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_7);
+    G4cout << "density value for comp7 = " << density_value << G4endl;
     grainComp7 = new G4Material("35W", density = 0.6*g/cm3, ncomponents=chem_composition_7.size());
     for (it = chem_composition_7.begin(); it != chem_composition_7.end(); it++) {
             grainComp7->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_8);
+    G4cout << "density value for comp8 = " << density_value << G4endl;
     grainComp8 = new G4Material("40W", density = 0.6*g/cm3, ncomponents=chem_composition_8.size());
     for (it = chem_composition_8.begin(); it != chem_composition_8.end(); it++) {
             grainComp8->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_9);
+    G4cout << "density value for comp9 = " << density_value << G4endl;
     grainComp9 = new G4Material("45W", density = 0.6*g/cm3, ncomponents=chem_composition_9.size());
     for (it = chem_composition_9.begin(); it != chem_composition_9.end(); it++) {
             grainComp9->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_10);
+    G4cout << "density value for comp10 = " << density_value << G4endl;
     grainComp10 = new G4Material("50W", density = 0.6*g/cm3, ncomponents=chem_composition_10.size());
     for (it = chem_composition_10.begin(); it != chem_composition_10.end(); it++) {
             grainComp10->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_11);
+    G4cout << "density value for comp11 = " << density_value << G4endl;
     grainComp11 = new G4Material("55W", density = 0.6*g/cm3, ncomponents=chem_composition_11.size());
     for (it = chem_composition_11.begin(); it != chem_composition_11.end(); it++) {
             grainComp11->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_12);
+    G4cout << "density value for comp12 = " << density_value << G4endl;
     grainComp12 = new G4Material("60W", density = 0.6*g/cm3, ncomponents=chem_composition_12.size());
     for (it = chem_composition_12.begin(); it != chem_composition_12.end(); it++) {
             grainComp12->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_13);
+    G4cout << "density value for comp13 = " << density_value << G4endl;
     grainComp13 = new G4Material("65W", density = 0.6*g/cm3, ncomponents=chem_composition_13.size());
     for (it = chem_composition_13.begin(); it != chem_composition_13.end(); it++) {
             grainComp13->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_14);
+    G4cout << "density value for comp14 = " << density_value << G4endl;
     grainComp14 = new G4Material("70W", density = 0.6*g/cm3, ncomponents=chem_composition_14.size());
     for (it = chem_composition_14.begin(); it != chem_composition_14.end(); it++) {
             grainComp14->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_15);
+    G4cout << "density value for comp15 = " << density_value << G4endl;
     grainComp15 = new G4Material("75W", density = 0.6*g/cm3, ncomponents=chem_composition_15.size());
     for (it = chem_composition_15.begin(); it != chem_composition_15.end(); it++) {
             grainComp15->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_16);
+    G4cout << "density value for comp16 = " << density_value << G4endl;
     grainComp16 = new G4Material("80W", density = 0.6*g/cm3, ncomponents=chem_composition_16.size());
     for (it = chem_composition_16.begin(); it != chem_composition_16.end(); it++) {
             grainComp16->AddMaterial(it->first, fractionmass=it->second);
-    }
+    }   
 
+    density_value = calculateMixtureDensity(chem_composition_17);
+    G4cout << "density value for comp17 = " << density_value << G4endl;
     grainComp17 = new G4Material("85W", density = 0.6*g/cm3, ncomponents=chem_composition_17.size());
     for (it = chem_composition_17.begin(); it != chem_composition_17.end(); it++) {
             grainComp17->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_18);
+    G4cout << "density value for comp18 = " << density_value << G4endl;
     grainComp18 = new G4Material("90W", density = 0.6*g/cm3, ncomponents=chem_composition_18.size());
     for (it = chem_composition_18.begin(); it != chem_composition_18.end(); it++) {
             grainComp18->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_19);
+    G4cout << "density value for comp19 = " << density_value << G4endl;
     grainComp19 = new G4Material("95W", density = 0.6*g/cm3, ncomponents=chem_composition_19.size());
     for (it = chem_composition_19.begin(); it != chem_composition_19.end(); it++) {
             grainComp19->AddMaterial(it->first, fractionmass=it->second);
     }
 
+    density_value = calculateMixtureDensity(chem_composition_20);
+    G4cout << "density value for comp20 = " << density_value << G4endl;
     grainComp20 = new G4Material("100W", density = 0.6*g/cm3, ncomponents=chem_composition_20.size());
     for (it = chem_composition_20.begin(); it != chem_composition_20.end(); it++) {
             grainComp20->AddMaterial(it->first, fractionmass=it->second);
     }
-
-    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -1573,3 +2622,29 @@ void RPS2023DetectorConstruction::fillPoresWithChemComps()
     }
 }
 
+G4double RPS2023DetectorConstruction::calculateMixtureDensity(map<G4Material*, G4double> chem_composition_map) 
+{
+    // this function takes map as input parameter and returns density of mixture
+    G4double sum = 0;
+    G4double material_density = 0;
+    G4double massfraction = 0;
+    G4Material* material;
+
+    // iterate the map
+    for (it = chem_composition_map.begin(); it != chem_composition_map.end(); it++) {
+        
+        material = it->first;
+        massfraction = it->second;
+
+
+        material_density = material->GetDensity() / (g/cm3);
+        // G4cout << "density of " << material->GetName() << " with massfraction of " << massfraction << " is = " << material_density << G4endl;
+
+        sum = sum + ( material_density * (massfraction));
+    }
+
+    // G4cout << "density of mixture = " << sum << G4endl;
+
+    return sum;
+
+}

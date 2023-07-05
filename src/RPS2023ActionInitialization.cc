@@ -31,7 +31,7 @@ void RPS2023ActionInitialization::BuildForMaster() const
 
 void RPS2023ActionInitialization::Build() const
 {
-  RPS2023PrimaryGeneratorAction* primary = new RPS2023PrimaryGeneratorAction();
+  RPS2023PrimaryGeneratorAction* primary = new RPS2023PrimaryGeneratorAction(); // particle gun : mostly used 
   SetUserAction(primary);
     
   RPS2023RunAction* runAction = new RPS2023RunAction(fDetector, primary);

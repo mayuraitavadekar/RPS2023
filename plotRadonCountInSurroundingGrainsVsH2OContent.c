@@ -1,4 +1,4 @@
-void plotCountInSurroundingGrainsByH2O()
+void plotRadonCountInSurroundingGrainsVsH2OContent()
 {
     TFile* input = new TFile("100nm-multigrain.root", "read");
     TTree* tree = (TTree*) input->Get("particleData");

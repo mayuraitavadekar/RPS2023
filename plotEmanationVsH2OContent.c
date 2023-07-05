@@ -1,6 +1,11 @@
-void plotEmanationByH2O()
+/*
+    plot radon emanation fraction as function of moisture content
+    use when you have only one root file which corrospond to one grain size
+*/
+
+void plotEmanationVsH2OContent()
 {
-    TFile* input = new TFile("mainfile.root", "read");
+    TFile* input = new TFile("paper-100nm.root", "read");
     TTree* tree = (TTree*) input->Get("particleData");
     int entries = tree->GetEntries();
 
@@ -78,8 +83,8 @@ void plotEmanationByH2O()
     // now draw graph
     TGraph* graph =  new TGraph(21, moistureLevels, eCounts);
     
-    graph->GetYaxis()->SetTitle("escaped radon from soil grain");
-    graph->GetXaxis()->SetTitle("moisture content (%)");
+    graph->GetYaxis()->SetTitle("Radon emanation fraction (%)");
+    graph->GetXaxis()->SetTitle("Moisture content (%)");
     graph->SetMarkerStyle(20);
     graph->SetMarkerSize(1.);
     graph->SetMarkerColor(2); // 4 blue 2 red
