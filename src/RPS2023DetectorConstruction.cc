@@ -74,9 +74,7 @@ G4VPhysicalVolume* RPS2023DetectorConstruction::Construct()
   // define chemical composition maps
 //   DefineApproximateChemicalComps(); // call this OR
   DefineXRFChemicalComps(); // call this
-
   fillGrainWithChemComps();
-
   DefinePoreChemicalComps();
   fillPoresWithChemComps();
   
@@ -237,7 +235,7 @@ G4VPhysicalVolume* RPS2023DetectorConstruction::DefineVolumes()
     // auto worldSizeZ  = worldSizeXY; 
     
     auto worldS 
-        = new G4Box("World",           // its name
+        = new G4Box("World",                                      // its name
                     worldSizeXY/2, worldSizeXY/2, worldSizeXY/2); // its size
                             
     auto worldLV

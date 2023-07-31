@@ -2,7 +2,7 @@
                                 Geant4 Simulation for Radon Propagation Study in Soil
                                 =====================================================
 
-        This is Geant4 c++ code for radon emanation study in soil at Stone Mountain Park, Atlanta, GA.
+            Geant4 c++ code for radon emanation study in soil at Stone Mountain Park, Atlanta, GA.
 
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                                     Authors: Mayur Aitavadekar, Dr. Xiaochun He
@@ -10,19 +10,18 @@
 
 ---
 
-# commands:
+# Publications
 
 ---
 
-after running code in interactive mode, you can optionally use following
-commands for better visibility and understanding of detector geometry.
+---
 
-- /vis/viewer/set/style surface OR wireframe
-- /vis/viewer/addCutawayPlane 0 1 0
-- /vis/viewer/set/background white
+# system requirements
 
-More commands to use in macros and interactive console can be found here:
-https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
+---
+
+- Ubuntu 20.XX (preferred) or any debian linux distribution
+- Geant4 11.1.0
 
 ---
 
@@ -39,12 +38,28 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
 1. run code interative mode:
 
-   > ./neutronBall
-   > /control/execute file_name.mac
+   > ./RPS2023
+   > /control/execute macro_name.mac
 
 2. run code in batch mode
 
-   > ./neutronBall file_name.mac
+   > ./RPS2023 macro_name.mac
+
+---
+
+# commands:
+
+---
+
+after running code in interactive mode, you can optionally use following
+commands for better visibility and understanding of detector geometry.
+
+- /vis/viewer/set/style surface OR wireframe
+- /vis/viewer/addCutawayPlane 0 1 0
+- /vis/viewer/set/background white
+
+More commands to use in macros and interactive console can be found here:
+https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
 ---
 

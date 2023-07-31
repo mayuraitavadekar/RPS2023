@@ -51,15 +51,15 @@ set(RPS2023_SCRIPTS
   recoilEmanationParticleGun.mac
   uniformEmanation.mac
   plotPNames.c
-  plotEmanationByH2OMultiGraph.c
   plotHistXY.c
-  plotEmanationByH2O.c
   findRecoilRange.mac
   oneRun.mac
-  plotEmanationLocationInMultiGrainSetup.c
-  plotCountInSurroundingGrainsByH2O.c
-  plotCountInSurroundingGrainsByH2OMultiGrain.c
-  countEmanationToFindRecoilRange.c
+
+  plotEmanationVsH2OContent.c
+  plotEmanationVsH2OContentMultipleGraphs.c
+  plotLocationwiseRadonCount.c
+  plotRadonCountAtTwoLocationsVsH2OContent.c 
+  plotRadonCountInSurroundingGrainsVsH2OContent.c
   )
 
 foreach(_script ${RPS2023_SCRIPTS})

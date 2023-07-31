@@ -52,7 +52,7 @@ void plotEmanationVsH2OContent()
     for(int i=0;i<22;i++)
     {
         printf("ecount[%d] = %f \n", i, eCounts[i]);
-        eCounts[i] = (eCounts[i]/10000)*100;
+        eCounts[i] = (eCounts[i]/1000000)*100;
     }
 
     gROOT->Reset();

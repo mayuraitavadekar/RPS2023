@@ -10,126 +10,127 @@
 /gun/particle ion
 /gun/ion 86 222
 /gun/energy 86.30 keV
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 5pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 5
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 10pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 10
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 15pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 15
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 20pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 20
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 25pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 25
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 30pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 30
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 35pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 35
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 40pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 40
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 45pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 45
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 50pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 50
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 55pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 55
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 60pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 60
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 65pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 65
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 70pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 70
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 75pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 75
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 80pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 80
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 85pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 85
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 90pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 90
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 95pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 95
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /run/initialize
 /analysis/setFileName 100pct
 /run/printProgress 100
 /RPS2023/det/H2O/setH2O 100
-/run/beamOn 100000000
+/run/beamOn 1000000
 #
 /control/shell hadd mainfile.root 0pct.root 5pct.root 10pct.root 15pct.root 20pct.root 25pct.root 30pct.root 35pct.root 40pct.root 45pct.root 50pct.root 55pct.root 60pct.root 65pct.root 70pct.root 75pct.root 80pct.root 85pct.root 90pct.root 95pct.root 100pct.root 
+/control/shell rm 0pct.root 5pct.root 10pct.root 15pct.root 20pct.root 25pct.root 30pct.root 35pct.root 40pct.root 45pct.root 50pct.root 55pct.root 60pct.root 65pct.root 70pct.root 75pct.root 80pct.root 85pct.root 90pct.root 95pct.root 100pct.root

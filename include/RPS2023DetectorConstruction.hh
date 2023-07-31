@@ -64,7 +64,7 @@ class RPS2023DetectorConstruction : public G4VUserDetectorConstruction
       G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 
       // grain size
-      G4double grainSize = 1000.*nm;
+      G4double grainSize = 1000000.*nm;
 
       // Define dimensions of box
       G4double boxSizeX = 1*cm;

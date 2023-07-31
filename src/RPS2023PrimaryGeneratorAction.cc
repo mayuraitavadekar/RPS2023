@@ -54,8 +54,8 @@ void RPS2023PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double PI, phi, cosTheta, sinTheta;
   G4double px, py, pz;
   G4double rRange, xPos, yPos, zPos;
-  G4double minR = 977*nm;  
-  G4double maxR = 1000*nm; // recoil range = maxR - minR; maxR = radius of grain
+  G4double minR = 999977.*nm;  
+  G4double maxR = 1000000.*nm; // recoil range = maxR - minR; maxR = radius of grain
 
   PI = 3.14159265;
   
