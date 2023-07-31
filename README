@@ -2,7 +2,7 @@
                                 Geant4 Simulation for Radon Propagation Study in Soil
                                 =====================================================
 
-            Geant4 c++ code for radon emanation study in soil at Stone Mountain Park, Atlanta, GA.
+               Geant4 c++ code for radon emanation study in soil at Stone Mountain Park, Atlanta, GA.
 
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                                     Authors: Mayur Aitavadekar, Dr. Xiaochun He
@@ -13,6 +13,8 @@
 # Publications
 
 ---
+
+(1) Aitavadekar, Mayur P., "Geant4 Simulation for Radon Propagation in Soil." Thesis, Georgia State University, 2023. https://scholarworks.gsu.edu/cs_theses/109
 
 ---
 
