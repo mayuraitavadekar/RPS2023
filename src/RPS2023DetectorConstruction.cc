@@ -72,7 +72,7 @@ G4VPhysicalVolume* RPS2023DetectorConstruction::Construct()
   G4cout << "soil grain size : " << grainSize << G4endl; 
 
   // define chemical composition maps
-//   DefineApproximateChemicalComps(); // call this OR
+  // DefineApproximateChemicalComps(); // call this OR
   DefineXRFChemicalComps(); // call this
   fillGrainWithChemComps();
   DefinePoreChemicalComps();
