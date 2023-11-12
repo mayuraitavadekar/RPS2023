@@ -9,26 +9,26 @@ void plotLocationwiseRadonCount()
 
     gStyle->SetOptStat(0);
     gStyle->SetCanvasColor(kWhite);
-	gStyle->SetFrameFillStyle(1001);
-	gStyle->SetFrameFillColor(kWhite);
-	gStyle->SetPadBorderMode(0);
-	gStyle->SetPadColor(kWhite);
-	gStyle->SetStatColor(kWhite);
-	// gStyle->SetPadTickX(1);
-	// gStyle->SetPadTickY(1);
+    gStyle->SetFrameFillStyle(1001);
+    gStyle->SetFrameFillColor(kWhite);
+    gStyle->SetPadBorderMode(0);
+    gStyle->SetPadColor(kWhite);
+    gStyle->SetStatColor(kWhite);
+    // gStyle->SetPadTickX(1);
+    // gStyle->SetPadTickY(1);
 
     gStyle->SetLabelColor(1,"X");
-	gStyle->SetLabelColor(1,"Y");
+    gStyle->SetLabelColor(1,"Y");
 
     TCanvas *c1 = new TCanvas("c1","c1",800,1000);
 
     c1->SetLeftMargin(0.15);
     c1->SetBottomMargin(0.3);
-	c1->SetTopMargin(0.15);
+    c1->SetTopMargin(0.15);
     c1->SetRightMargin(0.15);
     c1->SetGridy(0);
     c1->SetGridx(1);
-	c1->cd();
+    c1->cd();
 
     const char *locations[3] = {"Central grain","Sorrounding grain","Pore space"};
 
@@ -47,7 +47,7 @@ void plotLocationwiseRadonCount()
     gPad->SetLogy();
 
     h->GetYaxis()->SetTitle("Count of radon");
-	h->GetXaxis()->SetTitle("Location of radon when it comes to rest");
+    h->GetXaxis()->SetTitle("Location of radon when it comes to rest");
     h->GetXaxis()->SetTitleOffset(1.5);
     h->GetYaxis()->SetTitleColor(kBlack);
     h->GetYaxis()->SetTitleSize(0.03);
