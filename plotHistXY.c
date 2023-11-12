@@ -17,16 +17,16 @@ void plotHistXY()
 
     gStyle->SetOptStat(0);
     gStyle->SetCanvasColor(kWhite);
-	gStyle->SetFrameFillStyle(1001);
-	gStyle->SetFrameFillColor(kWhite);
-	gStyle->SetPadBorderMode(0);
-	gStyle->SetPadColor(kWhite);
-	gStyle->SetStatColor(kWhite);
-	// gStyle->SetPadTickX(1);
-	// gStyle->SetPadTickY(1);
+    gStyle->SetFrameFillStyle(1001);
+    gStyle->SetFrameFillColor(kWhite);
+    gStyle->SetPadBorderMode(0);
+    gStyle->SetPadColor(kWhite);
+    gStyle->SetStatColor(kWhite);
+    // gStyle->SetPadTickX(1);
+    // gStyle->SetPadTickY(1);
 
     gStyle->SetLabelColor(1,"X");
-	gStyle->SetLabelColor(1,"Y");
+    gStyle->SetLabelColor(1,"Y");
 
     TCanvas *c1 = new TCanvas("c1","c1",800,1000);
 
@@ -81,7 +81,7 @@ void plotHistXY()
 
     htemp->SetTitle("Distribution of distance of radon rays from origin with air medium");
     htemp->GetYaxis()->SetTitle("Count");
-	htemp->GetXaxis()->SetTitle("Distance (in centimeters)");
+    htemp->GetXaxis()->SetTitle("Distance (in centimeters)");
     htemp->GetXaxis()->SetTitleOffset(1.5);
     htemp->GetYaxis()->SetTitleColor(kBlack);
     htemp->GetYaxis()->SetTitleSize(0.03);
